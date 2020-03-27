@@ -7,9 +7,8 @@ public abstract class Piece {
 	private int timesMoved;
 	private Coordinate position;
 	
-	public Piece(Colour colour, Coordinate position) {
+	public Piece(Colour colour) {
 		this.colour = colour;
-		this.position = position;
 		this.timesMoved = 0;
 	}
 		
@@ -65,16 +64,18 @@ public abstract class Piece {
 	//methods
 	public abstract Coordinate[] getPossibleMoves();
 	
+	/**
+	 * Move piece to a given coordinate on board
+	 * @param coordinate
+	 * @param board
+	 */
 	public void move(Coordinate coordinate, Board board) {	
 		//set previous position to null
-		board.set(null, this.position);
-		//set new position to this object
-		board.set(this, coordinate);
-		//update position attribute
-		this.position = coordinate;
+		board.set(getPosition(), null);
+		//set new position to this piece
+		board.set(coordinate, this);
 		this.timesMoved++;
 	}
-
 	/**
 	 * Returns array of squares attacked by piece
 	 * Default to getPossibleMoves()
