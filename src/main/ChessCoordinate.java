@@ -5,9 +5,7 @@ import java.util.Arrays;
 import boardgame.Coordinate;
 import boardgame.InvalidCoordinateException;
 
-public class ChessCoordinate extends Coordinate{
-	private String coordinate;
-	
+public class ChessCoordinate extends Coordinate{	
 	/**
 	 * Constructor for ChessCoordinate class
 	 * @param coordinate

@@ -8,7 +8,7 @@ public abstract class Coordinate {
 	}
 	/**
 	 * Try split the coordinate into array of two chars.
-	 * Throw InvalidCoordinateException if fails, else return.
+	 * Throw InvalidCoordinateException if fails, else return
 	 * @return coordinateSplit - array of chess coordinate as chars, eg. (a5 => ['a', '5'] ) 
 	 * @throws InvalidCoordinateException
 	 */

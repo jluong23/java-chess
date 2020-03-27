@@ -49,13 +49,6 @@ public abstract class Piece {
 	}
 
 	/**
-	 * @param timesMoved the timesMoved to set
-	 */
-	public void setTimesMoved(int timesMoved) {
-		this.timesMoved = timesMoved;
-	}
-
-	/**
 	 * @return the position
 	 */
 	public Coordinate getPosition() {
@@ -72,8 +65,13 @@ public abstract class Piece {
 	//methods
 	public abstract Coordinate[] getPossibleMoves();
 	
-	public void move(Coordinate coordinate) {		
-		
+	public void move(Coordinate coordinate, Board board) {	
+		//set previous position to null
+		board.set(null, this.position);
+		//set new position to this object
+		board.set(this, coordinate);
+		//update position attribute
+		this.position = coordinate;
 		this.timesMoved++;
 	}
 
