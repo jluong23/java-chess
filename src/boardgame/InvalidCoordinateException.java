@@ -1,4 +1,4 @@
-package exceptions;
+package boardgame;
 
 public class InvalidCoordinateException extends Exception {
 	private String c;
