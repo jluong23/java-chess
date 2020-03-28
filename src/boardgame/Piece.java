@@ -1,17 +1,23 @@
 package boardgame;
+
+import java.util.ArrayList;
+
 public abstract class Piece {
 	
 	//attributes
 	private String symbol;
-	private Colour colour;
+	private Player owner;
 	private int timesMoved;
 	private Coordinate position;
+	private Board board;
+	private int pointValue;
+	private boolean alive;
 	
-	public Piece(Colour colour) {
-		this.colour = colour;
+	
+	public Piece(Player player) {
+		this.owner = player;
 		this.timesMoved = 0;
 	}
-		
 	/**
 	 * @return the symbol
 	 */
@@ -27,19 +33,17 @@ public abstract class Piece {
 	}
 
 	/**
-	 * @return the colour
+	 * @return the owner
 	 */
-	public Colour getColour() {
-		return colour;
+	public Player getOwner() {
+		return owner;
 	}
-
 	/**
-	 * @param colour the colour to set
+	 * @param owner the owner to set
 	 */
-	public void setColour(Colour colour) {
-		this.colour = colour;
+	public void setOwner(Player owner) {
+		this.owner = owner;
 	}
-
 	/**
 	 * @return the timesMoved
 	 */
@@ -48,12 +52,54 @@ public abstract class Piece {
 	}
 
 	/**
+	 * @return the pointValue
+	 */
+	public int getPointValue() {
+		return pointValue;
+	}
+	/**
+	 * @param pointValue the pointValue to set
+	 */
+	public void setPointValue(int pointValue) {
+		this.pointValue = pointValue;
+	}
+	/**
+	 * @return the alive
+	 */
+	public boolean isAlive() {
+		return alive;
+	}
+	/**
+	 * @param alive the alive to set
+	 */
+	public void setAlive(boolean alive) {
+		this.alive = alive;
+	}
+	/**
+	 * @param timesMoved the timesMoved to set
+	 */
+	public void setTimesMoved(int timesMoved) {
+		this.timesMoved = timesMoved;
+	}
+	/**
 	 * @return the position
 	 */
 	public Coordinate getPosition() {
 		return position;
 	}
 
+	/**
+	 * @return the board
+	 */
+	public Board getBoard() {
+		return board;
+	}
+	/**
+	 * @param board the board to set
+	 */
+	public void setBoard(Board board) {
+		this.board = board;
+	}
 	/**
 	 * @param position the position to set
 	 */
@@ -62,7 +108,12 @@ public abstract class Piece {
 	}
 
 	//methods
-	public abstract Coordinate[] getPossibleMoves();
+	
+	/**
+	 * Fetch arraylist of tiles the piece can move to
+	 * @return tiles Arraylist of tiles
+	 */
+	public abstract ArrayList<Coordinate> getPossibleMoves();
 	
 	/**
 	 * Move piece to a given coordinate on board
@@ -77,12 +128,17 @@ public abstract class Piece {
 		this.timesMoved++;
 	}
 	/**
-	 * Returns array of squares attacked by piece
+	 * Returns arraylist of squares attacked by piece
 	 * Default to getPossibleMoves()
 	 * @return tiles The tiles the piece attacks
 	 */
-	public Coordinate[] getSquaresAttacking() {
+	public ArrayList<Coordinate> getSquaresAttacking() {
 		return this.getPossibleMoves();
+	}
+	
+	@Override
+	public String toString() {
+		return owner + " " +  symbol + " at position" + position + " on board " + board;
 	}
 	
 }
