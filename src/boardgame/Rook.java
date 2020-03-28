@@ -11,9 +11,15 @@ public class Rook extends ChessPiece {
 		// TODO Auto-generated constructor stub
 	}
 	@Override
-	public ArrayList<Coordinate> getPossibleMoves() {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Coordinate> getPossibleMoves() throws HasNoBoardException{
+		if(this.getBoard() == null) {
+			throw new HasNoBoardException(this);
+		}
+		else {
+			ArrayList<Coordinate> moves = new ArrayList<Coordinate>();
+			return moves;
+		}
 	}
+
 
 }

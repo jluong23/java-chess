@@ -113,7 +113,13 @@ public abstract class Piece {
 	 * Fetch arraylist of tiles the piece can move to
 	 * @return tiles Arraylist of tiles
 	 */
-	public abstract ArrayList<Coordinate> getPossibleMoves();
+	
+	/**
+	 * Fetch arraylist of tiles the piece can move to
+	 * @return tiles Arraylist of tiles
+	 * @throws HasNoBoardException - If the piece's board attribute is null
+	 */
+	public abstract ArrayList<Coordinate> getPossibleMoves() throws HasNoBoardException;
 	
 	/**
 	 * Move piece to a given coordinate on board
@@ -131,9 +137,17 @@ public abstract class Piece {
 	 * Returns arraylist of squares attacked by piece
 	 * Default to getPossibleMoves()
 	 * @return tiles The tiles the piece attacks
+	 * 
 	 */
 	public ArrayList<Coordinate> getSquaresAttacking() {
-		return this.getPossibleMoves();
+		try {
+			return this.getPossibleMoves();
+		} catch (HasNoBoardException e) {
+			System.out.println(e);
+			e.printStackTrace();
+			System.exit(0);
+		}
+		return null;
 	}
 	
 	@Override

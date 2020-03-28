@@ -9,6 +9,12 @@ public class Player {
 	private ArrayList<Piece> myPieces;
 	private ArrayList<Piece> piecesTaken;
 
+	
+	public Player(Colour colour) {
+		this.colour = colour;
+		score = 0;
+	}
+	
 	/**
 	 * @return the colour
 	 */
@@ -57,9 +63,6 @@ public class Player {
 	public void setPiecesTaken(ArrayList<Piece> piecesTaken) {
 		this.piecesTaken = piecesTaken;
 	}
-	
-	public Player() {
-		// TODO Auto-generated constructor stub
-	}
+
 
 }

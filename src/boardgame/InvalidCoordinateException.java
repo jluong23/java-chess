@@ -1,5 +1,6 @@
 package boardgame;
 
+@SuppressWarnings("serial")
 public class InvalidCoordinateException extends Exception {
 	private String c;
 	
