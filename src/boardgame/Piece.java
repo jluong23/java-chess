@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public abstract class Piece {
 	
 	//attributes
-	private String symbol;
-	private Player owner;
+	private char symbol;
+	private Player player;
 	private int timesMoved;
 	private Coordinate position;
 	private Board board;
@@ -15,34 +15,36 @@ public abstract class Piece {
 	
 	
 	public Piece(Player player) {
-		this.owner = player;
+		this.player = player;
 		this.timesMoved = 0;
 	}
+
 	/**
 	 * @return the symbol
 	 */
-	public String getSymbol() {
+	public char getSymbol() {
 		return symbol;
 	}
+
 
 	/**
 	 * @param symbol the symbol to set
 	 */
-	public void setSymbol(String symbol) {
+	public void setSymbol(char symbol) {
 		this.symbol = symbol;
 	}
-
+	
 	/**
-	 * @return the owner
+	 * @return the player
 	 */
-	public Player getOwner() {
-		return owner;
+	public Player getPlayer() {
+		return player;
 	}
 	/**
-	 * @param owner the owner to set
+	 * @param player the player to set
 	 */
-	public void setOwner(Player owner) {
-		this.owner = owner;
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 	/**
 	 * @return the timesMoved
@@ -117,9 +119,9 @@ public abstract class Piece {
 	/**
 	 * Fetch arraylist of tiles the piece can move to
 	 * @return tiles Arraylist of tiles
-	 * @throws HasNoBoardException - If the piece's board attribute is null
+	 * @throws NoPlayerException - If the piece's board attribute is null
 	 */
-	public abstract ArrayList<Coordinate> getPossibleMoves() throws HasNoBoardException;
+	public abstract ArrayList<Coordinate> getPossibleMoves() throws NoBoardException;
 	
 	/**
 	 * Move piece to a given coordinate on board
@@ -142,7 +144,7 @@ public abstract class Piece {
 	public ArrayList<Coordinate> getSquaresAttacking() {
 		try {
 			return this.getPossibleMoves();
-		} catch (HasNoBoardException e) {
+		} catch (NoBoardException e) {
 			System.out.println(e);
 			e.printStackTrace();
 			System.exit(0);
@@ -152,7 +154,7 @@ public abstract class Piece {
 	
 	@Override
 	public String toString() {
-		return owner + " " +  symbol + " at position" + position + " on board " + board;
+		return player.getColour() + " " +  symbol + " at position " + position;
 	}
 	
 }

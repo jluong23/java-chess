@@ -1,19 +1,19 @@
-package boardgame;
+package main;
 
 import java.util.ArrayList;
 
-import main.ChessPiece;
+import boardgame.*;
 
 public class Rook extends ChessPiece {
 
 	public Rook(Player player) {
 		super(player);
-		// TODO Auto-generated constructor stub
 	}
+	
 	@Override
-	public ArrayList<Coordinate> getPossibleMoves() throws HasNoBoardException{
+	public ArrayList<Coordinate> getPossibleMoves() throws NoBoardException{
 		if(this.getBoard() == null) {
-			throw new HasNoBoardException(this);
+			throw new NoBoardException(this);
 		}
 		else {
 			ArrayList<Coordinate> moves = new ArrayList<Coordinate>();

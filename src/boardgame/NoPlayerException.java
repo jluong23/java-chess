@@ -1,10 +1,10 @@
 package boardgame;
 
 @SuppressWarnings("serial")
-public class HasNoBoardException extends Exception {
+public class NoPlayerException extends Exception {
 	private Piece p;
 	
-	public HasNoBoardException(Piece p) {
+	public NoPlayerException(Piece p) {
 		// TODO Auto-generated constructor stub
 		this.p = p;
 	}
