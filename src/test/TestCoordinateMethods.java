@@ -6,9 +6,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import boardgame.InvalidCoordinateException;
 import main.ChessCoordinate;
 
-public class TestGetIndexes {
+public class TestCoordinateMethods {
 
 	
 	@Before
@@ -25,7 +26,6 @@ public class TestGetIndexes {
 		ChessCoordinate c = new ChessCoordinate("A8");
 		int[] ce = {0,0};
 		assertArrayEquals(ce, c.getIndexes());
-
 	}
 	@Test
 	public void testBottomLeft() {

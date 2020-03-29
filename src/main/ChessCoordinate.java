@@ -13,7 +13,6 @@ public class ChessCoordinate extends Coordinate{
 	public ChessCoordinate(String coordinate) {
 		super(coordinate);
 	}
-
 	@Override
 	public boolean isValid() {
 		char[] charCoordinates = this.getCoordinate().toCharArray();
@@ -27,7 +26,6 @@ public class ChessCoordinate extends Coordinate{
 			return letterInRange && rowInRange;
 		}
 	}
-	
 	@Override
 	public int[] getIndexes() {
 		char[] coords = new char[2];
@@ -45,9 +43,31 @@ public class ChessCoordinate extends Coordinate{
 		return indexes;
 	}
 	
+	public static Coordinate toCoordinate(int[] indexes) throws InvalidCoordinateException{
+		char rowValue = (char)('8' - indexes[1]);
+		char colValue = (char)(indexes[0] + 'a');
+		char[] coordChars = {colValue,rowValue};
+		String coordString = new String(coordChars);
+		ChessCoordinate coord = new ChessCoordinate(coordString);
+		if(coord.isValid())return coord;
+		else {
+			throw new InvalidCoordinateException(coordString);
+		}
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(this.getClass() == obj.getClass()) {
+			return ((ChessCoordinate) obj).getCoordinate() ==this.getCoordinate();
+		}else {
+			return false;
+		}
+	}
+		
+	
 	public static void main(String[] args) {
-		ChessCoordinate m = new ChessCoordinate("z");
-		System.out.println(Arrays.toString(m.getIndexes()));
+		int[] i = {8,0};
+		System.out.println(ChessCoordinate.toCoordinate(i));
 	}
 
 }

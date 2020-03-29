@@ -1,7 +1,7 @@
 package boardgame;
 
 @SuppressWarnings("serial")
-public class InvalidCoordinateException extends Exception {
+public class InvalidCoordinateException extends RuntimeException {
 	private String c;
 	
 	public InvalidCoordinateException(String c) {

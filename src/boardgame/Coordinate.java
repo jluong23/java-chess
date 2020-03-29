@@ -40,4 +40,10 @@ public abstract class Coordinate {
 	 */
 	public abstract boolean isValid();
 	
+	@Override
+	public String toString() {
+		return coordinate;
+	}
+	
+	
 }

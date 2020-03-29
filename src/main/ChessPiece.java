@@ -12,6 +12,7 @@ public abstract class ChessPiece extends Piece {
 	
 	public ChessPiece(Player player){
 		super(player);
+		//name attribute is the class name as an enum
 		name = ChessPieceEnum.valueOf(getClass().getSimpleName().toUpperCase());
 		try {
 			setChessSymbol();
@@ -20,6 +21,11 @@ public abstract class ChessPiece extends Piece {
 		}
 	}
 
+	
+	/**
+	 * Fetch and set the symbol attribute for a chess piece
+	 * @throws NoPlayerException
+	 */
 	public void setChessSymbol() throws NoPlayerException {
 		if(getPlayer() == null) {
 			throw new NoPlayerException(this);

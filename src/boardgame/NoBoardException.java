@@ -1,7 +1,7 @@
 package boardgame;
 
 @SuppressWarnings("serial")
-public class NoBoardException extends Exception {
+public class NoBoardException extends RuntimeException {
 	private Piece p;
 	
 	public NoBoardException(Piece p) {
