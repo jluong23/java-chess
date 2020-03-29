@@ -1,6 +1,8 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import boardgame.Board;
 import boardgame.Piece;
 import boardgame.Player;
@@ -12,7 +14,7 @@ public class ChessBoard extends Board {
 	private Layout layout;
 	private Piece[][] emptyBoard = new Piece[8][8];
 	
-	public ChessBoard(Layout layout, ArrayList<Player> players) {
+	public ChessBoard(Layout layout, List<Player> players) {
 		super(players);
 		this.layout = layout;
 		//set to emptyBoard initially to access board methods when changing to given layout
@@ -29,7 +31,7 @@ public class ChessBoard extends Board {
 		else {
 			switch(layout) {
 			case STANDARD:
-				setBoard(createDefaultBoard());
+//				setBoard(createDefaultBoard());
 				break;
 			default:
 				throw new InvalidLayoutException("Layout does not exist");

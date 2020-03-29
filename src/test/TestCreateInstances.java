@@ -1,7 +1,7 @@
 package test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import boardgame.Colour;
 import boardgame.Player;
@@ -11,8 +11,10 @@ import main.Layout;
 public class TestCreateInstances {
 	
 	public static void main(String[] args) {
-		Player[] playersArray = {new Player(Colour.WHITE), new Player(Colour.BLACK)};
-		ArrayList<Player> players = (ArrayList<Player>) Arrays.asList(playersArray);
+		Player p1 = new Player(Colour.WHITE);
+		Player p2 = new Player(Colour.BLACK);
+		Player[] playersArray = {p1,p2};
+		List<Player> players = Arrays.asList(playersArray);
 		ChessBoard b = new ChessBoard(Layout.STANDARD,players);
 		System.out.println(b);
 

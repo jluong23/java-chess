@@ -1,25 +1,26 @@
 package boardgame;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Board {
 	private Piece[][] board;
-	private ArrayList<Player> players;
-	public Board(ArrayList<Player> players){
-		this.players = players;
+	private List<Player> players;
+	public Board(List<Player> players2){
+		this.players = players2;
 	}
 	
 	/**
 	 * @return the players
 	 */
-	public ArrayList<Player> getPlayers() {
+	public List<Player> getPlayers() {
 		return players;
 	}
 
 	/**
 	 * @param players the players to set
 	 */
-	public void setPlayers(ArrayList<Player> players) {
+	public void setPlayers(List<Player> players) {
 		this.players = players;
 	}
 	/**
@@ -56,7 +57,7 @@ public abstract class Board {
 			for (Piece tile : row) {
 				out+=tile;
 			}
-			out+="|";
+			out+="|\n";
 		}
 		return out;
 	}

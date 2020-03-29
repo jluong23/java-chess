@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import boardgame.exceptions.NoBoardException;
 import boardgame.exceptions.TooManyPlayersException;
 
-public abstract class Piece {
+public abstract class Piece implements Cloneable{
 	
 	//attributes
 	private char symbol;
@@ -31,7 +31,6 @@ public abstract class Piece {
 	public char getSymbol() {
 		return symbol;
 	}
-
 
 	/**
 	 * @param symbol the symbol to set
@@ -158,8 +157,20 @@ public abstract class Piece {
 		return null;
 	}
 	
-	public static ArrayList<Piece> generatePiece(){
-		
+	public Object clone() {
+		try {
+			return super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	public ArrayList<Piece> clone(int n){
+		ArrayList<Piece> duplicatePieces = new ArrayList<Piece>();
+		for (int i = 0; i < n; i++) {
+			duplicatePieces.add( (Piece) this.clone());
+		}
+		return duplicatePieces;
 	}
 	
 	@Override

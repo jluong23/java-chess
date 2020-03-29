@@ -58,4 +58,5 @@ public abstract class ChessPiece extends Piece {
 		}
 		return piecesHashMap.get(colour).get(piece);
 	}
+
 }
