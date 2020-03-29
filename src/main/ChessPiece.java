@@ -10,12 +10,12 @@ import boardgame.exceptions.TooManyPlayersException;
 
 
 public abstract class ChessPiece extends Piece {
-	private ChessPieceEnum name;
-	
+	private ChessPieceNames name;
+
 	public ChessPiece(Player player){
 		super(player);
 		//name attribute is the class name as an enum
-		name = ChessPieceEnum.valueOf(getClass().getSimpleName().toUpperCase());
+		name = ChessPieceNames.valueOf(getClass().getSimpleName().toUpperCase());
 		setChessSymbol();
 	}
 
@@ -41,14 +41,14 @@ public abstract class ChessPiece extends Piece {
 	 * @param colour the colour wanted as Colour enum class
 	 * @return symbol - symbol of the coloured piece
 	 */
-	public static char getSymbol(ChessPieceEnum piece, Colour colour) {
+	public static char getSymbol(ChessPieceNames piece, Colour colour) {
 		
-		HashMap<Colour, Map <ChessPieceEnum, Character> > piecesHashMap = new HashMap<>();
+		HashMap<Colour, Map <ChessPieceNames, Character> > piecesHashMap = new HashMap<>();
 		//populate map
 		for (Colour c : Colour.values()) {
-			HashMap<ChessPieceEnum, Character> symbolsHashMap = new HashMap<>();
-			ChessPieceEnum[] pieceNames = ChessPieceEnum.values();
-			char[] symbols = ChessPieceEnum.getSymbols(c);
+			HashMap<ChessPieceNames, Character> symbolsHashMap = new HashMap<>();
+			ChessPieceNames[] pieceNames = ChessPieceNames.values();
+			char[] symbols = ChessPieceNames.getSymbols(c);
 			//for each piece, map to according symbol
 			for (int i = 0; i < pieceNames.length; i++) {
 				symbolsHashMap.put(pieceNames[i], symbols[i]);

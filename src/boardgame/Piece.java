@@ -158,6 +158,10 @@ public abstract class Piece {
 		return null;
 	}
 	
+	public static ArrayList<Piece> generatePiece(){
+		
+	}
+	
 	@Override
 	public String toString() {
 		return player.getColour() + " " +  symbol + " at position " + position;
