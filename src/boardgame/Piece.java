@@ -2,6 +2,9 @@ package boardgame;
 
 import java.util.ArrayList;
 
+import boardgame.exceptions.NoBoardException;
+import boardgame.exceptions.TooManyPlayersException;
+
 public abstract class Piece {
 	
 	//attributes
@@ -122,7 +125,7 @@ public abstract class Piece {
 	/**
 	 * Fetch arraylist of tiles the piece can move to
 	 * @return tiles Arraylist of tiles
-	 * @throws NoPlayerException - If the piece's board attribute is null
+	 * @throws TooManyPlayersException - If the piece's board attribute is null
 	 */
 	public abstract ArrayList<Coordinate> getPossibleMoves() throws NoBoardException;
 	
@@ -133,9 +136,9 @@ public abstract class Piece {
 	 */
 	public void move(Coordinate coordinate, Board board) {	
 		//set previous position to null
-		board.set(getPosition(), null);
+		board.setPiece(getPosition(), null);
 		//set new position to this piece
-		board.set(coordinate, this);
+		board.setPiece(coordinate, this);
 		this.timesMoved++;
 	}
 	/**

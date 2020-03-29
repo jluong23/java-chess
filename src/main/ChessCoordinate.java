@@ -1,9 +1,7 @@
 package main;
 
-import java.util.Arrays;
-
 import boardgame.Coordinate;
-import boardgame.InvalidCoordinateException;
+import boardgame.exceptions.InvalidCoordinateException;
 
 public class ChessCoordinate extends Coordinate{	
 	/**

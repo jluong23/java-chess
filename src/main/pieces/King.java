@@ -3,6 +3,7 @@ package main.pieces;
 import java.util.ArrayList;
 
 import boardgame.*;
+import boardgame.exceptions.NoBoardException;
 import main.ChessPiece;
 
 public class King extends ChessPiece {

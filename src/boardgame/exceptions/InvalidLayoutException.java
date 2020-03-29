@@ -1,14 +1,14 @@
-package boardgame;
+package boardgame.exceptions;
 
 @SuppressWarnings("serial")
 public class InvalidLayoutException extends RuntimeException {
-	private String s;
+	private String msg;
 	
-	public InvalidLayoutException(String s) {
-		this.s = s;
+	public InvalidLayoutException(String msg) {
+		this.msg = msg;
 	}
 	
 	public String getLayout() {
-		return s;
+		return msg;
 	}
 }

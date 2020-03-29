@@ -1,4 +1,4 @@
-package boardgame;
+package boardgame.exceptions;
 
 @SuppressWarnings("serial")
 public class InvalidCoordinateException extends RuntimeException {

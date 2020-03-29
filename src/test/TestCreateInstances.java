@@ -13,7 +13,7 @@ public class TestCreateInstances {
 	public static void main(String[] args) {
 		Player[] playersArray = {new Player(Colour.WHITE), new Player(Colour.BLACK)};
 		ArrayList<Player> players = (ArrayList<Player>) Arrays.asList(playersArray);
-		ChessBoard b = new ChessBoard(Layout.DEFAULT,players);
+		ChessBoard b = new ChessBoard(Layout.STANDARD,players);
 		System.out.println(b);
 
 	}

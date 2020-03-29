@@ -5,8 +5,7 @@ import java.util.ArrayList;
 public abstract class Board {
 	private Piece[][] board;
 	private ArrayList<Player> players;
-	public Board(Piece[][] board, ArrayList<Player> players){
-		this.board = board;
+	public Board(ArrayList<Player> players){
 		this.players = players;
 	}
 	
@@ -24,6 +23,13 @@ public abstract class Board {
 		this.players = players;
 	}
 	/**
+	 * @param board the board to set
+	 */
+	public void setBoard(Piece[][] board) {
+		this.board = board;
+	}
+
+	/**
 	 * @return the board
 	 */
 	public Piece[][] getBoard() {
@@ -34,7 +40,7 @@ public abstract class Board {
 	 * @param coordinate - new position for piece
 	 * @param piece - piece to place at coordinate
 	 */
-	public void set(Coordinate coordinate, Piece piece) {
+	public void setPiece(Coordinate coordinate, Piece piece) {
 		int r = coordinate.getIndexes()[0];
 		int c = coordinate.getIndexes()[1];
 		board[r][c] = piece;

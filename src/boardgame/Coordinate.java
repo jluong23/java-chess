@@ -1,5 +1,7 @@
 package boardgame;
 
+import boardgame.exceptions.InvalidCoordinateException;
+
 public abstract class Coordinate {
 	private String coordinate;
 

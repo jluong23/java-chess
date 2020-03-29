@@ -1,13 +1,15 @@
-package boardgame;
+package boardgame.exceptions;
+
+import boardgame.Piece;
 
 @SuppressWarnings("serial")
-public class NoPlayerException extends RuntimeException {
+public class NoBoardException extends RuntimeException {
 	private Piece p;
 	
-	public NoPlayerException(Piece p) {
+	public NoBoardException(Piece p) {
 		// TODO Auto-generated constructor stub
 		this.p = p;
-	}	
+	}
 	
 	public Piece getPiece() {
 		return p;

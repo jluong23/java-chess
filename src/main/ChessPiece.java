@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import boardgame.*;
+import boardgame.exceptions.NoPlayerAttributeException;
+import boardgame.exceptions.TooManyPlayersException;
 
 
 public abstract class ChessPiece extends Piece {
@@ -21,11 +23,11 @@ public abstract class ChessPiece extends Piece {
 	/**
 	 * Fetch and set the symbol attribute for a chess piece, using the static method getSymbol().
 	 * Called in the constructor of ChessPiece class
-	 * @throws NoPlayerException
+	 * @throws TooManyPlayersException
 	 */
-	public void setChessSymbol() throws NoPlayerException {
+	public void setChessSymbol() throws TooManyPlayersException {
 		if(getPlayer() == null) {
-			throw new NoPlayerException(this);
+			throw new NoPlayerAttributeException(this);
 		}else {
 			Colour colour = getPlayer().getColour();
 			char symbol = getSymbol(name,colour);
