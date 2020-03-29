@@ -3,6 +3,10 @@ package boardgame;
 public abstract class Coordinate {
 	private String coordinate;
 
+	/**
+	 * Create new coordinate object
+	 * @param coordinate the coordinate, converted to lower case
+	 */
 	public Coordinate(String coordinate) {
 		this.coordinate = coordinate.toLowerCase();
 	}

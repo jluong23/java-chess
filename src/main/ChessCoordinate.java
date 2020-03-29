@@ -42,7 +42,12 @@ public class ChessCoordinate extends Coordinate{
 		int[] indexes = {rowIndex, colIndex};
 		return indexes;
 	}
-	
+	/**
+	 * 
+	 * @param indexes the indexes on the board 
+	 * @return coordinate the new coordinate object given indexes
+	 * @throws InvalidCoordinateException if the coordinate is invalid and can't be converted
+	 */
 	public static Coordinate toCoordinate(int[] indexes) throws InvalidCoordinateException{
 		char rowValue = (char)('8' - indexes[1]);
 		char colValue = (char)(indexes[0] + 'a');
@@ -56,6 +61,9 @@ public class ChessCoordinate extends Coordinate{
 	}
 	
 	@Override
+	/**
+	 * Returns whether two chess coordinates are the same
+	 */
 	public boolean equals(Object obj) {
 		if(this.getClass() == obj.getClass()) {
 			return ((ChessCoordinate) obj).getCoordinate() ==this.getCoordinate();

@@ -13,7 +13,10 @@ public abstract class Piece {
 	private int pointValue;
 	private boolean alive;
 	
-	
+	/**
+	 * Creates a new piece object
+	 * @param player the player controlling the piece
+	 */
 	public Piece(Player player) {
 		this.player = player;
 		this.timesMoved = 0;

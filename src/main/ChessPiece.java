@@ -14,16 +14,13 @@ public abstract class ChessPiece extends Piece {
 		super(player);
 		//name attribute is the class name as an enum
 		name = ChessPieceEnum.valueOf(getClass().getSimpleName().toUpperCase());
-		try {
-			setChessSymbol();
-		} catch (NoPlayerException e) {
-			e.printStackTrace();
-		}
+		setChessSymbol();
 	}
 
 	
 	/**
-	 * Fetch and set the symbol attribute for a chess piece
+	 * Fetch and set the symbol attribute for a chess piece, using the static method getSymbol().
+	 * Called in the constructor of ChessPiece class
 	 * @throws NoPlayerException
 	 */
 	public void setChessSymbol() throws NoPlayerException {
@@ -38,9 +35,9 @@ public abstract class ChessPiece extends Piece {
 	/**
 	 * map colour to map of pieces to character
 	 * colour and piece are essentially two keys for character which is a coloured piece 
-	 * @param piece
-	 * @param colour
-	 * @return
+	 * @param piece the piece wanted as ChessPieceEnum class
+	 * @param colour the colour wanted as Colour enum class
+	 * @return symbol - symbol of the coloured piece
 	 */
 	public static char getSymbol(ChessPieceEnum piece, Colour colour) {
 		
