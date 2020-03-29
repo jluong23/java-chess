@@ -1,19 +1,20 @@
 package test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import boardgame.Colour;
 import boardgame.Player;
 import main.ChessBoard;
-import main.pieces.Bishop;
+import main.Layout;
 
 public class TestCreateInstances {
 	
 	public static void main(String[] args) {
-		Player p = new Player(Colour.WHITE);
-		Bishop k = new Bishop(p);
-		ChessBoard b = new ChessBoard(null);
-		k.setBoard(b);
-		System.out.println(k.getPossibleMoves());
-		System.out.println(k);
+		Player[] playersArray = {new Player(Colour.WHITE), new Player(Colour.BLACK)};
+		ArrayList<Player> players = (ArrayList<Player>) Arrays.asList(playersArray);
+		ChessBoard b = new ChessBoard(Layout.DEFAULT,players);
+		System.out.println(b);
 
 	}
 }

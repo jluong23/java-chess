@@ -1,12 +1,28 @@
 package boardgame;
 
+import java.util.ArrayList;
+
 public abstract class Board {
 	private Piece[][] board;
-	
-	public Board(Piece[][] board){
+	private ArrayList<Player> players;
+	public Board(Piece[][] board, ArrayList<Player> players){
 		this.board = board;
+		this.players = players;
 	}
 	
+	/**
+	 * @return the players
+	 */
+	public ArrayList<Player> getPlayers() {
+		return players;
+	}
+
+	/**
+	 * @param players the players to set
+	 */
+	public void setPlayers(ArrayList<Player> players) {
+		this.players = players;
+	}
 	/**
 	 * @return the board
 	 */
@@ -26,14 +42,17 @@ public abstract class Board {
 		piece.setPosition(coordinate);
 	}
 	
-	public void print() {
+	@Override
+	public String toString() {
+		String out = "";
 		for (Piece[] row : board) {
-			System.out.print("|");
+			out+="|";
 			for (Piece tile : row) {
-				System.out.print(tile);
+				out+=tile;
 			}
-			System.out.println("|");
+			out+="|";
 		}
+		return out;
 	}
 	
 	public abstract void reset();
