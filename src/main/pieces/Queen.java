@@ -1,12 +1,13 @@
-package main;
+package main.pieces;
 
 import java.util.ArrayList;
 
 import boardgame.*;
+import main.ChessPiece;
 
-public class Rook extends ChessPiece {
+public class Queen extends ChessPiece {
 
-	public Rook(Player player) {
+	public Queen(Player player) {
 		super(player);
 	}
 	

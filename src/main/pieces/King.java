@@ -1,8 +1,9 @@
-package main;
+package main.pieces;
 
 import java.util.ArrayList;
 
 import boardgame.*;
+import main.ChessPiece;
 
 public class King extends ChessPiece {
 
