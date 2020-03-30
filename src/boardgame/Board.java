@@ -8,6 +8,7 @@ import main.ChessCoordinate;
 public abstract class Board {
 	private Piece[][] board;
 	private List<Player> players;
+	
 	public Board(List<Player> players2){
 		this.players = players2;
 	}
@@ -68,13 +69,13 @@ public abstract class Board {
 	@Override
 	public String toString() {
 		String out = "";
-		for (Piece[] row : board) {
-			out+="|";
-			for (Piece tile : row) {
+		for (int i = 0; i < board.length; i++) {
+			out+= (board.length - i) + " |";
+			for (Piece tile : board[i]) {
 				if(tile == null) out+="  "; //if nothing on tile, print empty space
 				else out+=tile + " ";					
 			}
-			out+="|\n------------------\n";
+			out+="|\n  ------------------\n";
 		}
 		return out;
 	}

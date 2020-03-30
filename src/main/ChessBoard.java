@@ -75,6 +75,14 @@ public class ChessBoard extends Board {
 			}
 		}
 	}
+	
+	@Override
+	public String toString() {
+		String out = super.toString();
+		//include letters of chess board
+		out+="   a b c d e f g h";
+		return out;
+	}
 	@Override
 	public void reset() {
 		setBoardStyle(layout);
