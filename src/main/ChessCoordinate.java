@@ -47,8 +47,8 @@ public class ChessCoordinate extends Coordinate{
 	 * @throws InvalidCoordinateException if the coordinate is invalid and can't be converted
 	 */
 	public static Coordinate toCoordinate(int[] indexes) throws InvalidCoordinateException{
-		char rowValue = (char)('8' - indexes[1]);
-		char colValue = (char)(indexes[0] + 'a');
+		char rowValue = (char)('8' - indexes[0]);
+		char colValue = (char)(indexes[1] + 'a');
 		char[] coordChars = {colValue,rowValue};
 		String coordString = new String(coordChars);
 		ChessCoordinate coord = new ChessCoordinate(coordString);
@@ -70,10 +70,5 @@ public class ChessCoordinate extends Coordinate{
 		}
 	}
 		
-	
-	public static void main(String[] args) {
-		int[] i = {8,0};
-		System.out.println(ChessCoordinate.toCoordinate(i));
-	}
 
 }

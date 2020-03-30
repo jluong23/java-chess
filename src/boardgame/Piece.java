@@ -157,6 +157,10 @@ public abstract class Piece implements Cloneable{
 		return null;
 	}
 	
+	/**
+	 * Return a shallow copy of the instance
+	 * @return clone A clone of the instance object
+	 */
 	public Object clone() {
 		try {
 			return super.clone();
@@ -165,6 +169,12 @@ public abstract class Piece implements Cloneable{
 		}
 		return null;
 	}
+	
+	/**
+	 * Return n shallow copies of the instance as an ArrayList
+	 * @param n the number of copies to make
+	 * @return duplicatePieces the clones of the instance in an ArrayList
+	 */
 	public ArrayList<Piece> clone(int n){
 		ArrayList<Piece> duplicatePieces = new ArrayList<Piece>();
 		for (int i = 0; i < n; i++) {
@@ -175,7 +185,7 @@ public abstract class Piece implements Cloneable{
 	
 	@Override
 	public String toString() {
-		return player.getColour() + " " +  symbol + " at position " + position;
+		return Character.toString(symbol);
 	}
 	
 }

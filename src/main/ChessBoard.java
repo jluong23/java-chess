@@ -1,18 +1,19 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import boardgame.Board;
-import boardgame.Piece;
-import boardgame.Player;
-import boardgame.exceptions.InvalidLayoutException;
-import boardgame.exceptions.TooManyPlayersException;
+import boardgame.*;
+import boardgame.exceptions.*;
+import main.*;
+import main.pieces.*;
 
 public class ChessBoard extends Board {
 	
 	private Layout layout;
-	private Piece[][] emptyBoard = new Piece[8][8];
+	private static Piece[][] emptyBoard = new Piece[8][8];
+	
 	
 	public ChessBoard(Layout layout, List<Player> players) {
 		super(players);
@@ -22,16 +23,15 @@ public class ChessBoard extends Board {
 		setBoardStyle(layout);
 	}
 	/**
-	 * Create a board given a particular layout from Layout enum
+	 * Set a board given a particular layout from Layout enum
 	 * @param layout the layout for the chess board
-	 * @return board 2d array of the board with the given layout
 	 */
 	public void setBoardStyle(Layout layout) throws InvalidLayoutException {
 		if(layout == null) throw new InvalidLayoutException("Null layout detected");
 		else {
 			switch(layout) {
 			case STANDARD:
-//				setBoard(createDefaultBoard());
+				setDefaultBoard();
 				break;
 			default:
 				throw new InvalidLayoutException("Layout does not exist");
@@ -39,17 +39,41 @@ public class ChessBoard extends Board {
 		}
 	}
 	
-	/** 
-	 * TODO Should return layout of chess board as 2d array of pieces
-	 * @return
-	 */
-	private Piece[][] createDefaultBoard() throws TooManyPlayersException{
+	private void setDefaultBoard() throws TooManyPlayersException{
 		if(getPlayers().size() != 2) {
 			throw new TooManyPlayersException("There are too many players, must only be 2");
 		}else {
-			
+			ArrayList<Coordinate> pawnRankCoords, backRankCoords; //indexes for row numbers for ranks
+			for (Player player: getPlayers()) {
+				
+				//select what rank the pieces should be based on colour
+				switch (player.getColour()) {
+				case BLACK:
+					pawnRankCoords = this.getRowCoordinates(1);
+					backRankCoords = this.getRowCoordinates(0);
+					break;
+				case WHITE:
+					pawnRankCoords = this.getRowCoordinates(getBoard().length-2);
+					backRankCoords = this.getRowCoordinates(getBoard().length-1);
+					break;
+				default:
+					throw new RuntimeException("Chess only has white or black colours, please reset");
+				}
+				
+				final int NUM_PIECES_IN_RANK = 8;
+				//create the pieces, assigning the player to them
+				ArrayList<Piece> pawns = new Pawn(player).clone(NUM_PIECES_IN_RANK);
+				Piece[] specialPieces = {new Rook(player), new Knight(player), new Bishop(player), new Queen(player),
+				new King(player), new Bishop(player), new Knight(player), new Rook(player)};
+				
+				for (int i = 0; i < NUM_PIECES_IN_RANK; i++) {
+					this.setPiece(pawnRankCoords.get(i), pawns.get(i));
+					this.setPiece(backRankCoords.get(i), specialPieces[i]);
+				}
+			}
 		}
 	}
+	
 
 	@Override
 	public void reset() {

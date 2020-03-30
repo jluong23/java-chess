@@ -3,6 +3,8 @@ package boardgame;
 import java.util.ArrayList;
 import java.util.List;
 
+import main.ChessCoordinate;
+
 public abstract class Board {
 	private Piece[][] board;
 	private List<Player> players;
@@ -49,13 +51,28 @@ public abstract class Board {
 		piece.setPosition(coordinate);
 	}
 	
+	/**
+	 * Return all coordinates at a given row
+	 * @param row the row of coordinates requested
+	 * @return the coordinates fetched as an ArrayList
+	 */
+	public ArrayList<Coordinate> getRowCoordinates(int row) {
+		ArrayList<Coordinate> coords = new ArrayList<>();
+		for (int i = 0; i < board[row].length; i++) {
+			int[] indexes = {row,i};
+			coords.add(ChessCoordinate.toCoordinate(indexes));
+		}
+		return coords;
+	}
+	
 	@Override
 	public String toString() {
 		String out = "";
 		for (Piece[] row : board) {
 			out+="|";
 			for (Piece tile : row) {
-				out+=tile;
+				if(tile == null) out+=" "; //if nothing on tile, print empty space
+				else out+=tile;					
 			}
 			out+="|\n";
 		}

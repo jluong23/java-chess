@@ -6,6 +6,7 @@ import java.util.List;
 import boardgame.Colour;
 import boardgame.Player;
 import main.ChessBoard;
+import main.ChessCoordinate;
 import main.Layout;
 
 public class TestCreateInstances {
