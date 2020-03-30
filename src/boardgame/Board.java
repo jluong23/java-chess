@@ -71,10 +71,10 @@ public abstract class Board {
 		for (Piece[] row : board) {
 			out+="|";
 			for (Piece tile : row) {
-				if(tile == null) out+=" "; //if nothing on tile, print empty space
-				else out+=tile;					
+				if(tile == null) out+="  "; //if nothing on tile, print empty space
+				else out+=tile + " ";					
 			}
-			out+="|\n";
+			out+="|\n------------------\n";
 		}
 		return out;
 	}

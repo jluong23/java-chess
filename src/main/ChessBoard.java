@@ -1,12 +1,10 @@
 package main;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import boardgame.*;
 import boardgame.exceptions.*;
-import main.*;
 import main.pieces.*;
 
 public class ChessBoard extends Board {
@@ -38,8 +36,12 @@ public class ChessBoard extends Board {
 			}						
 		}
 	}
-	
-	private void setDefaultBoard() throws TooManyPlayersException{
+	/**
+	 * Sets current board to default board layout
+	 * @throws TooManyPlayersException
+	 * @throws InvalidColourException
+	 */
+	private void setDefaultBoard() throws TooManyPlayersException, InvalidColourException{
 		if(getPlayers().size() != 2) {
 			throw new TooManyPlayersException("There are too many players, must only be 2");
 		}else {
@@ -57,7 +59,7 @@ public class ChessBoard extends Board {
 					backRankCoords = this.getRowCoordinates(getBoard().length-1);
 					break;
 				default:
-					throw new RuntimeException("Chess only has white or black colours, please reset");
+					throw new InvalidColourException("Chess only has white or black colours, please reset");
 				}
 				
 				final int NUM_PIECES_IN_RANK = 8;
@@ -73,8 +75,6 @@ public class ChessBoard extends Board {
 			}
 		}
 	}
-	
-
 	@Override
 	public void reset() {
 		setBoardStyle(layout);

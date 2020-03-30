@@ -9,8 +9,8 @@ public enum ChessPieceNames{
 	
 	/**
 	 * Returns an array of symbols available for the colour
-	 * @param colour
-	 * @return
+	 * @param colour The colour of symbols requested
+	 * @return symbols The symbols of the requested colour
 	 */
 	public static char[] getSymbols(Colour colour) {
 		switch(colour) {
