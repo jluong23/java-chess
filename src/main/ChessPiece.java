@@ -21,42 +21,18 @@ public abstract class ChessPiece extends Piece {
 
 	
 	/**
-	 * Fetch and set the symbol attribute for a chess piece, using the static method getSymbol().
-	 * Called in the constructor of ChessPiece class
-	 * @throws TooManyPlayersException
+	 * Fetch and set the symbol attribute for this instance.
+	 * @throws NoPlayerAttributeException When no players are in the game, don't know what colour symbol to fetch, exit.
 	 */
-	public void setChessSymbol() throws TooManyPlayersException {
+	public void setChessSymbol() throws NoPlayerAttributeException {
 		if(getPlayer() == null) {
 			throw new NoPlayerAttributeException(this);
 		}else {
 			Colour colour = getPlayer().getColour();
-			char symbol = getSymbol(name,colour);
+			char symbol = this.name.getSymbol(name,colour);
 			this.setSymbol(symbol);			
 		}		
 	}
-	/**
-	 * map colour to map of pieces to character
-	 * colour and piece are essentially two keys for character which is a coloured piece 
-	 * @param piece the piece wanted as ChessPieceEnum class
-	 * @param colour the colour wanted as Colour enum class
-	 * @return symbol - symbol of the coloured piece
-	 */
-	public static char getSymbol(ChessPieceNames piece, Colour colour) {
-		
-		HashMap<Colour, Map <ChessPieceNames, Character> > piecesHashMap = new HashMap<>();
-		//populate map
-		for (Colour c : Colour.values()) {
-			HashMap<ChessPieceNames, Character> symbolsHashMap = new HashMap<>();
-			ChessPieceNames[] pieceNames = ChessPieceNames.values();
-			char[] symbols = ChessPieceNames.getSymbols(c);
-			//for each piece, map to according symbol
-			for (int i = 0; i < pieceNames.length; i++) {
-				symbolsHashMap.put(pieceNames[i], symbols[i]);
-			}
-			//map colour to symbolsHashMap in 2d hashmap
-			piecesHashMap.put(c,symbolsHashMap);
-		}
-		return piecesHashMap.get(colour).get(piece);
-	}
+
 
 }

@@ -3,6 +3,7 @@ package boardgame;
 import java.util.ArrayList;
 import java.util.List;
 
+import boardgame.exceptions.InvalidCoordinateException;
 import main.ChessCoordinate;
 
 public abstract class Board {
@@ -50,6 +51,21 @@ public abstract class Board {
 		board[r][c] = piece;
 		//update piece position
 		piece.setPosition(coordinate);
+	}
+	
+	/**
+	 * Return what is on the board at a given coordinate
+	 * @param coordinate the coordinate to check 
+	 * @return result -  the object at the coordinate on the board, null if empty
+	 */
+	public Piece at(Coordinate coordinate) {
+		if(!coordinate.isValid()) {
+			throw new InvalidCoordinateException("Tried to use invalid coordinate, exiting...");
+		}else {
+			int[] indexes = coordinate.getIndexes();
+			return board[indexes[0]][indexes[1]];
+		}
+		
 	}
 	
 	/**

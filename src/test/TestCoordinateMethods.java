@@ -6,7 +6,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import boardgame.exceptions.InvalidCoordinateException;
 import main.ChessCoordinate;
 
 public class TestCoordinateMethods {

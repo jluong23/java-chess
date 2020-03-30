@@ -1,7 +1,5 @@
 package boardgame.exceptions;
 
-import boardgame.Piece;
-
 @SuppressWarnings("serial")
 public class TooManyPlayersException extends RuntimeException {
 	private String s;

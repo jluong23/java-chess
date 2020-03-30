@@ -1,25 +1,40 @@
 package main;
+
 import boardgame.Colour;
+import boardgame.exceptions.InvalidColourException;
 
 public enum ChessPieceNames{
-	//these should be in the same order 
-	PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING;
-	private static final char[] WHITE_SYMBOLS = {'♙','♘','♗','♖','♕', '♔'};
-	private static final char[] BLACK_SYMBOLS = {'♟','♞','♝','♜','♛', '♚'};
+	//each piece as enum contains according unicode symbol as an attribute
+	PAWN('♙','♟'), 
+	KNIGHT('♘','♞'), 
+	BISHOP('♗','♝'), 
+	ROOK('♖','♜'), 
+	QUEEN('♕','♛'), 
+	KING('♔','♚');
+	public final char whiteSymbol;
+	public final char blackSymbol;
+	
+	private ChessPieceNames(char c, char d) {
+		this.whiteSymbol = c;
+		this.blackSymbol = d;
+	}
 	
 	/**
-	 * Returns an array of symbols available for the colour
-	 * @param colour The colour of symbols requested
-	 * @return symbols The symbols of the requested colour
+	 * Gets the symbol for a requested piece and colour
+	 * @param piece the piece requested
+	 * @param colour the colour requested
+	 * @throws InvalidColourException thrown when colour is not found
+	 * @return symbol - the symbol requested, throws InvalidColourException if colour is not found
 	 */
-	public static char[] getSymbols(Colour colour) {
+	public char getSymbol(ChessPieceNames piece, Colour colour) {
 		switch(colour) {
 		case BLACK:
-			return BLACK_SYMBOLS;
+			return piece.blackSymbol;
 		case WHITE:
-			return WHITE_SYMBOLS;
+			return piece.whiteSymbol;
+		default:
+			throw new InvalidColourException("Could not find this colour, exiting...");
 		}
-		return null;
 	}
 	
 	@Override
