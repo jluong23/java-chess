@@ -1,26 +1,18 @@
 package main.pieces;
-
-import java.util.ArrayList;
-
 import boardgame.*;
-import boardgame.exceptions.NoBoardException;
 import main.ChessPiece;
 
 public class King extends ChessPiece {
 
 	public King(Player player) {
 		super(player);
+		//king can move in all directions
+		setMoveableDirections(Direction.values());
+		//moving and attacking 1 distance away
+		setMoveableDistance(1);
+		setAttackDistance(1);
+		
+		
 	}
-	@Override
-	public ArrayList<Coordinate> getPossibleMoves() throws NoBoardException{
-		if(this.getBoard() == null) {
-			throw new NoBoardException(this);
-		}
-		else {
-			ArrayList<Coordinate> moves = new ArrayList<Coordinate>();
-			return moves;
-		}
-	}
-
 
 }

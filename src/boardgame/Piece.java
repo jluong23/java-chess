@@ -16,7 +16,11 @@ public abstract class Piece implements Cloneable{
 	private int pointValue;
 	private boolean alive;
 	private Direction[] moveableDirections;
-	
+	private int moveableDistance;
+	private int attackDistance;
+
+
+
 	/**
 	 * Creates a new piece object
 	 * @param player the player controlling the piece
@@ -116,30 +120,51 @@ public abstract class Piece implements Cloneable{
 	public void setBoard(Board board) {
 		this.board = board;
 	}
-	
+
 	/**
-	 * @return the moveableDirection
+	 * @return the moveableDirections
 	 */
-	public Direction[] getMoveableDirection() {
+	public Direction[] getMoveableDirections() {
 		return moveableDirections;
 	}
 
 	/**
-	 * @param moveableDirection the moveableDirection to set
+	 * @param moveableDirections the moveableDirections to set
 	 */
-	public void setMoveableDirection(Direction[] moveableDirection) {
-		this.moveableDirections = moveableDirection;
+	public void setMoveableDirections(Direction[] moveableDirections) {
+		this.moveableDirections = moveableDirections;
+	}
+
+	/**
+	 * @return the moveableDistance
+	 */
+	public int getMoveableDistance() {
+		return moveableDistance;
+	}
+
+	/**
+	 * @param moveableDistance the moveableDistance to set
+	 */
+	public void setMoveableDistance(int moveableDistance) {
+		this.moveableDistance = moveableDistance;
+	}
+	
+	/**
+	 * @return the attackDistance
+	 */
+	public int getAttackDistance() {
+		return attackDistance;
+	}
+
+	/**
+	 * @param attackDistance the attackDistance to set
+	 */
+	public void setAttackDistance(int attackDistance) {
+		this.attackDistance = attackDistance;
 	}
 
 
 	//methods
-	
-	/**
-	 * Fetch the tiles the piece can move to given a direction
-	 * @param dir the direction to search in
-	 * @return moves - the possible moves the piece can make in the given direction
-	 */
-	public abstract ArrayList<Coordinate> getMoveableTiles(Direction dir);
 	
 	/**
 	 * Fetch the tiles the piece can move to given a direction and number of tiles to search
@@ -150,7 +175,8 @@ public abstract class Piece implements Cloneable{
 	public abstract ArrayList<Coordinate> getMoveableTiles(Direction dir, int numTiles);
 	
 	/**
-	 * Fetch arraylist of tiles the piece can move to
+	 * Fetch arraylist of tiles the piece can move to.
+	 * Every piece apart from the knight will use this method.
 	 * @return moves Arraylist of coordinates the piece can move to
 	 * @throws TooManyPlayersException - If the piece's board attribute is null
 	 */
@@ -160,7 +186,7 @@ public abstract class Piece implements Cloneable{
 			ArrayList<Coordinate> moves = new ArrayList<>();
 			for (Direction direction : moveableDirections) {
 				//for all directions they can move in, fetch the tiles the piece can move to in each of those directions
-				moves.addAll(getMoveableTiles(direction));
+				moves.addAll(getMoveableTiles(direction, moveableDistance));
 			}
 			return moves;
 		}

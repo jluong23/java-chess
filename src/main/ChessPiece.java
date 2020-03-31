@@ -15,6 +15,12 @@ public abstract class ChessPiece extends Piece {
 		//name attribute is the class name as an enum
 		name = ChessPieceNames.valueOf(getClass().getSimpleName().toUpperCase());
 		setChessSymbol();
+		//by default, moveable and attack distance can reach the whole board
+		//overridden by pawn and king piece
+		int d = getBoard().getBoardArray().length-1;
+		setMoveableDistance(d);
+		setAttackDistance(d);
+		
 	}
 
 	
@@ -33,11 +39,7 @@ public abstract class ChessPiece extends Piece {
 	}
 	
 	@Override
-	public ArrayList<Coordinate> getMoveableTiles(Direction dir) {
-		return null;
-	}
-	
-	@Override
+	//TODO	
 	public ArrayList<Coordinate> getMoveableTiles(Direction dir, int numTiles) {
 		// TODO Auto-generated method stub
 		return null;

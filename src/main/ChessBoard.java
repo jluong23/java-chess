@@ -17,7 +17,7 @@ public class ChessBoard extends Board {
 		super(players);
 		this.layout = layout;
 		//set to emptyBoard initially to access board methods when changing to given layout
-		setBoard(emptyBoard);
+		setBoardArray(emptyBoard);
 		setBoardStyle(layout);
 	}
 	/**
@@ -55,8 +55,8 @@ public class ChessBoard extends Board {
 					backRankCoords = this.getRowCoordinates(0);
 					break;
 				case WHITE:
-					pawnRankCoords = this.getRowCoordinates(getBoard().length-2);
-					backRankCoords = this.getRowCoordinates(getBoard().length-1);
+					pawnRankCoords = this.getRowCoordinates(getBoardArray().length-2);
+					backRankCoords = this.getRowCoordinates(getBoardArray().length-1);
 					break;
 				default:
 					throw new InvalidColourException("Chess only has white or black colours, please reset");

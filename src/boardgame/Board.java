@@ -30,14 +30,14 @@ public abstract class Board {
 	/**
 	 * @param board the board to set
 	 */
-	public void setBoard(Piece[][] board) {
+	public void setBoardArray(Piece[][] board) {
 		this.board = board;
 	}
 
 	/**
 	 * @return the board
 	 */
-	public Piece[][] getBoard() {
+	public Piece[][] getBoardArray() {
 		return board;
 	}
 	/**

@@ -13,14 +13,17 @@ public class Knight extends ChessPiece {
 	}
 	
 	@Override
+	//TODO
 	public ArrayList<Coordinate> getPossibleMoves() throws NoBoardException{
-		if(this.getBoard() == null) {
-			throw new NoBoardException(this);
-		}
-		else {
-			ArrayList<Coordinate> moves = new ArrayList<Coordinate>();
-			return moves;
-		}
+		//knights need to override getPossibleMoves() as they move differently to other pieces
+		return null;
+	}
+	
+	@Override
+	//TODO
+	public ArrayList<Coordinate> getSquaresAttacking() {
+		//knights need to override getSquaresAttacking() as they move differently to other pieces
+		return null;
 	}
 
 
