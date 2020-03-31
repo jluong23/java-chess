@@ -71,6 +71,8 @@ public class ChessBoard extends Board {
 				for (int i = 0; i < NUM_PIECES_IN_RANK; i++) {
 					this.setPiece(pawnRankCoords.get(i), pawns.get(i));
 					this.setPiece(backRankCoords.get(i), specialPieces[i]);
+					
+					
 				}
 			}
 		}
