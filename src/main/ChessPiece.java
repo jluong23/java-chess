@@ -1,12 +1,10 @@
 
 package main;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 import boardgame.*;
 import boardgame.exceptions.NoPlayerAttributeException;
-import boardgame.exceptions.TooManyPlayersException;
 
 
 public abstract class ChessPiece extends Piece {
@@ -33,6 +31,16 @@ public abstract class ChessPiece extends Piece {
 			this.setSymbol(symbol);			
 		}		
 	}
-
+	
+	@Override
+	public ArrayList<Coordinate> getMoveableTiles(Direction dir) {
+		return null;
+	}
+	
+	@Override
+	public ArrayList<Coordinate> getMoveableTiles(Direction dir, int numTiles) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

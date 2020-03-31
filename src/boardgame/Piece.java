@@ -15,6 +15,7 @@ public abstract class Piece implements Cloneable{
 	private Board board;
 	private int pointValue;
 	private boolean alive;
+	private Direction[] moveableDirections;
 	
 	/**
 	 * Creates a new piece object
@@ -96,37 +97,84 @@ public abstract class Piece implements Cloneable{
 	}
 
 	/**
-	 * @return the board
-	 */
-	public Board getBoard() {
-		return board;
-	}
-	/**
-	 * @param board the board to set
-	 */
-	public void setBoard(Board board) {
-		this.board = board;
-	}
-	/**
 	 * @param position the position to set
 	 */
 	public void setPosition(Coordinate position) {
 		this.position = position;
 	}
 
+	/**
+	 * @return the board
+	 */
+	public Board getBoard() {
+		return board;
+	}
+
+	/**
+	 * @param board the board to set
+	 */
+	public void setBoard(Board board) {
+		this.board = board;
+	}
+	
+	/**
+	 * @return the moveableDirection
+	 */
+	public Direction[] getMoveableDirection() {
+		return moveableDirections;
+	}
+
+	/**
+	 * @param moveableDirection the moveableDirection to set
+	 */
+	public void setMoveableDirection(Direction[] moveableDirection) {
+		this.moveableDirections = moveableDirection;
+	}
+
+
 	//methods
 	
 	/**
-	 * Fetch arraylist of tiles the piece can move to
-	 * @return tiles Arraylist of tiles
+	 * Fetch the tiles the piece can move to given a direction
+	 * @param dir the direction to search in
+	 * @return moves - the possible moves the piece can make in the given direction
 	 */
+	public abstract ArrayList<Coordinate> getMoveableTiles(Direction dir);
+	
+	/**
+	 * Fetch the tiles the piece can move to given a direction and number of tiles to search
+	 * @param dir the direction to search in
+	 * @param numTiles the number of tiles to search 
+	 * @return moves - the possible moves the piece can make in the given direction
+	 */
+	public abstract ArrayList<Coordinate> getMoveableTiles(Direction dir, int numTiles);
 	
 	/**
 	 * Fetch arraylist of tiles the piece can move to
-	 * @return tiles Arraylist of tiles
+	 * @return moves Arraylist of coordinates the piece can move to
 	 * @throws TooManyPlayersException - If the piece's board attribute is null
 	 */
-	public abstract ArrayList<Coordinate> getPossibleMoves() throws NoBoardException;
+	public ArrayList<Coordinate> getPossibleMoves() throws NoBoardException{
+		if(board == null)throw new NoBoardException(this); //if the piece does not have a board attribute
+		else {
+			ArrayList<Coordinate> moves = new ArrayList<>();
+			for (Direction direction : moveableDirections) {
+				//for all directions they can move in, fetch the tiles the piece can move to in each of those directions
+				moves.addAll(getMoveableTiles(direction));
+			}
+			return moves;
+		}
+	}
+	
+	/**
+	 * Returns arraylist of coordinates which contain another piece and is attacked by this piece instance
+	 * Default to getPossibleMoves()
+	 * @return tiles The tiles the piece attacks
+	 * 
+	 */
+	public ArrayList<Coordinate> getSquaresAttacking() {
+		return this.getPossibleMoves();
+	}
 	
 	/**
 	 * Move piece to a given coordinate on board
@@ -140,23 +188,7 @@ public abstract class Piece implements Cloneable{
 		board.setPiece(coordinate, this);
 		this.timesMoved++;
 	}
-	/**
-	 * Returns arraylist of squares attacked by piece
-	 * Default to getPossibleMoves()
-	 * @return tiles The tiles the piece attacks
-	 * 
-	 */
-	public ArrayList<Coordinate> getSquaresAttacking() {
-		try {
-			return this.getPossibleMoves();
-		} catch (NoBoardException e) {
-			System.out.println(e);
-			e.printStackTrace();
-			System.exit(0);
-		}
-		return null;
-	}
-	
+
 	/**
 	 * Return a shallow copy of the instance
 	 * @return clone A clone of the instance object

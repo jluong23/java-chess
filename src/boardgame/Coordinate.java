@@ -19,11 +19,8 @@ public abstract class Coordinate {
 	 * @throws InvalidCoordinateException
 	 */
 	public char[] split() throws InvalidCoordinateException{
-		if(!this.isValid()) throw new InvalidCoordinateException(coordinate);
-		else {
-			char[] coordinateSplit = coordinate.toCharArray();
-			return coordinateSplit;
-		}
+		char[] coordinateSplit = coordinate.toCharArray();
+		return coordinateSplit;
 	}
 	/**
 	 * @return the coordinate
@@ -40,7 +37,8 @@ public abstract class Coordinate {
 		
 	
 	/**
-	 * Checks if a coordinate is valid, must be implemented
+	 * Checks if a coordinate is valid, must be implemented.
+	 * Returns true by default.
 	 * @param coordinate - Test coordinate as string 
 	 * @return boolean - whether result is valid or not
 	 */
