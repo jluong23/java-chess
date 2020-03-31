@@ -51,6 +51,9 @@ public abstract class Board {
 		board[r][c] = piece;
 		//update piece position
 		piece.setPosition(coordinate);
+		
+		//set board attribute of piece to this instance
+		piece.setBoard(this);
 	}
 	
 	/**

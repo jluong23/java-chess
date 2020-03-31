@@ -40,7 +40,7 @@ public abstract class ChessPiece extends Piece {
 	@Override
 	//TODO	
 	public ArrayList<Coordinate> getMoveableTiles(Direction dir, int numTiles) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

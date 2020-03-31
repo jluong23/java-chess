@@ -33,7 +33,8 @@ public class ChessBoard extends Board {
 				break;
 			default:
 				throw new InvalidLayoutException("Layout does not exist");
-			}						
+			}
+			
 		}
 	}
 	/**
