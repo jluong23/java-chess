@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import boardgame.*;
 import boardgame.exceptions.NoPlayerAttributeException;
-import main.pieces.Rook;
 
 
 public abstract class ChessPiece extends Piece {
@@ -45,12 +44,24 @@ public abstract class ChessPiece extends Piece {
 		//index and coordinates to check for in direction dir, initially current position
 		int[] indexes = this.getPosition().getIndexes();
 		Coordinate coordinate = ChessCoordinate.toCoordinate(indexes);
+		//initialise array list of tiles that are moveable to
+		ArrayList<Coordinate> moveableTiles = new ArrayList<Coordinate>();
 		
 		while (numSearched <= numTiles && coordinate.isValid()) {
-			//move in given direction
+			//move in given direction, updating coordinate 
 			indexes[0] += dir.dr;
 			indexes[1] += dir.dc;
+			coordinate = ChessCoordinate.toCoordinate(indexes);				
+			
+			//piece can move to coordinate if the square is empty or 
+			//the piece on the square is an enemy and can attack
+			Piece obstruction = getBoard().at(coordinate);
+			if(obstruction == null || obstruction.getPlayer().getColour() != this.getPlayer().getColour())
+				moveableTiles.add(coordinate); 
+			
 			System.out.println(coordinate);
+			
+			//increment numSearched
 			numSearched++;
 		}
 		return null;

@@ -1,7 +1,7 @@
 package main;
 
 public enum Layout {
-	STANDARD, ROOK_TEST;
+	STANDARD, EMPTY;
 	
 	@Override
 	public String toString() {

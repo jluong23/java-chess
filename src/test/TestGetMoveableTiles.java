@@ -52,11 +52,12 @@ public class TestGetMoveableTiles {
 	 * Test method for {@link main.ChessPiece#getMoveableTiles(boardgame.Direction, int)}.
 	 */
 	@Test
-	public void testGetMoveableTiles() {
-		b = new ChessBoard(Layout.ROOK_TEST,players);
+	public void testRook() {
+		b = new ChessBoard(Layout.EMPTY,players);
+		Rook rook = new Rook(players.get(0)); //white rook
+		b.setPiece(new ChessCoordinate("C4"), rook); //place rook at c4
 		System.out.println(b);
-		Rook r = (Rook) b.at(new ChessCoordinate("C4"));
-		r.getMoveableTiles(Direction.UP, r.getMoveableDistance());
+		rook.getMoveableTiles(Direction.DOWN, rook.getMoveableDistance());
 
 	}
 

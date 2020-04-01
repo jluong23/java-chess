@@ -31,18 +31,14 @@ public class ChessBoard extends Board {
 			case STANDARD:
 				setDefaultBoard();
 				break;
-			case ROOK_TEST:
-				setRookTestBoard();
+			case EMPTY:
+				//just break for empty layout enum as the emptyBoard is already assigned
 				break;
 			default:
 				throw new InvalidLayoutException("Layout does not exist");
 			}
 			
 		}
-	}
-	
-	private void setRookTestBoard() {
-		this.setPiece(new ChessCoordinate("c4"), new Rook(getPlayers().get(0)));
 	}
 	/**
 	 * Sets current board to default board layout
