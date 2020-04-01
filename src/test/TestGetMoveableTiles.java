@@ -55,9 +55,9 @@ public class TestGetMoveableTiles {
 	public void testRook() {
 		b = new ChessBoard(Layout.EMPTY,players);
 		Rook rook = new Rook(players.get(0)); //white rook
-		b.setPiece(new ChessCoordinate("C4"), rook); //place rook at c4
+		b.setPiece(new ChessCoordinate("a1"), rook); //place rook at c4
 		System.out.println(b);
-		rook.getMoveableTiles(Direction.DOWN, rook.getMoveableDistance());
+		System.out.println(rook.getMoveableTiles(Direction.UP, rook.getMoveableDistance()));
 
 	}
 

@@ -4,6 +4,7 @@ package main;
 import java.util.ArrayList;
 
 import boardgame.*;
+import boardgame.exceptions.InvalidCoordinateException;
 import boardgame.exceptions.NoPlayerAttributeException;
 
 
@@ -46,25 +47,35 @@ public abstract class ChessPiece extends Piece {
 		Coordinate coordinate = ChessCoordinate.toCoordinate(indexes);
 		//initialise array list of tiles that are moveable to
 		ArrayList<Coordinate> moveableTiles = new ArrayList<Coordinate>();
-		
-		while (numSearched <= numTiles && coordinate.isValid()) {
-			//move in given direction, updating coordinate 
+		//boolean set to true when other piece is found, blocking movement of this piece
+		boolean foundPiece = false;
+		while (numSearched <= numTiles && !foundPiece) {
+			//move in given direction
 			indexes[0] += dir.dr;
 			indexes[1] += dir.dc;
-			coordinate = ChessCoordinate.toCoordinate(indexes);				
-			
-			//piece can move to coordinate if the square is empty or 
-			//the piece on the square is an enemy and can attack
+			try {
+				//try update the coordinate with new indexes
+				coordinate = ChessCoordinate.toCoordinate(indexes);
+			} catch (InvalidCoordinateException e) {
+				//coordinate is invalid, must be at the edge of a board so break out of loop
+				break;
+			}
+			//piece can move to coordinate if the square is empty 
 			Piece obstruction = getBoard().at(coordinate);
-			if(obstruction == null || obstruction.getPlayer().getColour() != this.getPlayer().getColour())
+			if(obstruction == null)
 				moveableTiles.add(coordinate); 
-			
-			System.out.println(coordinate);
-			
-			//increment numSearched
+			else {
+				//obstruction must be a piece
+				foundPiece = true;
+				if(obstruction.getPlayer().getColour() != this.getPlayer().getColour()) {
+					//if they don't share the same colour, this piece can attack, add to moveableTiles
+					moveableTiles.add(coordinate); 
+				}
+			}
 			numSearched++;
+			
 		}
-		return null;
+		return moveableTiles;
 	}
 	
 }
