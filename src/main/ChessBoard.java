@@ -31,11 +31,18 @@ public class ChessBoard extends Board {
 			case STANDARD:
 				setDefaultBoard();
 				break;
+			case ROOK_TEST:
+				setRookTestBoard();
+				break;
 			default:
 				throw new InvalidLayoutException("Layout does not exist");
 			}
 			
 		}
+	}
+	
+	private void setRookTestBoard() {
+		this.setPiece(new ChessCoordinate("c4"), new Rook(getPlayers().get(0)));
 	}
 	/**
 	 * Sets current board to default board layout
@@ -72,9 +79,8 @@ public class ChessBoard extends Board {
 				for (int i = 0; i < NUM_PIECES_IN_RANK; i++) {
 					this.setPiece(pawnRankCoords.get(i), pawns.get(i));
 					this.setPiece(backRankCoords.get(i), specialPieces[i]);
-					
-					
 				}
+				
 			}
 		}
 	}
