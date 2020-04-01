@@ -18,16 +18,17 @@ import boardgame.Player;
 import main.ChessBoard;
 import main.ChessCoordinate;
 import main.Layout;
+import main.pieces.Pawn;
 import main.pieces.Rook;
 
 /**
  * @author james
  *
  */
-public class TestGetMoveableTiles {
+public class TestGetPossibleMoves {
 	ChessBoard b;
 	List<Player> players;
-	
+	Player p1,p2;
 	
 	
 	/**
@@ -35,8 +36,8 @@ public class TestGetMoveableTiles {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		Player p1 = new Player(Colour.WHITE);
-		Player p2 = new Player(Colour.BLACK);
+		p1 = new Player(Colour.WHITE);
+		p2 = new Player(Colour.BLACK);
 		Player[] playersArray = {p1,p2};
 		players = Arrays.asList(playersArray);
 	}
@@ -49,16 +50,20 @@ public class TestGetMoveableTiles {
 	}
 
 	/**
-	 * Test method for {@link main.ChessPiece#getMoveableTiles(boardgame.Direction, int)}.
+	 * Test method for {@link main.ChessPiece#getPossibleMoves()}.
 	 */
 	@Test
 	public void testRook() {
 		b = new ChessBoard(Layout.EMPTY,players);
-		Rook rook = new Rook(players.get(0)); //white rook
+		Rook rook = new Rook(p1); //white rook
 		b.setPiece(new ChessCoordinate("a1"), rook); //place rook at c4
 		System.out.println(b);
-		System.out.println(rook.getMoveableTiles(Direction.UP, rook.getMoveableDistance()));
-
+		System.out.println(rook.getPossibleMoves());
+		//rook should be able to move to (a2..a8) vertically and (b1..h1) horizontally
+		
+		b.setPiece(new ChessCoordinate("A3"), new Pawn(p1));
+		//now pawn is at a3, rook can only move to a2 vertically but same horizontally
+		System.out.println(rook.getPossibleMoves());
 	}
 
 }
