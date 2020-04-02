@@ -1,6 +1,7 @@
 package boardgame;
 
-import boardgame.exceptions.InvalidCoordinateException;
+import java.util.ArrayList;
+
 
 public abstract class Coordinate{
 	private String coordinate;
@@ -11,16 +12,6 @@ public abstract class Coordinate{
 	 */
 	public Coordinate(String coordinate) {
 		this.coordinate = coordinate.toLowerCase();
-	}
-	/**
-	 * Try split the coordinate into array of two chars.
-	 * Throw InvalidCoordinateException if fails, else return
-	 * @return coordinateSplit - array of chess coordinate as chars, eg. (a5 => ['a', '5'] ) 
-	 * @throws InvalidCoordinateException
-	 */
-	public char[] split() throws InvalidCoordinateException{
-		char[] coordinateSplit = coordinate.toCharArray();
-		return coordinateSplit;
 	}
 	/**
 	 * @return the coordinate
@@ -34,7 +25,7 @@ public abstract class Coordinate{
 	 * @return indexes - indexes of coordinate in board array, row and column indexes respectively in array
 	 */
 	public abstract int[] getIndexes();
-		
+	
 	
 	/**
 	 * Checks if a coordinate is valid, must be implemented.
@@ -44,10 +35,14 @@ public abstract class Coordinate{
 	 */
 	public abstract boolean isValid();
 	
+	
+	
 	@Override
 	public String toString() {
 		return coordinate;
 	}
+	
+	
 	
 	
 }

@@ -12,7 +12,6 @@ public class King extends ChessPiece {
 		setMoveableDistance(1);
 		setAttackDistance(1);
 		
-		
 	}
 
 }
