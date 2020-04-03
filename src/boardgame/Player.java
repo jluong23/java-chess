@@ -12,6 +12,8 @@ public class Player {
 	
 	public Player(Colour colour) {
 		this.colour = colour;
+		this.myPieces = new ArrayList<Piece>();
+		this.piecesTaken = new ArrayList<Piece>();
 		score = 0;
 	}
 	

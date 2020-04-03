@@ -93,6 +93,7 @@ public class TestGetPossibleMoves {
 		b.setPiece(new ChessCoordinate("A3"), new Pawn(p2));
 		expectedCoordsString = new String[]{
 				"B1","C1","D1","E1","F1","G1","H1","A2","A3"};
+		
 		performTest(expectedCoordsString, rook);
 	}
 	/**
@@ -106,6 +107,7 @@ public class TestGetPossibleMoves {
 		String[] expectedCoordsString = new String[]{
 				"A1","A2","A3","B3","B1","C1","C2","C3"};
 		performTest(expectedCoordsString, king);
+		
 	}
 	
 	/**
@@ -115,9 +117,10 @@ public class TestGetPossibleMoves {
 	public void testBishop() {
 		ChessBoard b = new ChessBoard(Layout.EMPTY,players);
 		Bishop bishop = new Bishop(p1);
+
 		b.setPiece(new ChessCoordinate("c3"), bishop);
 		String[] expectedCoordsString = new String[]{
-				"A2","B2","D4","E5","F6","H7", // '/' diagonal
+				"A1","B2","D4","E5","F6","G7","H8", // '/' diagonal
 				"A5","B4","D2","E1" // '\' diagonal
 				}; 
 		performTest(expectedCoordsString, bishop);

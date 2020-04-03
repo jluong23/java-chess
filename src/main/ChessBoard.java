@@ -10,14 +10,13 @@ import main.pieces.*;
 public class ChessBoard extends Board {
 	
 	private Layout layout;
-	private static Piece[][] emptyBoard = new Piece[8][8];
 	
 	
 	public ChessBoard(Layout layout, List<Player> players) {
 		super(players);
 		this.layout = layout;
-		//set to emptyBoard initially to access board methods when changing to given layout
-		setBoardArray(emptyBoard);
+		//set as empty initially to access board methods while changing to given layout
+		setBoardArray(new Piece[8][8]);
 		setBoardStyle(layout);
 	}
 	/**
@@ -27,7 +26,6 @@ public class ChessBoard extends Board {
 	public void setBoardStyle(Layout layout) throws InvalidLayoutException {
 		if(layout == null) throw new InvalidLayoutException("Null layout detected");
 		else {
-			
 			switch(layout) {
 			case STANDARD:
 				setDefaultBoard();
@@ -77,7 +75,6 @@ public class ChessBoard extends Board {
 					this.setPiece(pawnRankCoords.get(i), pawns.get(i));
 					this.setPiece(backRankCoords.get(i), specialPieces[i]);
 				}
-				
 			}
 		}
 	}

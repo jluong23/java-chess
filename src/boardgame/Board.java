@@ -9,9 +9,25 @@ import main.ChessCoordinate;
 public abstract class Board {
 	private Piece[][] board;
 	private List<Player> players;
-	
+	private List<Piece> pieces;
+
 	public Board(List<Player> players2){
 		this.players = players2;
+		pieces = new ArrayList<Piece>();
+	}
+	
+	/**
+	 * @return the pieces
+	 */
+	public List<Piece> getPieces() {
+		return pieces;
+	}
+
+	/**
+	 * @param pieces the pieces to set
+	 */
+	public void setPieces(List<Piece> pieces) {
+		this.pieces = pieces;
 	}
 	
 	/**
@@ -51,9 +67,9 @@ public abstract class Board {
 		board[r][c] = piece;
 		//update piece position
 		piece.setPosition(coordinate);
-		
-		//set board attribute of piece to this instance
+		//set board attribute of piece to this instance and vice versa
 		piece.setBoard(this);
+		this.pieces.add(piece);
 	}
 	
 	/**

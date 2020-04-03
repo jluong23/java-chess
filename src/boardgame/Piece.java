@@ -28,6 +28,7 @@ public abstract class Piece implements Cloneable{
 	public Piece(Player player) {
 		this.player = player;
 		this.timesMoved = 0;
+		player.getMyPieces().add(this); 
 	}
 
 	/**
