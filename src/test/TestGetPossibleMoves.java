@@ -5,7 +5,10 @@ package test;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import org.junit.After;
@@ -51,6 +54,24 @@ public class TestGetPossibleMoves {
 	@After
 	public void tearDown() throws Exception {
 	}
+	
+	private ArrayList<Coordinate> expected(String[] expectedStrings) {
+		return ChessCoordinate.toCoordinate(expectedStrings);
+	}
+	
+	private ArrayList<Coordinate> actual(Piece piece) {
+		return piece.getPossibleMoves();
+	}
+	
+	private void performTest(String[] expectedStrings, Piece piece) {
+		List<Coordinate> expectedArr = expected(expectedStrings);
+		List<Coordinate> actualArr = actual(piece);
+		//sort values as we want to check if they compare the same values
+		Collections.sort(expectedArr);
+	    Collections.sort(actualArr);
+		assertEquals(expectedArr, actualArr);
+	}
+	
 
 	/**
 	 * Test method for {@link main.ChessPiece#getPossibleMoves()}.
@@ -60,8 +81,9 @@ public class TestGetPossibleMoves {
 		b = new ChessBoard(Layout.EMPTY,players);
 		Rook rook = new Rook(p1); //white rook
 		b.setPiece(new ChessCoordinate("a1"), rook); //place rook at c4
-//		System.out.println(b);
 		//rook should be able to move to (a2..a8) vertically and (b1..h1) horizontally
+		String [] expectedStrings = new String[]{"B1","C1","D1","E1","F1","G1","H1","A2","A3","A4","A5","A6","A7","A8"};
+		performTest(expectedStrings, rook);
 		b.setPiece(new ChessCoordinate("A3"), new Pawn(p1));
 //		System.out.println(rook.getPossibleMoves());
 		//now pawn is at a3, rook can only move to a2 vertically but same horizontally
@@ -74,7 +96,5 @@ public class TestGetPossibleMoves {
 		b = new ChessBoard(Layout.EMPTY,players);
 		King king = new King(p1);
 		b.setPiece(new ChessCoordinate("A1"), king);
-		System.out.println(b);
-		System.out.println(king.getPossibleMoves());
 	}
 }

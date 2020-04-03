@@ -1,9 +1,7 @@
 package boardgame;
 
-import java.util.ArrayList;
 
-
-public abstract class Coordinate{
+public abstract class Coordinate implements java.lang.Comparable<Coordinate>{
 	private String coordinate;
 
 	/**
@@ -34,12 +32,16 @@ public abstract class Coordinate{
 	 * @return boolean - whether result is valid or not
 	 */
 	public abstract boolean isValid();
-	
-	
-	
+		
 	@Override
 	public String toString() {
 		return coordinate;
+	}
+	
+	@Override
+	public int compareTo(Coordinate o) {
+		// TODO Auto-generated method stub
+		return getCoordinate().compareTo(o.getCoordinate());
 	}
 	
 	

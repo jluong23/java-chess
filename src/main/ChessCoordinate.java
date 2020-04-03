@@ -82,24 +82,10 @@ public class ChessCoordinate extends Coordinate{
 			}
 			else {
 				throw new InvalidCoordinateException(coordinateString);
-			}
+			}			
 		}
 		return newCoords;
 	
 	}
-	
-	
-	@Override
-	/**
-	 * Returns whether two chess coordinates are the same
-	 */
-	public boolean equals(Object obj) {
-		if(this.getClass() == obj.getClass()) {
-			return ((ChessCoordinate) obj).getCoordinate() ==this.getCoordinate();
-		}else {
-			return false;
-		}
-	}
-		
 
 }
