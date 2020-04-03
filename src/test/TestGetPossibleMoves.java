@@ -23,6 +23,7 @@ import boardgame.Player;
 import main.ChessBoard;
 import main.ChessCoordinate;
 import main.Layout;
+import main.pieces.Bishop;
 import main.pieces.King;
 import main.pieces.Pawn;
 import main.pieces.Rook;
@@ -32,7 +33,6 @@ import main.pieces.Rook;
  *
  */
 public class TestGetPossibleMoves {
-	ChessBoard b;
 	List<Player> players;
 	Player p1,p2;
 	
@@ -55,17 +55,10 @@ public class TestGetPossibleMoves {
 	public void tearDown() throws Exception {
 	}
 	
-	private ArrayList<Coordinate> expected(String[] expectedStrings) {
-		return ChessCoordinate.toCoordinate(expectedStrings);
-	}
-	
-	private ArrayList<Coordinate> actual(Piece piece) {
-		return piece.getPossibleMoves();
-	}
 	
 	private void performTest(String[] expectedStrings, Piece piece) {
-		List<Coordinate> expectedArr = expected(expectedStrings);
-		List<Coordinate> actualArr = actual(piece);
+		List<Coordinate> expectedArr = ChessCoordinate.toCoordinate(expectedStrings);
+		List<Coordinate> actualArr = piece.getPossibleMoves();
 		//sort values as we want to check if they compare the same values
 		Collections.sort(expectedArr);
 	    Collections.sort(actualArr);
@@ -78,13 +71,14 @@ public class TestGetPossibleMoves {
 	 */
 	@Test
 	public void testRook() {
-		b = new ChessBoard(Layout.EMPTY,players);
+		ChessBoard b = new ChessBoard(Layout.EMPTY,players);
 		Rook rook = new Rook(p1); //white rook
 		
 		//first test
 		b.setPiece(new ChessCoordinate("a1"), rook); //place rook at c4
 		//rook should be able to move to (a2..a8) vertically and (b1..h1) horizontally
-		String [] expectedCoordsString = new String[]{"B1","C1","D1","E1","F1","G1","H1","A2","A3","A4","A5","A6","A7","A8"};
+		String [] expectedCoordsString = new String[]{
+				"B1","C1","D1","E1","F1","G1","H1","A2","A3","A4","A5","A6","A7","A8"};
 		performTest(expectedCoordsString, rook);
 		
 		//second test
@@ -92,21 +86,43 @@ public class TestGetPossibleMoves {
 		b.setPiece(new ChessCoordinate("A3"), new Pawn(p1));
 		expectedCoordsString = new String[]{
 				"B1","C1","D1","E1","F1","G1","H1","A2"};
-//		performTest(expectedCoordsString, rook);
+		performTest(expectedCoordsString, rook);
 
 		//third test
 		//now black pawn is at a3, rook should be able to attack it on a3 and move to a2, same horizontally
 		b.setPiece(new ChessCoordinate("A3"), new Pawn(p2));
 		expectedCoordsString = new String[]{
 				"B1","C1","D1","E1","F1","G1","H1","A2","A3"};
-//		performTest(expectedCoordsString, rook);
+		performTest(expectedCoordsString, rook);
 	}
+	/**
+	 * Test method for {@link main.ChessPiece#getPossibleMoves()} for the {@link main.pieces.King} class.
+	 */
 	@Test
 	public void testKing() {
-		b = new ChessBoard(Layout.EMPTY,players);
+		ChessBoard b = new ChessBoard(Layout.EMPTY,players);
 		King king = new King(p1);
-		b.setPiece(new ChessCoordinate("A1"), king);
+		b.setPiece(new ChessCoordinate("b2"), king);
+		String[] expectedCoordsString = new String[]{
+				"A1","A2","A3","B3","B1","C1","C2","C3"};
+		performTest(expectedCoordsString, king);
 	}
+	
+	/**
+	 * Test method for {@link main.ChessPiece#getPossibleMoves()} for the {@link main.pieces.Bishop} class.
+	 */
+	@Test
+	public void testBishop() {
+		ChessBoard b = new ChessBoard(Layout.EMPTY,players);
+		Bishop bishop = new Bishop(p1);
+		b.setPiece(new ChessCoordinate("c3"), bishop);
+		String[] expectedCoordsString = new String[]{
+				"A2","B2","D4","E5","F6","H7", // '/' diagonal
+				"A5","B4","D2","E1" // '\' diagonal
+				}; 
+		performTest(expectedCoordsString, bishop);
+	}
+	
 }
 
 

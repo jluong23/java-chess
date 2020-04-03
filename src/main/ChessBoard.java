@@ -27,6 +27,7 @@ public class ChessBoard extends Board {
 	public void setBoardStyle(Layout layout) throws InvalidLayoutException {
 		if(layout == null) throw new InvalidLayoutException("Null layout detected");
 		else {
+			
 			switch(layout) {
 			case STANDARD:
 				setDefaultBoard();

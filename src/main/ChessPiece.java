@@ -49,7 +49,7 @@ public abstract class ChessPiece extends Piece {
 		ArrayList<Coordinate> moveableTiles = new ArrayList<Coordinate>();
 		//boolean set to true when other piece is found, blocking movement of this piece
 		boolean foundPiece = false;
-		while (numSearched <= numTiles && !foundPiece) {
+		while (numSearched < numTiles && !foundPiece) {
 			//move in given direction
 			indexes[0] += dir.dr;
 			indexes[1] += dir.dc;
