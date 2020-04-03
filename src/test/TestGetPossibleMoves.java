@@ -74,22 +74,32 @@ public class TestGetPossibleMoves {
 	
 
 	/**
-	 * Test method for {@link main.ChessPiece#getPossibleMoves()}.
+	 * Test method for {@link main.ChessPiece#getPossibleMoves()} for the {@link main.pieces.Rook} class.
 	 */
 	@Test
 	public void testRook() {
 		b = new ChessBoard(Layout.EMPTY,players);
 		Rook rook = new Rook(p1); //white rook
+		
+		//first test
 		b.setPiece(new ChessCoordinate("a1"), rook); //place rook at c4
 		//rook should be able to move to (a2..a8) vertically and (b1..h1) horizontally
-		String [] expectedStrings = new String[]{"B1","C1","D1","E1","F1","G1","H1","A2","A3","A4","A5","A6","A7","A8"};
-		performTest(expectedStrings, rook);
-		b.setPiece(new ChessCoordinate("A3"), new Pawn(p1));
-//		System.out.println(rook.getPossibleMoves());
+		String [] expectedCoordsString = new String[]{"B1","C1","D1","E1","F1","G1","H1","A2","A3","A4","A5","A6","A7","A8"};
+		performTest(expectedCoordsString, rook);
+		
+		//second test
 		//now pawn is at a3, rook can only move to a2 vertically but same horizontally
-		b.setPiece(new ChessCoordinate("A3"), new Pawn(p2));
-//		System.out.println(rook.getPossibleMoves());
+		b.setPiece(new ChessCoordinate("A3"), new Pawn(p1));
+		expectedCoordsString = new String[]{
+				"B1","C1","D1","E1","F1","G1","H1","A2"};
+//		performTest(expectedCoordsString, rook);
+
+		//third test
 		//now black pawn is at a3, rook should be able to attack it on a3 and move to a2, same horizontally
+		b.setPiece(new ChessCoordinate("A3"), new Pawn(p2));
+		expectedCoordsString = new String[]{
+				"B1","C1","D1","E1","F1","G1","H1","A2","A3"};
+//		performTest(expectedCoordsString, rook);
 	}
 	@Test
 	public void testKing() {
@@ -98,3 +108,8 @@ public class TestGetPossibleMoves {
 		b.setPiece(new ChessCoordinate("A1"), king);
 	}
 }
+
+
+
+
+

@@ -1,5 +1,6 @@
 package boardgame;
 
+import main.ChessCoordinate;
 
 public abstract class Coordinate implements java.lang.Comparable<Coordinate>{
 	private String coordinate;
@@ -42,6 +43,18 @@ public abstract class Coordinate implements java.lang.Comparable<Coordinate>{
 	public int compareTo(Coordinate o) {
 		// TODO Auto-generated method stub
 		return getCoordinate().compareTo(o.getCoordinate());
+	}
+	
+	@Override
+	/**
+	 * Returns whether two chess coordinates are the same
+	 */
+	public boolean equals(Object obj) {
+		if(this.getClass() == obj.getClass()) {
+			return ((Coordinate) obj).getCoordinate().contentEquals(this.getCoordinate());
+		}else {
+			return false;
+		}
 	}
 	
 	
