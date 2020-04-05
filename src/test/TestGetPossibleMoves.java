@@ -5,29 +5,19 @@ package test;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import boardgame.Colour;
-import boardgame.Coordinate;
-import boardgame.Direction;
-import boardgame.Piece;
-import boardgame.Player;
+import boardgame.*;
 import main.ChessBoard;
 import main.ChessCoordinate;
 import main.Layout;
-import main.pieces.Bishop;
-import main.pieces.King;
-import main.pieces.Pawn;
-import main.pieces.Rook;
-
+import main.pieces.*;
 /**
  * @author james
  *
@@ -125,6 +115,71 @@ public class TestGetPossibleMoves {
 				}; 
 		performTest(expectedCoordsString, bishop);
 	}
+	
+	/**
+	 * Test method for {@link main.ChessPiece#getPossibleMoves()} for the {@link main.pieces.Pawn} class.
+	 */
+	@Test
+	public void testPawn() {
+		ChessBoard b = new ChessBoard(Layout.EMPTY,players);
+		Pawn pawn = new Pawn(p1);
+
+		b.setPiece(new ChessCoordinate("c2"), pawn);
+		String[] expectedCoordsString = new String[]{
+				"C3","C4"
+		};
+		performTest(expectedCoordsString, pawn);
+	}
+	
+	/**
+	 * Test method for {@link main.ChessPiece#getPossibleMoves()} for the {@link main.pieces.Knight} class.
+	 */
+	@Test
+	public void testKnight() {
+		ChessBoard b = new ChessBoard(Layout.EMPTY,players);
+		Knight knight = new Knight(p1);
+
+		b.setPiece(new ChessCoordinate("c4"), knight);
+		String[] expectedCoordsString = new String[]{
+				"b2","a3", //bottom left
+				"a5","b6", //top left
+				"d6","e5", //top right
+				"e3","d2" //bottom right
+				
+		};
+		performTest(expectedCoordsString, knight);
+		
+		//knight can take pawn, expected coordinates remain the same
+		b.setPiece(new ChessCoordinate("b2"), new Pawn(p2));
+		performTest(expectedCoordsString, knight);
+		knight.move(new ChessCoordinate("a3"), b);
+		expectedCoordsString = new String[]{
+				"b5","c4", //top right
+				"b1","c2" //bottom right
+		};		
+	}
+	
+	/**
+	 * Test method for {@link main.ChessPiece#getPossibleMoves()} for the {@link main.pieces.Knight} class.
+	 */
+	@Test
+	public void testQueen() {
+		ChessBoard b = new ChessBoard(Layout.EMPTY,players);
+		Queen queen = new Queen(p1);
+		b.setPiece(new ChessCoordinate("b2"), queen);
+		String[] expectedCoordsString = new String[]{
+			"a1","c3","d4","e5","f6","g7","h8", // '/' diagonal
+			"a3","c1", // '\' diagonal
+			"a2","c2","d2","e2","f2","g2","h2", // horizontal coordinates
+			"b1","b3","b4","b5","b6","b7","b8" // vertical coordinates
+		};
+							
+		performTest(expectedCoordsString, queen);
+	}
+	
+	
+	
+	
 	
 }
 
