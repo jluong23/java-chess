@@ -169,11 +169,11 @@ public class TestGetPossibleMoves {
 		} catch (InvalidMoveException e) {
 			System.out.println(e);
 		}
-		
 		expectedCoordsString = new String[]{
 				"b5","c4", //top right
 				"b1","c2" //bottom right
 		};		
+		performTest(expectedCoordsString, knight);
 	}
 	
 	/**

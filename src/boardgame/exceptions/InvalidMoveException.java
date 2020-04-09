@@ -9,6 +9,8 @@ public class InvalidMoveException extends Exception {
 	private Coordinate coordinate;
 	
 	public InvalidMoveException(Piece p, Coordinate c) {
+		piece = p;
+		coordinate = c;
 	}	
 	
 	@Override

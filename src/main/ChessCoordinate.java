@@ -27,7 +27,7 @@ public class ChessCoordinate extends Coordinate{
 		}
 	}
 	@Override
-	public int[] getIndexes() {
+	public int[] getIndexes() throws InvalidCoordinateException {
 		String coordString = getCoordinate();
 		if(new ChessCoordinate(coordString).isValid()) {
 			char[] coords = this.getCoordinate().toCharArray();

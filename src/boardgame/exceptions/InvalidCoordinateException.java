@@ -9,7 +9,8 @@ public class InvalidCoordinateException extends RuntimeException {
 		this.c = c;
 	}
 	
-	public String getCharacter() {
-		return c;
+	@Override
+	public String toString() {
+		return c + " is an invalid coordinate";
 	}
 }

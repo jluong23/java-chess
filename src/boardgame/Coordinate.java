@@ -1,5 +1,6 @@
 package boardgame;
 
+import boardgame.exceptions.InvalidCoordinateException;
 import main.ChessCoordinate;
 
 public abstract class Coordinate implements java.lang.Comparable<Coordinate>{
@@ -22,8 +23,9 @@ public abstract class Coordinate implements java.lang.Comparable<Coordinate>{
 	/**
 	 * Map coordinate string to indexes on 2d array board, must be implemented
 	 * @return indexes - indexes of coordinate in board array, row and column indexes respectively in array
+	 * @throws InvalidCoordinateException 
 	 */
-	public abstract int[] getIndexes();
+	public abstract int[] getIndexes() throws InvalidCoordinateException;
 	
 	
 	/**
