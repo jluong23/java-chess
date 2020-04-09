@@ -65,11 +65,13 @@ public abstract class Board {
 		int r = coordinate.getIndexes()[0];
 		int c = coordinate.getIndexes()[1];
 		board[r][c] = piece;
-		//update piece position
-		piece.setPosition(coordinate);
-		//set board attribute of piece to this instance and vice versa
-		piece.setBoard(this);
-		this.pieces.add(piece);
+		if (piece!=null) {
+			//update piece position
+			piece.setPosition(coordinate);
+			//set board attribute of piece to this instance and vice versa
+			piece.setBoard(this);
+			this.pieces.add(piece);			
+		}
 	}
 	
 	/**

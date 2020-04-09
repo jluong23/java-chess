@@ -2,9 +2,7 @@ package boardgame;
 
 import java.util.ArrayList;
 
-import boardgame.exceptions.NoBoardException;
-import boardgame.exceptions.TooManyPlayersException;
-
+import boardgame.exceptions.*;
 public abstract class Piece implements Cloneable{
 	
 	//attributes
@@ -208,12 +206,19 @@ public abstract class Piece implements Cloneable{
 	 * @param coordinate
 	 * @param board
 	 */
-	public void move(Coordinate coordinate, Board board) {	
-		//set previous position to null
-		board.setPiece(getPosition(), null);
-		//set new position to this piece
-		board.setPiece(coordinate, this);
-		this.timesMoved++;
+	public void move(Coordinate coordinate) throws InvalidMoveException {	
+		if(board == null)throw new NoBoardException(this); //if the piece does not have a board attribute
+		else if(getPossibleMoves().contains(coordinate)) {
+			//set previous position to null
+			board.setPiece(getPosition(), null);
+			//set new position to this piece
+			board.setPiece(coordinate, this);
+			this.timesMoved++;				
+		}
+		else {
+			throw new InvalidMoveException(this, coordinate);
+		}
+		
 	}
 
 	/**

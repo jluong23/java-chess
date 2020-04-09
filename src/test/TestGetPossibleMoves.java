@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import boardgame.*;
+import boardgame.exceptions.InvalidMoveException;
 import main.ChessBoard;
 import main.ChessCoordinate;
 import main.Layout;
@@ -129,6 +130,17 @@ public class TestGetPossibleMoves {
 				"C3","C4"
 		};
 		performTest(expectedCoordsString, pawn);
+		
+		try {
+			pawn.move(new ChessCoordinate("c4"));
+		} catch (InvalidMoveException e) {
+			System.out.println(e);
+		}
+		expectedCoordsString = new String[]{
+				"C5"
+		};
+		performTest(expectedCoordsString, pawn);
+
 	}
 	
 	/**
@@ -152,7 +164,12 @@ public class TestGetPossibleMoves {
 		//knight can take pawn, expected coordinates remain the same
 		b.setPiece(new ChessCoordinate("b2"), new Pawn(p2));
 		performTest(expectedCoordsString, knight);
-		knight.move(new ChessCoordinate("a3"), b);
+		try {
+			knight.move(new ChessCoordinate("a3"));
+		} catch (InvalidMoveException e) {
+			System.out.println(e);
+		}
+		
 		expectedCoordsString = new String[]{
 				"b5","c4", //top right
 				"b1","c2" //bottom right
