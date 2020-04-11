@@ -13,7 +13,6 @@ public class Knight extends ChessPiece {
 	public Knight(Player player) {
 		super(player);
 	}
-	
 	@Override
 	//TODO
 	public ArrayList<Coordinate> getPossibleMoves() throws NoBoardException{

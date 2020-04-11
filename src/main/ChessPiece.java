@@ -2,6 +2,7 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import boardgame.*;
 import boardgame.exceptions.InvalidCoordinateException;
@@ -68,8 +69,10 @@ public abstract class ChessPiece extends Piece {
 				//obstruction must be a piece
 				foundPiece = true;
 				if(obstruction.getPlayer().getColour() != this.getPlayer().getColour()) {
-					//if they don't share the same colour, this piece can attack, add to moveableTiles
-					moveableTiles.add(coordinate); 
+					//if they don't share the same colour, this piece can attack if this piece attacks in same direction as it moves
+					if(Arrays.equals(this.getMoveableDirections(), this.getAttackableDirections())){
+						moveableTiles.add(coordinate); 						
+					}
 				}
 			}
 			numSearched++;

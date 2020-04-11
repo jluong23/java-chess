@@ -213,6 +213,7 @@ public abstract class Piece implements Cloneable{
 		for (Coordinate coordinate : getPossibleMoves()) {
 			Piece enemy = getBoard().at(coordinate);
 			if(enemy != null && enemy.getPlayer().getColour() != this.getPlayer().getColour())
+				//if an enemy exists and they are opposite colours, this piece can attack
 				squaresAttacking.add(coordinate);
 		}
 		return squaresAttacking;

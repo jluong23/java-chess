@@ -14,7 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import boardgame.*;
-import boardgame.exceptions.InvalidCoordinateException;
 import boardgame.exceptions.InvalidMoveException;
 import main.ChessBoard;
 import main.ChessCoordinate;

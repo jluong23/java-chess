@@ -7,7 +7,8 @@ public class Rook extends ChessPiece {
 
 	public Rook(Player player) {
 		super(player);
-		//rook can move horizontally and vertically
+		//rook can move and attack horizontally and vertically
+		setAttackableDirections(Direction.horizontalAndVertical());
 		setMoveableDirections(Direction.horizontalAndVertical());
 	}
 	
