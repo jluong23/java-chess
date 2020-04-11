@@ -28,15 +28,6 @@ public class Pawn extends ChessPiece {
 	}
 	
 	@Override
-	public ArrayList<Coordinate> getSquaresAttacking() {
-		ArrayList<Coordinate> squaresAttacking = new ArrayList<Coordinate>();
-		for (Direction dir : getMoveableDirections()) {
-			squaresAttacking.addAll(getMoveableTiles(dir, getAttackDistance()));
-		}
-		return squaresAttacking;
-	}
-
-	@Override
 	public void move(Coordinate coordinate) throws InvalidMoveException{
 		super.move(coordinate);
 		//pawns can move two squares on the first move, but only one afterwards

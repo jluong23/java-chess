@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import boardgame.*;
+import boardgame.exceptions.InvalidAction;
 import boardgame.exceptions.InvalidCoordinateException;
 import boardgame.exceptions.NoPlayerAttributeException;
 
@@ -41,7 +42,7 @@ public abstract class ChessPiece extends Piece {
 	
 	@Override
 	//TODO	
-	public ArrayList<Coordinate> getMoveableTiles(Direction dir, int numTiles) {
+	protected ArrayList<Coordinate> searchTiles(Direction dir, int numTiles, Action action) {
 		int numSearched = 0;
 		//index and coordinates to check for in direction dir, initially current position
 		int[] indexes = this.getPosition().getIndexes();
@@ -61,19 +62,22 @@ public abstract class ChessPiece extends Piece {
 				//coordinate is invalid, must be at the edge of a board so break out of loop
 				break;
 			}
-			//piece can move to coordinate if the square is empty 
 			Piece obstruction = getBoard().at(coordinate);
-			if(obstruction == null)
-				moveableTiles.add(coordinate); 
-			else {
-				//obstruction must be a piece
-				foundPiece = true;
-				if(obstruction.getPlayer().getColour() != this.getPlayer().getColour()) {
-					//if they don't share the same colour, this piece can attack if this piece attacks in same direction as it moves
-					if(Arrays.equals(this.getMoveableDirections(), this.getAttackableDirections())){
-						moveableTiles.add(coordinate); 						
-					}
+			if(obstruction !=null)foundPiece = true;
+			//conditions for actions to be met
+			switch (action) {
+			case ATTACK:
+				//piece can only attack if opposite colours
+				if(obstruction != null && obstruction.getPlayer().getColour() != this.getPlayer().getColour()) {
+					moveableTiles.add(coordinate); 					
 				}
+				break;
+			case MOVE_TO:
+				//piece can keep moving if piece has not been found yet
+				if(!foundPiece)moveableTiles.add(coordinate); 
+				break;
+			default:
+				throw new InvalidAction(action);
 			}
 			numSearched++;
 			

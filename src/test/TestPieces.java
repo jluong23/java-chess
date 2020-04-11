@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import boardgame.*;
+import boardgame.exceptions.InvalidCoordinateException;
 import boardgame.exceptions.InvalidMoveException;
 import main.ChessBoard;
 import main.ChessCoordinate;
@@ -47,9 +48,17 @@ public class TestPieces {
 	}
 	
 	
-	private void performTest(String[] expectedStrings, Piece piece) {
+	private void performMovementTest(String[] expectedStrings, Piece piece) {
 		List<Coordinate> expectedArr = ChessCoordinate.toCoordinate(expectedStrings);
-		List<Coordinate> actualArr = piece.getPossibleMoves();
+		List<Coordinate> actualArr = piece.getMoves(Action.MOVE_TO);
+		//sort values as we want to check if they compare the same values
+		Collections.sort(expectedArr);
+	    Collections.sort(actualArr);
+		assertEquals(expectedArr, actualArr);
+	}
+	private void performAttackTest(String[] expectedStrings, Piece piece) {
+		List<Coordinate> expectedArr = ChessCoordinate.toCoordinate(expectedStrings);
+		List<Coordinate> actualArr = piece.getMoves(Action.ATTACK);
 		//sort values as we want to check if they compare the same values
 		Collections.sort(expectedArr);
 	    Collections.sort(actualArr);
@@ -70,22 +79,25 @@ public class TestPieces {
 		//rook should be able to move to (a2..a8) vertically and (b1..h1) horizontally
 		String [] expectedCoordsString = new String[]{
 				"B1","C1","D1","E1","F1","G1","H1","A2","A3","A4","A5","A6","A7","A8"};
-		performTest(expectedCoordsString, rook);
+		performMovementTest(expectedCoordsString, rook);
+		performAttackTest(new String[] {}, rook); //no enemies to attack
+
 		
 		//second test
 		//now pawn is at a3, rook can only move to a2 vertically but same horizontally
 		b.setPiece(new ChessCoordinate("A3"), new Pawn(p1));
 		expectedCoordsString = new String[]{
 				"B1","C1","D1","E1","F1","G1","H1","A2"};
-		performTest(expectedCoordsString, rook);
+		performMovementTest(expectedCoordsString, rook);
 
 		//third test
 		//now black pawn is at a3, rook should be able to attack it on a3 and move to a2, same horizontally
 		b.setPiece(new ChessCoordinate("A3"), new Pawn(p2));
 		expectedCoordsString = new String[]{
-				"B1","C1","D1","E1","F1","G1","H1","A2","A3"};
+				"B1","C1","D1","E1","F1","G1","H1","A2"};
 		
-		performTest(expectedCoordsString, rook);
+		performMovementTest(expectedCoordsString, rook);
+		performAttackTest(new String[] {"A3"}, rook);
 	}
 	/**
 	 * Test method for {@link main.ChessPiece#getPossibleMoves()} for the {@link main.pieces.King} class.
@@ -97,7 +109,7 @@ public class TestPieces {
 		b.setPiece(new ChessCoordinate("b2"), king);
 		String[] expectedCoordsString = new String[]{
 				"A1","A2","A3","B3","B1","C1","C2","C3"};
-		performTest(expectedCoordsString, king);
+		performMovementTest(expectedCoordsString, king);
 		
 	}
 	
@@ -109,12 +121,24 @@ public class TestPieces {
 		ChessBoard b = new ChessBoard(Layout.EMPTY,players);
 		Bishop bishop = new Bishop(p1);
 
+		//first test
 		b.setPiece(new ChessCoordinate("c3"), bishop);
 		String[] expectedCoordsString = new String[]{
 				"A1","B2","D4","E5","F6","G7","H8", // '/' diagonal
 				"A5","B4","D2","E1" // '\' diagonal
-				}; 
-		performTest(expectedCoordsString, bishop);
+		}; 
+		performMovementTest(expectedCoordsString, bishop);
+		//no enemies to attack
+		performAttackTest(new String[] {}, bishop);
+		
+		//second test - black bishop at e5
+		b.setPiece(new ChessCoordinate("e5"), new Bishop(p2));
+		expectedCoordsString = new String[]{
+				"A1","B2","D4","E5", // '/' diagonal
+				"A5","B4","D2","E1" // '\' diagonal
+		}; 
+		performAttackTest(new String[] {"e5"}, bishop); //white bishop can take on e5
+		performAttackTest(new String[] {"c3"}, b.at(new ChessCoordinate("e5"))); //black bishop can take on c3
 	}
 	
 	/**
@@ -129,7 +153,7 @@ public class TestPieces {
 		String[] expectedCoordsString = new String[]{
 				"C3","C4"
 		};
-		performTest(expectedCoordsString, pawn);
+		performMovementTest(expectedCoordsString, pawn);
 		
 		//second test, pawn moves to c4, can only move to c5
 		try {
@@ -140,14 +164,15 @@ public class TestPieces {
 		expectedCoordsString = new String[]{
 				"C5"
 		};
-		performTest(expectedCoordsString, pawn);
-
-		
+		performMovementTest(expectedCoordsString, pawn);
 		//third test, pawn has no moves, blocked by black pawn
 		b.setPiece(new ChessCoordinate("c5"), new Pawn(p2));
-		System.out.println(b);
-		performTest(new String[] {}, pawn);
+		performMovementTest(new String[] {}, pawn);
 
+		//fourth test, new black pawn at b5, white pawn can take
+		b.setPiece(new ChessCoordinate("b5"), new Pawn(p2));
+		performMovementTest(new String[] {}, pawn);
+		performAttackTest(new String[] {"b5"}, pawn);
 	}
 	
 	/**
@@ -166,11 +191,11 @@ public class TestPieces {
 				"e3","d2" //bottom right
 				
 		};
-		performTest(expectedCoordsString, knight);
+		performMovementTest(expectedCoordsString, knight);
 		
 		//knight can take pawn, expected coordinates remain the same
 		b.setPiece(new ChessCoordinate("b2"), new Pawn(p2));
-		performTest(expectedCoordsString, knight);
+		performMovementTest(expectedCoordsString, knight);
 		try {
 			knight.move(new ChessCoordinate("a3"));
 		} catch (InvalidMoveException e) {
@@ -180,7 +205,7 @@ public class TestPieces {
 				"b5","c4", //top right
 				"b1","c2" //bottom right
 		};		
-		performTest(expectedCoordsString, knight);
+		performMovementTest(expectedCoordsString, knight);
 	}
 	
 	/**
@@ -198,7 +223,7 @@ public class TestPieces {
 			"b1","b3","b4","b5","b6","b7","b8" // vertical coordinates
 		};
 							
-		performTest(expectedCoordsString, queen);
+		performMovementTest(expectedCoordsString, queen);
 	}
 	
 	

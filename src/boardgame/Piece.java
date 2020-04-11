@@ -1,8 +1,8 @@
 package boardgame;
-
 import java.util.ArrayList;
 
 import boardgame.exceptions.*;
+import boardgame.*;
 public abstract class Piece implements Cloneable{
 	
 	//attributes
@@ -178,55 +178,63 @@ public abstract class Piece implements Cloneable{
 	//methods
 	
 	/**
-	 * Fetch the tiles the piece can move to given a direction and number of tiles to search
+	 * Fetch the tiles the piece can perform a given action in a given a direction and number of tiles to search
 	 * @param dir the direction to search in
+	 * @param action the action this piece should perform
 	 * @param numTiles the number of tiles to search 
+	 * @param action the action to seaerch for eg. attack or defend
 	 * @return moves - the possible moves the piece can make in the given direction
 	 */
-	public abstract ArrayList<Coordinate> getMoveableTiles(Direction dir, int numTiles);
+	protected abstract ArrayList<Coordinate> searchTiles(Direction dir, int numTiles, boardgame.Action action);
 	
 	/**
-	 * Fetch arraylist of tiles the piece can move to.
-	 * Every piece apart from the knight will use this method.
+	 * Fetch arraylist of all tiles the piece can perform an action to from this piece's current position.
+	 * searchTiles() is called for all directions of the action.
 	 * @return moves - Arraylist of coordinates the piece can move to
-	 * @throws TooManyPlayersException - If the piece's board attribute is null
+	 * @throws NoBoardException - If the piece's board attribute is null
 	 */
-	public ArrayList<Coordinate> getPossibleMoves() throws NoBoardException{
+	public ArrayList<Coordinate> getMoves(boardgame.Action action) throws NoBoardException{
 		if(board == null)throw new NoBoardException(this); //if the piece does not have a board attribute
 		else {
 			ArrayList<Coordinate> moves = new ArrayList<>();
-			for (Direction direction : moveableDirections) {
+			
+			//get which list of directions to check for given an action
+			Direction[] directionList = null;
+			switch(action) {
+			case ATTACK:
+				directionList = getAttackableDirections();
+				break;
+			case MOVE_TO:
+				directionList = getMoveableDirections();
+				break;
+			}
+			for (Direction direction : directionList) {
 				//for all directions they can move in, fetch the tiles the piece can move to in each of those directions
-				moves.addAll(getMoveableTiles(direction, moveableDistance));
+				moves.addAll(searchTiles(direction, moveableDistance, action));
 			}
 			return moves;
 		}
 	}
 	
 	/**
-	 * Returns arraylist of coordinates which contain another piece and is attacked by this piece instance
-	 * @return squaresAttacking - The tiles this piece attacks
-	 * 
+	 * Call getMoves() for all possible actions
+	 * @return allMoves - an array list of all possible moves for all possible actions
+	 * @throws NoBoardException - If the piece's board attribute is null
 	 */
-	public ArrayList<Coordinate> getSquaresAttacking() {
-		ArrayList<Coordinate> squaresAttacking = new ArrayList<Coordinate>();
-		for (Coordinate coordinate : getPossibleMoves()) {
-			Piece enemy = getBoard().at(coordinate);
-			if(enemy != null && enemy.getPlayer().getColour() != this.getPlayer().getColour())
-				//if an enemy exists and they are opposite colours, this piece can attack
-				squaresAttacking.add(coordinate);
+	public ArrayList<Coordinate> getAllMoves() throws NoBoardException{
+		ArrayList<Coordinate> allMoves = new ArrayList<Coordinate>();
+		for (boardgame.Action action : boardgame.Action.values()) {
+			allMoves.addAll(getMoves(action));
 		}
-		return squaresAttacking;
+		return allMoves;
 	}
-	
 	/**
 	 * Move piece to a given coordinate on board
 	 * @param coordinate - Coordinate to move to
-	 * @param board
 	 */
 	public void move(Coordinate coordinate) throws InvalidMoveException {	
 		if(board == null)throw new NoBoardException(this); //if the piece does not have a board attribute
-		else if(getPossibleMoves().contains(coordinate)) {
+		else if(getAllMoves().contains(coordinate)) {
 			//set previous position to null
 			board.setPiece(getPosition(), null);
 			//set new position to this piece
@@ -236,9 +244,8 @@ public abstract class Piece implements Cloneable{
 		else {
 			throw new InvalidMoveException(this, coordinate);
 		}
-		
 	}
-
+	
 	/**
 	 * Return a shallow copy of the instance
 	 * @return clone A clone of the instance object
@@ -269,5 +276,6 @@ public abstract class Piece implements Cloneable{
 	public String toString() {
 		return Character.toString(symbol);
 	}
+
 	
 }
