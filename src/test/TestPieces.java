@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import boardgame.*;
+import boardgame.exceptions.InvalidCoordinateException;
 import boardgame.exceptions.InvalidMoveException;
 import main.ChessBoard;
 import main.ChessCoordinate;
@@ -23,7 +24,7 @@ import main.pieces.*;
  * @author james
  *
  */
-public class TestGetPossibleMoves {
+public class TestPieces {
 	List<Player> players;
 	Player p1,p2;
 	
@@ -131,6 +132,7 @@ public class TestGetPossibleMoves {
 		};
 		performTest(expectedCoordsString, pawn);
 		
+		//second test, pawn moves to c4, can only move to c5
 		try {
 			pawn.move(new ChessCoordinate("c4"));
 		} catch (InvalidMoveException e) {
@@ -140,6 +142,12 @@ public class TestGetPossibleMoves {
 				"C5"
 		};
 		performTest(expectedCoordsString, pawn);
+
+		
+		//third test, pawn has no moves, blocked by black pawn
+		b.setPiece(new ChessCoordinate("c5"), new Pawn(p2));
+		System.out.println(b);
+		performTest(new String[] {}, pawn);
 
 	}
 	

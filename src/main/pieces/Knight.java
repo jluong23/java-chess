@@ -47,13 +47,4 @@ public class Knight extends ChessPiece {
 			return possibleCoordinates;
 		}
 	}
-	
-	@Override
-	//TODO
-	public ArrayList<Coordinate> getSquaresAttacking() {
-		//knights need to override getSquaresAttacking() as they move differently to other pieces
-		return null;
-	}
-
-
 }

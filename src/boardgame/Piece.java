@@ -14,10 +14,9 @@ public abstract class Piece implements Cloneable{
 	private int pointValue;
 	private boolean alive;
 	private Direction[] moveableDirections;
+	private Direction[] attackableDirections;
 	private int moveableDistance;
 	private int attackDistance;
-
-
 
 	/**
 	 * Creates a new piece object
@@ -161,7 +160,20 @@ public abstract class Piece implements Cloneable{
 	public void setAttackDistance(int attackDistance) {
 		this.attackDistance = attackDistance;
 	}
+	
+	/**
+	 * @return the attackableDirections
+	 */
+	public Direction[] getAttackableDirections() {
+		return attackableDirections;
+	}
 
+	/**
+	 * @param attackableDirections the attackableDirections to set
+	 */
+	public void setAttackableDirections(Direction[] attackableDirections) {
+		this.attackableDirections = attackableDirections;
+	}
 
 	//methods
 	
@@ -176,7 +188,7 @@ public abstract class Piece implements Cloneable{
 	/**
 	 * Fetch arraylist of tiles the piece can move to.
 	 * Every piece apart from the knight will use this method.
-	 * @return moves Arraylist of coordinates the piece can move to
+	 * @return moves - Arraylist of coordinates the piece can move to
 	 * @throws TooManyPlayersException - If the piece's board attribute is null
 	 */
 	public ArrayList<Coordinate> getPossibleMoves() throws NoBoardException{
@@ -193,17 +205,22 @@ public abstract class Piece implements Cloneable{
 	
 	/**
 	 * Returns arraylist of coordinates which contain another piece and is attacked by this piece instance
-	 * Default to getPossibleMoves()
-	 * @return tiles The tiles the piece attacks
+	 * @return squaresAttacking - The tiles this piece attacks
 	 * 
 	 */
 	public ArrayList<Coordinate> getSquaresAttacking() {
-		return this.getPossibleMoves();
+		ArrayList<Coordinate> squaresAttacking = new ArrayList<Coordinate>();
+		for (Coordinate coordinate : getPossibleMoves()) {
+			Piece enemy = getBoard().at(coordinate);
+			if(enemy != null && enemy.getPlayer().getColour() != this.getPlayer().getColour())
+				squaresAttacking.add(coordinate);
+		}
+		return squaresAttacking;
 	}
 	
 	/**
 	 * Move piece to a given coordinate on board
-	 * @param coordinate
+	 * @param coordinate - Coordinate to move to
 	 * @param board
 	 */
 	public void move(Coordinate coordinate) throws InvalidMoveException {	

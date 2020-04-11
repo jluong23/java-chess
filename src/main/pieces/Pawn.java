@@ -15,13 +15,24 @@ public class Pawn extends ChessPiece {
 		setMoveableDirections(new Direction[] {Direction.UP});
 		setMoveableDistance(FIRST_MOVE_DISTANCE);
 		setAttackDistance(NORMAL_MOVE_DISTANCE);
+		
+		//black pawns attack down the board from white's perspective
+		switch(this.getPlayer().getColour()) {
+		case BLACK:
+			setAttackableDirections(Direction.diagonalBackwards());
+		case WHITE:
+			setAttackableDirections(Direction.diagonalForwards());
+	
+		}
 	}
 	
 	@Override
-
 	public ArrayList<Coordinate> getSquaresAttacking() {
-		//pawns attack diagonally
-		return null;
+		ArrayList<Coordinate> squaresAttacking = new ArrayList<Coordinate>();
+		for (Direction dir : getMoveableDirections()) {
+			squaresAttacking.addAll(getMoveableTiles(dir, getAttackDistance()));
+		}
+		return squaresAttacking;
 	}
 
 	@Override
