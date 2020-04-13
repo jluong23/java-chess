@@ -1,5 +1,4 @@
 package main.pieces;
-import java.util.ArrayList;
 
 import boardgame.*;
 import boardgame.exceptions.InvalidMoveException;

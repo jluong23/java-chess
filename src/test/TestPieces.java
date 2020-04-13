@@ -5,7 +5,6 @@ package test;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -15,7 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import boardgame.*;
-import boardgame.exceptions.InvalidCoordinateException;
 import boardgame.exceptions.InvalidMoveException;
 import main.ChessBoard;
 import main.ChessCoordinate;

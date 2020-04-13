@@ -3,7 +3,6 @@ package main.pieces;
 import java.util.ArrayList;
 
 import boardgame.*;
-import boardgame.exceptions.InvalidAction;
 import boardgame.exceptions.InvalidCoordinateException;
 import boardgame.exceptions.NoBoardException;
 import main.ChessCoordinate;

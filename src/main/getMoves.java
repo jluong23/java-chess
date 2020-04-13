@@ -8,12 +8,12 @@ import boardgame.exceptions.InvalidCoordinateException;
 import boardgame.exceptions.NoPlayerAttributeException;
 
 
-public abstract class ChessPiece extends Piece {
+public abstract class getMoves extends Piece {
 	private ChessPieceNames name;
 	
 	private static int DEFAULT_DISTANCE = 7;
 
-	public ChessPiece(Player player){
+	public getMoves(Player player){
 		super(player);
 		//name attribute is the class name as an enum
 		name = ChessPieceNames.valueOf(getClass().getSimpleName().toUpperCase());
