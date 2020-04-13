@@ -66,7 +66,7 @@ public class TestPieces {
 	
 
 	/**
-	 * Test method for {@link main.ChessPiece#getPossibleMoves()} for the {@link main.pieces.Rook} class.
+	 * Test method for {@link main.ChessPiece#getMoves(Action)} for the {@link main.pieces.Rook} class.
 	 */
 	@Test
 	public void testRook() {
@@ -99,7 +99,7 @@ public class TestPieces {
 		performAttackTest(new String[] {"A3"}, rook);
 	}
 	/**
-	 * Test method for {@link main.ChessPiece#getPossibleMoves()} for the {@link main.pieces.King} class.
+	 * Test method for {@link main.ChessPiece#getMoves(Action)} for the {@link main.pieces.King} class.
 	 */
 	@Test
 	public void testKing() {
@@ -113,7 +113,7 @@ public class TestPieces {
 	}
 	
 	/**
-	 * Test method for {@link main.ChessPiece#getPossibleMoves()} for the {@link main.pieces.Bishop} class.
+	 * Test method for {@link main.ChessPiece#getMoves(Action)} for the {@link main.pieces.Bishop} class.
 	 */
 	@Test
 	public void testBishop() {
@@ -141,7 +141,7 @@ public class TestPieces {
 	}
 	
 	/**
-	 * Test method for {@link main.ChessPiece#getPossibleMoves()} for the {@link main.pieces.Pawn} class.
+	 * Test method for {@link main.ChessPiece#getMoves(Action)} for the {@link main.pieces.Pawn} class.
 	 */
 	@Test
 	public void testPawn() {
@@ -175,7 +175,7 @@ public class TestPieces {
 	}
 	
 	/**
-	 * Test method for {@link main.ChessPiece#getPossibleMoves()} for the {@link main.pieces.Knight} class.
+	 * Test method for {@link main.ChessPiece#getMoves(Action)} for the {@link main.pieces.Knight} class.
 	 */
 	@Test
 	public void testKnight() {
@@ -219,7 +219,7 @@ public class TestPieces {
 	}
 	
 	/**
-	 * Test method for {@link main.ChessPiece#getPossibleMoves()} for the {@link main.pieces.Knight} class.
+	 * Test method for {@link main.ChessPiece#getMoves(Action)} for the {@link main.pieces.Knight} class.
 	 */
 	@Test
 	public void testQueen() {
@@ -304,6 +304,22 @@ public class TestPieces {
 				"a7","c7" //right and down right
 			};
 		performMovementTest(expectedCoordsString, blackKing);
+	}
+	
+	/**
+	 * Test method for {@link main.ChessPiece#getMoves(Action)} for units that are pinned to their king.
+	 */
+	@Test
+	public void testPinnedPiece() {
+		ChessBoard b = new ChessBoard(Layout.EMPTY,players);
+		Queen queen = new Queen(p1);
+		King blackKing = new King(p2);
+		Pawn pinnedPawn = new Pawn(p2);
+		//first test - pinned pawn has no moves
+		b.setPiece(new ChessCoordinate("a1"), queen);
+		b.setPiece(new ChessCoordinate("c3"), pinnedPawn);
+		b.setPiece(new ChessCoordinate("h8"), blackKing);
+		performMovementTest(new String[] {}, pinnedPawn);
 	}
 }
 
