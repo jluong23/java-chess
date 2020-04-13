@@ -266,7 +266,6 @@ public class TestPieces {
 		try {
 			queen.move(new ChessCoordinate("b3"));
 		} catch (InvalidMoveException e) {
-			System.out.println(e);
 			e.printStackTrace();
 		}
 		
@@ -279,10 +278,28 @@ public class TestPieces {
 		assertEquals(null, blackPawn.getPosition());		
 	}
 	
-	
-	
-	
-	
+	/**
+	 * Test method for {@link main.pieces.king#inCheck()}
+	 */
+	@Test
+	public void testCheck() {
+		ChessBoard b = new ChessBoard(Layout.EMPTY,players);
+		Queen queen = new Queen(p1);
+		King blackKing = new King(p2);
+		//first test
+		//initially not in check, queen is not attacking black king
+		b.setPiece(new ChessCoordinate("a1"), queen);
+		b.setPiece(new ChessCoordinate("b8"), blackKing);
+		assertFalse(blackKing.inCheck());
+		
+		//second test, queen moves to b2, black king should be in check
+		try {
+			queen.move(new ChessCoordinate("b3"));
+		} catch (InvalidMoveException e) {
+			e.printStackTrace();
+		}
+		assertTrue(blackKing.inCheck());
+	}
 }
 
 

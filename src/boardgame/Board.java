@@ -2,9 +2,12 @@ package boardgame;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TooManyListenersException;
 
 import boardgame.exceptions.InvalidCoordinateException;
+import boardgame.exceptions.TooManyPlayersException;
 import main.ChessCoordinate;
+import main.pieces.King;
 
 public abstract class Board {
 	private Piece[][] board;
@@ -118,4 +121,20 @@ public abstract class Board {
 	}
 	
 	public abstract void reset();
+
+	/**
+	 * Given there are only two players on the board, getOtherPlayer() will return the other player
+	 * given one of the players
+	 * @param player - the known player on the board
+	 * @return otherPlayer - the other player on the board
+	 */
+	public Player getOtherPlayer(Player knownPlayer) {
+		if(players.size() != 2)throw new TooManyPlayersException("Need two players for getOtherPlayer()");
+		else {
+			for (Player player : players) {
+				if(player != knownPlayer) return player;
+			}			
+		}
+		return null; //returns null if other player can't be found, shouldn't happen
+	}
 }

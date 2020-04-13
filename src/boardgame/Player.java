@@ -1,6 +1,9 @@
 package boardgame;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import boardgame.exceptions.NoBoardException;
 
 public class Player {
 
@@ -65,6 +68,31 @@ public class Player {
 	public void setPiecesTaken(ArrayList<Piece> piecesTaken) {
 		this.piecesTaken = piecesTaken;
 	}
-
+	
+	/**
+	 * Get a hash map of all possible moves for a player of a given action
+	 * @param action - The action of a certain move
+	 * @return allMoves - A hashmap of piece to Arraylist of coordinates which are the given action a piece can make 
+	*/
+	public HashMap<Piece, ArrayList<Coordinate>> getAllMoves(Action action) throws NoBoardException{
+		//player's pieces mapped to all the moves of a given action the piece can make
+		HashMap<Piece, ArrayList<Coordinate>> allMoves= new HashMap<Piece, ArrayList<Coordinate>>();
+		for (Piece piece : myPieces) {
+			allMoves.put(piece, piece.getMoves(action));
+		}
+		return allMoves;
+	}
+	/**
+	 * Get a hash map of all possible moves for a player 
+	 * @return allMoves - A hashmap of piece to Arraylist of coordinates a piece can perform to
+	*/
+	public HashMap<Piece, ArrayList<Coordinate>> getAllMoves() throws NoBoardException{
+		//player's pieces mapped to all the moves of a given action the piece can make
+		HashMap<Piece, ArrayList<Coordinate>> allMoves= new HashMap<Piece, ArrayList<Coordinate>>();
+		for (Piece piece : myPieces) {
+			allMoves.put(piece, piece.getAllMoves());
+		}
+		return allMoves;
+	}
 
 }

@@ -1,5 +1,10 @@
 package main.pieces;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+
 import boardgame.*;
+import boardgame.exceptions.NoBoardException;
 import main.ChessPiece;
 
 public class King extends ChessPiece {
@@ -15,5 +20,22 @@ public class King extends ChessPiece {
 		setAttackDistance(1);
 		
 	}
+	/**
+	 * return whether this King object is in check on it's board attribute
+	 * @return boolean result 
+	 */
+	public boolean inCheck() throws NoBoardException{
+		if(getBoard() == null) throw new NoBoardException(this);
+		else {
+			HashMap<Piece, ArrayList<Coordinate>> otherPlayerAttacks = getBoard().getOtherPlayer(getPlayer()).getAllMoves(Action.ATTACK);
+			for (ArrayList<Coordinate> attacks : otherPlayerAttacks.values()) {
+				if(attacks.contains(this.getPosition())) return true;
+			}
+			//must not be in check if attacks does not contain this king's position
+			return false;
+		}
+	}
+	
+	
 
 }

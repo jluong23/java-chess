@@ -15,6 +15,6 @@ public class InvalidMoveException extends Exception {
 	
 	@Override
 	public String toString() {
-		return piece + "at " + piece.getPosition() + " can not move to " + coordinate;
+		return piece + " at " + piece.getPosition() + " can not move to " + coordinate;
 	}
 }
