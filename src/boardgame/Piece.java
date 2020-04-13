@@ -200,17 +200,20 @@ public abstract class Piece implements Cloneable{
 			
 			//get which list of directions to check for given an action
 			Direction[] directionList = null;
+			int distance = 0;
 			switch(action) {
 			case ATTACK:
 				directionList = getAttackableDirections();
+				distance = attackDistance;
 				break;
 			case MOVE_TO:
 				directionList = getMoveableDirections();
+				distance = moveableDistance;
 				break;
 			}
 			for (Direction direction : directionList) {
 				//for all directions they can move in, fetch the tiles the piece can move to in each of those directions
-				moves.addAll(searchTiles(direction, moveableDistance, action));
+				moves.addAll(searchTiles(direction, distance, action));
 			}
 			return moves;
 		}
@@ -234,18 +237,40 @@ public abstract class Piece implements Cloneable{
 	 */
 	public void move(Coordinate coordinate) throws InvalidMoveException {	
 		if(board == null)throw new NoBoardException(this); //if the piece does not have a board attribute
+		//check if valid move
 		else if(getAllMoves().contains(coordinate)) {
+			// check if it was a capture
+			if(this.getMoves(Action.ATTACK).contains(coordinate)) {
+				//do capture consequence, abstract method depending on board game.
+				//pass in the piece captures
+				captureConsequnce(board.at(coordinate));
+			}
+			
+			//make the move
+			
 			//set previous position to null
 			board.setPiece(getPosition(), null);
 			//set new position to this piece
 			board.setPiece(coordinate, this);
-			this.timesMoved++;				
+			this.timesMoved++;								
 		}
 		else {
 			throw new InvalidMoveException(this, coordinate);
 		}
 	}
-	
+	/**
+	 * Called when this piece captures another piece.
+	 * For chess, the consequences will be: 
+	 * <ul>
+	 * <li> Add to this piece's owner's captured list. </li>
+	 * <li> Remove from the captured piece's owner's piece list. </li>
+	 * <li> Set the captured piece's position to null. </li>
+	 * </ul>
+	 * Another game may choose to do something else.
+	 * @param capturedPiece - The piece captured
+	 */
+	protected abstract void captureConsequnce(Piece capturedPiece);
+
 	/**
 	 * Return a shallow copy of the instance
 	 * @return clone A clone of the instance object

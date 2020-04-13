@@ -72,4 +72,13 @@ public abstract class ChessPiece extends Piece {
 		return moveableTiles;
 	}
 	
+	@Override
+	protected void captureConsequnce(Piece pieceCaptured) {
+		// TODO Auto-generated method stub
+		this.getPlayer().getPiecesTaken().add(pieceCaptured);
+		pieceCaptured.getPlayer().getMyPieces().remove(pieceCaptured);
+		pieceCaptured.setPosition(null);
+		
+	}
+	
 }
