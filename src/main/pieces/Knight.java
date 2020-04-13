@@ -3,6 +3,7 @@ package main.pieces;
 import java.util.ArrayList;
 
 import boardgame.*;
+import boardgame.exceptions.InvalidAction;
 import boardgame.exceptions.InvalidCoordinateException;
 import boardgame.exceptions.NoBoardException;
 import main.ChessCoordinate;
@@ -34,8 +35,9 @@ public class Knight extends ChessPiece {
 					if(dc!= 0) { //skip change in column being 0, knight can't move straight up vertically
 						int dr = sign * (TILES_MOVED - Math.abs(dc)); 
 						try {
-							Coordinate coord = ChessCoordinate.toCoordinate(new int[] {r+dr,c+dc});	
-							possibleCoordinates.add(coord);
+							Coordinate coordinate = ChessCoordinate.toCoordinate(new int[] {r+dr,c+dc});
+							//if the action can be performed, push to possibleCoordinates
+							if(action.conditionMet(this, coordinate))possibleCoordinates.add(coordinate);
 						} catch (InvalidCoordinateException e) {
 							//do nothing if invalid coordinate found, move to next
 						}
@@ -45,10 +47,5 @@ public class Knight extends ChessPiece {
 			
 			return possibleCoordinates;
 		}
-	}
-	
-	@Override
-	public ArrayList<Coordinate> getAllMoves() throws NoBoardException {
-		return getMoves(null);
 	}
 }

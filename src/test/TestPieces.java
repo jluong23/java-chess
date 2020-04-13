@@ -180,6 +180,7 @@ public class TestPieces {
 	 */
 	@Test
 	public void testKnight() {
+		//first test
 		ChessBoard b = new ChessBoard(Layout.EMPTY,players);
 		Knight knight = new Knight(p1);
 
@@ -193,9 +194,19 @@ public class TestPieces {
 		};
 		performMovementTest(expectedCoordsString, knight);
 		
-		//knight can take pawn, expected coordinates remain the same
+		//second test
+		//knight can take pawn on b2, remove b2 from expected moves to expected attack
 		b.setPiece(new ChessCoordinate("b2"), new Pawn(p2));
+		expectedCoordsString = new String[]{
+				"a3", //bottom left
+				"a5","b6", //top left
+				"d6","e5", //top right
+				"e3","d2" //bottom right
+		};
+		performAttackTest(new String[] {"b2"}, knight);
 		performMovementTest(expectedCoordsString, knight);
+		
+		//third test, knight moves to a3
 		try {
 			knight.move(new ChessCoordinate("a3"));
 		} catch (InvalidMoveException e) {

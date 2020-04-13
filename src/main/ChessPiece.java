@@ -62,23 +62,10 @@ public abstract class ChessPiece extends Piece {
 				//coordinate is invalid, must be at the edge of a board so break out of loop
 				break;
 			}
-			Piece obstruction = getBoard().at(coordinate);
-			if(obstruction !=null)foundPiece = true;
-			//conditions for actions to be met
-			switch (action) {
-			case ATTACK:
-				//piece can only attack if opposite colours
-				if(obstruction != null && obstruction.getPlayer().getColour() != this.getPlayer().getColour()) {
-					moveableTiles.add(coordinate); 					
-				}
-				break;
-			case MOVE_TO:
-				//piece can keep moving if piece has not been found yet
-				if(!foundPiece)moveableTiles.add(coordinate); 
-				break;
-			default:
-				throw new InvalidAction(action);
-			}
+			//set foundPiece to true to prevent piece going through another
+			if(getBoard().at(coordinate) !=null)foundPiece = true;
+			//if the action can be performed, push to moveableTiles
+			if(action.conditionMet(this, coordinate))moveableTiles.add(coordinate);
 			numSearched++;
 			
 		}
