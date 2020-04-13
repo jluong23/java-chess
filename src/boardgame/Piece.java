@@ -247,7 +247,6 @@ public abstract class Piece implements Cloneable{
 			}
 			
 			//make the move
-			
 			//set previous position to null
 			board.setPiece(getPosition(), null);
 			//set new position to this piece

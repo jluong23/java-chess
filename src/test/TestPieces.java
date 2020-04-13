@@ -294,11 +294,18 @@ public class TestPieces {
 		
 		//second test, queen moves to b2, black king should be in check
 		try {
-			queen.move(new ChessCoordinate("b3"));
+			queen.move(new ChessCoordinate("b2"));
 		} catch (InvalidMoveException e) {
 			e.printStackTrace();
 		}
 		assertTrue(blackKing.inCheck());
+		
+		//third test: king can not move to b7 since it was still be in check
+		String[] expectedCoordsString = new String[]{
+				"a8","c8", //left and down left
+				"a7","c7" //right and down right
+			};
+		performMovementTest(expectedCoordsString, blackKing);
 	}
 }
 

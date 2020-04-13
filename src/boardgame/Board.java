@@ -12,25 +12,21 @@ import main.pieces.King;
 public abstract class Board {
 	private Piece[][] board;
 	private List<Player> players;
-	private List<Piece> pieces;
 
 	public Board(List<Player> players2){
 		this.players = players2;
-		pieces = new ArrayList<Piece>();
 	}
 	
 	/**
-	 * @return the pieces
+	 * Get all of the pieces on this board. The pieces checked are the player's pieces in the players list
+	 * @return The pieces on this board
 	 */
 	public List<Piece> getPieces() {
+		ArrayList<Piece> pieces = new ArrayList<Piece>();
+		for (Player player : players) {
+			pieces.addAll(player.getMyPieces());
+		}
 		return pieces;
-	}
-
-	/**
-	 * @param pieces the pieces to set
-	 */
-	public void setPieces(List<Piece> pieces) {
-		this.pieces = pieces;
 	}
 	
 	/**
@@ -73,10 +69,9 @@ public abstract class Board {
 			piece.setPosition(coordinate);
 			//set board attribute of piece to this instance and vice versa
 			piece.setBoard(this);
-			this.pieces.add(piece);			
 		}
 	}
-	
+
 	/**
 	 * Return what is on the board at a given coordinate
 	 * @param coordinate the coordinate to check 
