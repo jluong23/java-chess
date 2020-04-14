@@ -35,4 +35,26 @@ public class King extends ChessPiece {
 			return false;
 		}
 	}
+	
+	@Override
+	public ArrayList<Coordinate> getMoves(Action action) throws NoBoardException {
+		ArrayList<Coordinate> possibleMoves = super.getMoves(action);
+		//king can not move to a position where it in check again
+		Iterator<Coordinate> iterator = possibleMoves.iterator();
+		while(iterator.hasNext()) {
+			Coordinate coordinate = iterator.next();
+			King tempKing = new King(this.getPlayer());
+			//the piece this king is capturing, can be null if empty space 
+			Piece capturedPiece = getBoard().at(coordinate);
+
+			//place the temp king at the coordinate
+			getBoard().setPiece(coordinate, tempKing);
+			if(tempKing.inCheck())iterator.remove();
+
+			//reset back to original, place captured piece back and remove tempKing from player pieces list
+			getBoard().setPiece(coordinate, capturedPiece);
+			this.getPlayer().getMyPieces().remove(tempKing);
+		}
+		return possibleMoves;
+	}
 }

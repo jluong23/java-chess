@@ -203,16 +203,6 @@ public abstract class Piece implements Cloneable{
 	protected abstract ArrayList<Coordinate> searchTiles(Direction dir, int numTiles, boardgame.Action action);
 	
 	/**
-	 * Checks if a move is valid in the context of the current board configuration and game.
-	 * Note this is not to do with how pieces moves.
-	 * eg. For chess, a king can't stay in check, and pinned pieces can not move to put their king in chess.
-	 * @param coordinate - the coordinate to check for this piece to move to
-	 * @return boolean result whether move to coordinate is valid
-	 * @throws InvalidSettingsException 
-	 */
-	public abstract boolean validMove(Coordinate coordinate) throws NoBoardException, InvalidSettingsException;
-	
-	/**
 	 * Fetch arraylist of all tiles the piece can perform an action to from this piece's current position.
 	 * searchTiles() is called for all directions of the action.
 	 * @return moves - Arraylist of coordinates the piece can move to

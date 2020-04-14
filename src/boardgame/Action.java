@@ -21,8 +21,7 @@ public enum Action {
 		switch (this) {
 		case ATTACK:
 			//piece can only attack if opposite colours
-			return obstruction != null && 
-			obstruction.getPlayer().getColour() != piece.getPlayer().getColour();
+			return obstruction != null && obstruction.getPlayer().getColour() != piece.getPlayer().getColour();
 		case MOVE_TO:
 			return obstruction == null;
 		default:
