@@ -7,6 +7,7 @@ public abstract class Piece implements Cloneable{
 	
 	//attributes
 	private char symbol;
+	private String name;
 	private Player player;
 	private int timesMoved;
 	private Coordinate position;
@@ -26,6 +27,8 @@ public abstract class Piece implements Cloneable{
 		this.player = player;
 		this.timesMoved = 0;
 		player.getMyPieces().add(this); 
+		name = getClass().getSimpleName().toUpperCase();
+
 	}
 
 	/**
@@ -41,7 +44,19 @@ public abstract class Piece implements Cloneable{
 	public void setSymbol(char symbol) {
 		this.symbol = symbol;
 	}
-	
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
 	/**
 	 * @return the player
 	 */
@@ -186,6 +201,16 @@ public abstract class Piece implements Cloneable{
 	 * @return moves - the possible moves the piece can make in the given direction
 	 */
 	protected abstract ArrayList<Coordinate> searchTiles(Direction dir, int numTiles, boardgame.Action action);
+	
+	/**
+	 * Checks if a move is valid in the context of the current board configuration and game.
+	 * Note this is not to do with how pieces moves.
+	 * eg. For chess, a king can't stay in check, and pinned pieces can not move to put their king in chess.
+	 * @param coordinate - the coordinate to check for this piece to move to
+	 * @return boolean result whether move to coordinate is valid
+	 * @throws InvalidSettingsException 
+	 */
+	public abstract boolean validMove(Coordinate coordinate) throws NoBoardException, InvalidSettingsException;
 	
 	/**
 	 * Fetch arraylist of all tiles the piece can perform an action to from this piece's current position.

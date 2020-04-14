@@ -21,21 +21,24 @@ public enum ChessPieceNames{
 	
 	/**
 	 * Gets the symbol for a requested piece and colour
-	 * @param piece the piece requested
+	 * @param piece the piece requested as a string
 	 * @param colour the colour requested
 	 * @throws InvalidColourException thrown when colour is not found
 	 * @return symbol - the symbol requested, throws InvalidColourException if colour is not found
 	 */
-	public char getSymbol(ChessPieceNames piece, Colour colour) {
+	public static char getSymbol(String piece, Colour colour) {
+		ChessPieceNames pieceEnum = ChessPieceNames.valueOf(piece);
+		
 		switch(colour) {
 		case BLACK:
-			return piece.blackSymbol;
+			return pieceEnum.blackSymbol;
 		case WHITE:
-			return piece.whiteSymbol;
+			return pieceEnum.whiteSymbol;
 		default:
 			throw new InvalidColourException("Could not find this colour, exiting...");
 		}
 	}
+	
 	
 	@Override
 	public String toString() {

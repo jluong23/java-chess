@@ -1,22 +1,23 @@
 
 package main;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import boardgame.*;
 import boardgame.exceptions.InvalidCoordinateException;
+import boardgame.exceptions.InvalidSettingsException;
+import boardgame.exceptions.NoBoardException;
 import boardgame.exceptions.NoPlayerAttributeException;
+import main.pieces.King;
 
 
 public abstract class ChessPiece extends Piece {
-	private ChessPieceNames name;
-	
 	private static int DEFAULT_DISTANCE = 7;
 
 	public ChessPiece(Player player){
 		super(player);
 		//name attribute is the class name as an enum
-		name = ChessPieceNames.valueOf(getClass().getSimpleName().toUpperCase());
 		setChessSymbol();
 		//by default, moveable and attack distance can reach the whole board
 		//reset by pawn and king piece
@@ -33,7 +34,7 @@ public abstract class ChessPiece extends Piece {
 			throw new NoPlayerAttributeException(this);
 		}else {
 			Colour colour = getPlayer().getColour();
-			char symbol = this.name.getSymbol(name,colour);
+			char symbol = ChessPieceNames.getSymbol(getName(),colour);
 			this.setSymbol(symbol);			
 		}		
 	}
@@ -63,11 +64,53 @@ public abstract class ChessPiece extends Piece {
 			//set foundPiece to true to prevent piece going through another
 			if(getBoard().at(coordinate) !=null)foundPiece = true;
 			//if the action can be performed, push to moveableTiles
-			if(action.conditionMet(this, coordinate))moveableTiles.add(coordinate);
+			if(action.conditionMet(this, coordinate) && validMove(coordinate))
+				moveableTiles.add(coordinate);
+			
 			numSearched++;
 			
 		}
 		return moveableTiles;
+	}
+	
+	@Override
+	public boolean validMove(Coordinate coordinate) throws NoBoardException, InvalidSettingsException {
+		if(getBoard() == null) throw new NoBoardException(this);
+		else if(((ChessBoard) getBoard()).isKingRequired()){
+			King myKing = (King) getPlayer().getPiece("King");
+			if(myKing == null) throw new InvalidSettingsException("board.kingRequired",((ChessBoard)getBoard()).isKingRequired());
+			else {
+				//temp piece is copy of this piece to place at the coordinate
+				Piece tempPiece = null;
+				try {
+					//try make a copy of this piece, sharing the player attribute
+					tempPiece = (Piece) Class.forName(this.getClass().getName()).getConstructor(Player.class).newInstance(getPlayer());
+				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException | NoSuchMethodException | SecurityException
+						| ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				boolean valid = false;
+				//the piece that this piece is capturing, can be null if empty space 
+				Piece capturedPiece = getBoard().at(coordinate);
+				
+				//place the temp piece at the coordinate, check if king with same colour is in check
+				getBoard().setPiece(coordinate, tempPiece);
+				if(!myKing.inCheck())valid = true;
+				
+				//reset back to original, place captured piece back and remove tempKing from player pieces list
+				getBoard().setPiece(coordinate, capturedPiece);
+				this.getPlayer().getMyPieces().remove(tempPiece);
+				
+				return valid;
+				
+			}
+		}
+		
+		//king required is off, return true
+		return true;
 	}
 	
 	@Override

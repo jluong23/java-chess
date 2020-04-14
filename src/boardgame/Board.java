@@ -116,6 +116,8 @@ public abstract class Board {
 	}
 	
 	public abstract void reset();
+	
+	
 
 	/**
 	 * Given there are only two players on the board, getOtherPlayer() will return the other player

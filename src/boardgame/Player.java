@@ -68,6 +68,20 @@ public class Player {
 	public void setPiecesTaken(ArrayList<Piece> piecesTaken) {
 		this.piecesTaken = piecesTaken;
 	}
+	/**
+	 * Fetches a piece from myPieces
+	 * @param pieceName - String of piece name requested (by class name)
+	 * @return piece - piece object in myPieces, null if not found.
+	 */
+	public Piece getPiece(String pieceName) {
+		for (Piece piece : myPieces) {
+			if(piece.getName().equalsIgnoreCase(pieceName)) {
+				return piece;
+			}
+		}
+		return null;
+		
+	}
 	
 	/**
 	 * Get a hash map of all possible moves for a player of a given action
@@ -94,5 +108,7 @@ public class Player {
 		}
 		return allMoves;
 	}
+	
+	
 
 }

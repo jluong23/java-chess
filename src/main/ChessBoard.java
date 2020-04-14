@@ -10,7 +10,7 @@ import main.pieces.*;
 public class ChessBoard extends Board {
 	
 	private Layout layout;
-	
+	private boolean kingRequired;
 	
 	public ChessBoard(Layout layout, List<Player> players) {
 		super(players);
@@ -20,7 +20,21 @@ public class ChessBoard extends Board {
 		setBoardStyle(layout);
 	}
 	/**
-	 * Set a board given a particular layout from Layout enum
+	 * @return the kingRequired
+	 */
+	public boolean isKingRequired() {
+		return kingRequired;
+	}
+	/**
+	 * @param kingRequired the kingRequired to set
+	 */
+	public void setKingRequired(boolean kingRequired) {
+		this.kingRequired = kingRequired;
+	}
+	/**
+	 * Set a board given a particular layout from Layout enum and set kingRequired value
+	 * STANDARD: King is required
+	 * EMPTY: King is not required
 	 * @param layout the layout for the chess board
 	 */
 	public void setBoardStyle(Layout layout) throws InvalidLayoutException {
@@ -29,8 +43,11 @@ public class ChessBoard extends Board {
 			switch(layout) {
 			case STANDARD:
 				setDefaultBoard();
+				kingRequired = true;
 				break;
 			case EMPTY:
+				//by default, king required is false.
+				kingRequired = false;
 				//just break for empty layout enum as the emptyBoard is already assigned
 				break;
 			default:
