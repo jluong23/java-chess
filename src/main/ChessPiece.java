@@ -65,8 +65,13 @@ public abstract class ChessPiece extends Piece {
 			if(getBoard().at(coordinate) !=null)foundPiece = true;
 			//if the action can be performed, push to moveableTiles
 			if(action.conditionMet(this, coordinate))
-				moveableTiles.add(coordinate);
-			
+				//if you can take an enemy king, push the move.
+				//else push the move only if your king is not in check
+				//this is another way of thinking if opponent king is in check and dodging infinite recursion loop. 
+				if(action == Action.ATTACK && getBoard().at(coordinate).getName().equalsIgnoreCase("King"))
+					moveableTiles.add(coordinate);
+				else if(this.validMove(coordinate))
+					moveableTiles.add(coordinate);
 			numSearched++;
 			
 		}
@@ -80,6 +85,45 @@ public abstract class ChessPiece extends Piece {
 		pieceCaptured.getPlayer().getMyPieces().remove(pieceCaptured);
 		pieceCaptured.setPosition(null);
 		
+	}
+	
+	public boolean validMove(Coordinate coordinate) throws NoBoardException, InvalidSettingsException {
+		if(getBoard() == null) throw new NoBoardException(this);
+		else if(((ChessBoard) getBoard()).isKingRequired()){
+			King myKing = (King) getPlayer().getPiece("King");
+			if(myKing == null) throw new InvalidSettingsException("board.kingRequired",((ChessBoard)getBoard()).isKingRequired());
+			else {
+				//temp piece is copy of this piece to place at the coordinate
+				Piece tempPiece = null;
+				try {
+					//try make a copy of this piece, sharing the player attribute
+					tempPiece = (Piece) Class.forName(this.getClass().getName()).getConstructor(Player.class).newInstance(getPlayer());
+				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException | NoSuchMethodException | SecurityException
+						| ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				boolean valid = false;
+				//the piece that this piece is capturing, can be null if empty space 
+				Piece capturedPiece = getBoard().at(coordinate);
+
+				//place the temp piece at the coordinate, check if king with same colour is in check
+				getBoard().setPiece(coordinate, tempPiece);
+				if(!myKing.inCheck())valid = true;
+
+				//reset back to original, place captured piece back and remove tempKing from player pieces list
+				getBoard().setPiece(coordinate, capturedPiece);
+				this.getPlayer().getMyPieces().remove(tempPiece);
+
+				return valid;
+
+			}
+		}
+
+		//king required is off, return true
+		return true;
 	}
 	
 }
