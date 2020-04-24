@@ -1,7 +1,6 @@
 
 package main;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import boardgame.*;
@@ -61,58 +60,78 @@ public abstract class ChessPiece extends Piece {
 				//coordinate is invalid, must be at the edge of a board so break out of loop
 				break;
 			}
+			
 			//set foundPiece to true to prevent piece going through another
 			if(getBoard().at(coordinate) !=null)foundPiece = true;
-			//if the action can be performed, push to moveableTiles
-			if(action.conditionMet(this, coordinate))
-				//if you can take an enemy king, push the move.
-				//else push the move only if your king is not in check
-				//this is another way of thinking if opponent king is in check and dodging infinite recursion loop. 
-				if(action == Action.ATTACK && getBoard().at(coordinate).getName().equalsIgnoreCase("King"))
+			if(action.conditionMet(this, coordinate)) {
+				if(((ChessBoard)(getBoard())).isKingRequired()) {
+					//if king required is on, check if your king is in check before adding
+					if(this.validMove(coordinate))moveableTiles.add(coordinate);
+				}else {
 					moveableTiles.add(coordinate);
-				else if(this.validMove(coordinate))
-					moveableTiles.add(coordinate);
+				}
+			}
 			numSearched++;
-			
 		}
 		return moveableTiles;
 	}
-	
-	@Override
-	protected void captureConsequnce(Piece pieceCaptured) {
-		// TODO Auto-generated method stub
-		this.getPlayer().getPiecesTaken().add(pieceCaptured);
-		pieceCaptured.getPlayer().getMyPieces().remove(pieceCaptured);
-		pieceCaptured.setPosition(null);
-		
+	/**
+	 * Looks for a piece in a given direction starting from the pieces 
+	 * @param dir - the direction to look at
+	 * @return piece - the piece found from looking in that direction
+	 */
+	protected Piece pieceAhead(Direction dir) {
+		//index and coordinates to check for in direction dir, initially current position
+		int[] indexes = this.getPosition().getIndexes();
+		Coordinate coordinate = ChessCoordinate.toCoordinate(indexes);
+		boolean foundPiece = false;
+		while (!foundPiece) {
+			//move in given direction
+			indexes[0] += dir.dr;
+			indexes[1] += dir.dc;
+			try {
+				//try update the coordinate with new indexes
+				coordinate = ChessCoordinate.toCoordinate(indexes);
+			} catch (InvalidCoordinateException e) {
+				//coordinate is invalid, must be at the edge of a board so break out of loop
+				break;
+			}
+			//set foundPiece to true to prevent piece going through another
+			if(getBoard().at(coordinate) !=null)foundPiece = true;
+		}
+		if(foundPiece) {
+			return getBoard().at(coordinate);
+		}else {
+			return null;
+		}
 	}
-	
 	public boolean validMove(Coordinate coordinate) throws NoBoardException, InvalidSettingsException {
 		if(getBoard() == null) throw new NoBoardException(this);
 		else if(((ChessBoard) getBoard()).isKingRequired()){
 			King myKing = (King) getPlayer().getPiece("King");
+			
+			//if myKing is this piece, must be looking for possible king moves
+			boolean checkingKingMoves = this.equals(myKing);
+			
 			if(myKing == null) throw new InvalidSettingsException("board.kingRequired",((ChessBoard)getBoard()).isKingRequired());
 			else {
 				//temp piece is copy of this piece to place at the coordinate
-				Piece tempPiece = null;
-				try {
-					//try make a copy of this piece, sharing the player attribute
-					tempPiece = (Piece) Class.forName(this.getClass().getName()).getConstructor(Player.class).newInstance(getPlayer());
-				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-						| InvocationTargetException | NoSuchMethodException | SecurityException
-						| ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
+				Piece tempPiece = this.deepClonePlayerAttribute();
 				boolean valid = false;
 				//the piece that this piece is capturing, can be null if empty space 
 				Piece capturedPiece = getBoard().at(coordinate);
 
-				//place the temp piece at the coordinate, check if king with same colour is in check
+				//emulate the move made, move temp piece to the coordinate checked and set previous position to null
 				getBoard().setPiece(coordinate, tempPiece);
-				if(!myKing.inCheck())valid = true;
-
+				getBoard().setPiece(this.getPosition(), null);
+				
+				//check if king is in check.
+				//If looking for moves for king, check if temp piece is in check
+				if(checkingKingMoves && !((King)(tempPiece)).inCheck()) {
+					valid = true;
+				}else if(!checkingKingMoves && !myKing.inCheck()) {
+					valid = true;										
+				}
 				//reset back to original, place captured piece back and remove tempKing from player pieces list
 				getBoard().setPiece(coordinate, capturedPiece);
 				this.getPlayer().getMyPieces().remove(tempPiece);
@@ -124,6 +143,15 @@ public abstract class ChessPiece extends Piece {
 
 		//king required is off, return true
 		return true;
+	}
+	
+	@Override
+	protected void captureConsequnce(Piece pieceCaptured) {
+		// TODO Auto-generated method stub
+		this.getPlayer().getPiecesTaken().add(pieceCaptured);
+		pieceCaptured.getPlayer().getMyPieces().remove(pieceCaptured);
+		pieceCaptured.setPosition(null);
+		
 	}
 	
 }

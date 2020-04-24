@@ -235,6 +235,16 @@ public abstract class Piece implements Cloneable{
 	}
 	
 	/**
+	 * Checks if a move is valid in the context of the current board configuration and game.
+	 * Note this is not to do with how pieces moves.
+	 * eg. For chess, a king can't stay in check, and pinned pieces can not move to put their king in chess.
+	 * @param coordinate - the coordinate to check for this piece to move to
+	 * @return boolean result whether move to coordinate is valid
+	 * @throws InvalidSettingsException 
+	 */
+	public abstract boolean validMove(Coordinate coordinate) throws NoBoardException, InvalidSettingsException;
+	
+	/**
 	 * Call getMoves() for all possible actions
 	 * @return allMoves - an array list of all possible moves for all possible actions
 	 * @throws NoBoardException - If the piece's board attribute is null
@@ -309,6 +319,20 @@ public abstract class Piece implements Cloneable{
 			duplicatePieces.add( (Piece) this.clone());
 		}
 		return duplicatePieces;
+	}
+	
+	public Piece deepClonePlayerAttribute(){
+		try {
+			//try make a copy of this piece, sharing the player attribute
+			return (Piece) Class.forName(this.getClass().getName()).getConstructor(Player.class).newInstance(getPlayer());
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+				| java.lang.reflect.InvocationTargetException | NoSuchMethodException | SecurityException
+				| ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+
 	}
 	
 	@Override

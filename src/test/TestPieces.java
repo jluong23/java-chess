@@ -286,28 +286,28 @@ public class TestPieces {
 		King whiteKing = new King(p1);
 		b.setPiece(new ChessCoordinate("h1"), whiteKing);
 		
-		Queen queen = new Queen(p1);
+		Queen whiteQueen = new Queen(p1);
 		King blackKing = new King(p2);
 		//first test
 		//initially not in check, queen is not attacking black king
-		b.setPiece(new ChessCoordinate("a1"), queen);
+		b.setPiece(new ChessCoordinate("a1"), whiteQueen);
 		b.setPiece(new ChessCoordinate("b8"), blackKing);
 
 		assertFalse(blackKing.inCheck());
 
 		//second test, queen moves to b2, black king should be in check
 		try {
-			queen.move(new ChessCoordinate("b2"));
+			whiteQueen.move(new ChessCoordinate("b2"));
 		} catch (InvalidMoveException e) {
 			e.printStackTrace();
 		}
 		assertTrue(blackKing.inCheck());
-//		
 //		//third test: king can not move to b7 since it was still be in check
 		String[] expectedCoordsString = new String[]{
 				"a8","c8", //left and down left
 				"a7","c7" //right and down right
 			};
+		System.out.println(b);
 		performMovementTest(expectedCoordsString, blackKing);
 	}
 	
