@@ -1,12 +1,9 @@
 package main.pieces;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
 
 import boardgame.*;
 import boardgame.exceptions.NoBoardException;
 import main.ChessPiece;
+import main.ChessPieceNames;
 
 public class King extends ChessPiece {
 
@@ -41,5 +38,10 @@ public class King extends ChessPiece {
 		}
 		//can't be in check, exhausted all directions
 		return false;
+	}
+	
+	
+	public void castle(ChessPieceNames side) {
+		
 	}
 }
