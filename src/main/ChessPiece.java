@@ -135,6 +135,8 @@ public abstract class ChessPiece extends Piece {
 				//the piece that this piece is capturing, can be null if empty space 
 				Piece capturedPiece = getBoard().at(coordinate);
 
+				//store original position, place back after moving the piece
+				Coordinate originalPos = getPosition();
 				//emulate the move made, move temp piece to the coordinate checked and set previous position to null
 				getBoard().setPiece(coordinate, tempPiece);
 				getBoard().setPiece(this.getPosition(), null);
@@ -147,6 +149,7 @@ public abstract class ChessPiece extends Piece {
 					valid = true;										
 				}
 				//reset back to original, place captured piece back and remove tempKing from player pieces list
+				getBoard().setPiece(originalPos, this);
 				getBoard().setPiece(coordinate, capturedPiece);
 				this.getPlayer().getMyPieces().remove(tempPiece);
 

@@ -307,7 +307,6 @@ public class TestPieces {
 				"a8","c8", //left and down left
 				"a7","c7" //right and down right
 			};
-		System.out.println(b);
 		performMovementTest(expectedCoordsString, blackKing);
 	}
 	
@@ -318,16 +317,17 @@ public class TestPieces {
 	public void testPinnedPiece() {
 		ChessBoard b = new ChessBoard(Layout.EMPTY,players);
 		b.setKingRequired(true);
-		Queen queen = new Queen(p1);
+		Queen whiteQueen = new Queen(p1);
 		King whiteKing = new King(p1);
 		King blackKing = new King(p2);
 		Pawn pinnedPawn = new Pawn(p2);
 		//first test - pinned pawn has no moves
-		b.setPiece(new ChessCoordinate("a1"), queen);
+		b.setPiece(new ChessCoordinate("a1"), whiteQueen);
 		b.setPiece(new ChessCoordinate("c3"), pinnedPawn);
 		b.setPiece(new ChessCoordinate("h8"), blackKing);
 		b.setPiece(new ChessCoordinate("a2"), whiteKing);
 
+		System.out.println(b);
 		performMovementTest(new String[] {}, pinnedPawn);
 	}
 }
