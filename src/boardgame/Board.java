@@ -65,6 +65,7 @@ public abstract class Board {
 		int c = coordinate.getIndexes()[1];
 		board[r][c] = piece;
 		if (piece!=null) {
+			piece.setAlive(true);
 			//update piece position
 			piece.setPosition(coordinate);
 			//set board attribute of piece to this instance and vice versa

@@ -166,7 +166,7 @@ public abstract class ChessPiece extends Piece {
 	protected void captureConsequnce(Piece pieceCaptured) {
 		// TODO Auto-generated method stub
 		this.getPlayer().getPiecesTaken().add(pieceCaptured);
-		pieceCaptured.getPlayer().getMyPieces().remove(pieceCaptured);
+		pieceCaptured.setAlive(false);
 		pieceCaptured.setPosition(null);
 		
 	}

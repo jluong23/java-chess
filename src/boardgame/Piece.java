@@ -280,7 +280,7 @@ public abstract class Piece implements Cloneable{
 	 * For chess, the consequences will be: 
 	 * <ul>
 	 * <li> Add to this piece's owner's captured list. </li>
-	 * <li> Remove from the captured piece's owner's piece list. </li>
+	 * <li> Set the piece's alive attribute to false </li>
 	 * <li> Set the captured piece's position to null. </li>
 	 * </ul>
 	 * Another game may choose to do something else.

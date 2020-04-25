@@ -241,10 +241,7 @@ public class TestPieces {
 	@Test
 	public void testCapturing() {
 		//queen at b2 takes pawn at b3
-		//check if these conditions are met as stated in junit comment.
-//		1. Add to this piece's owner's captured list. 
-//		2. Remove from the captured piece's owner's piece list. 
-//		3. Set the captured piece's position to null. 
+		//check if the conditions are met as stated in junit comment in captureConsequence().
 
 		ChessBoard b = new ChessBoard(Layout.EMPTY,players);
 		Queen queen = new Queen(p1);
@@ -255,8 +252,8 @@ public class TestPieces {
 		//before capture
 		//condition 1 - captured list is empty
 		assertEquals(Arrays.asList(new Piece[] {}) , p1.getPiecesTaken());		
-		//condition 2 - p2 has black pawn unit
-		assertEquals(Arrays.asList(new Piece[] {blackPawn}) , p2.getMyPieces());		
+		//condition 2 - black pawn unit is alive
+		assertTrue(blackPawn.isAlive());		
 		//condition 3 - blackPawn has a position at b3
 		assertEquals(new ChessCoordinate("b3"), blackPawn.getPosition());	
 		
@@ -270,8 +267,8 @@ public class TestPieces {
 		//after capture
 		//condition 1
 		assertEquals(Arrays.asList(new Piece[] {blackPawn}) , p1.getPiecesTaken());		
-		//condition 2 - p2 has no units left
-		assertEquals(Arrays.asList(new Piece[] {}) , p2.getMyPieces());		
+		//condition 2
+		assertFalse(blackPawn.isAlive());
 		//condition 3 
 		assertEquals(null, blackPawn.getPosition());		
 	}

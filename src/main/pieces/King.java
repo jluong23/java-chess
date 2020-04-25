@@ -40,8 +40,4 @@ public class King extends ChessPiece {
 		return false;
 	}
 	
-	
-	public void castle(ChessPieceNames side) {
-		
-	}
 }
