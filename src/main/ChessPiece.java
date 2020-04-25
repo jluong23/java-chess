@@ -37,44 +37,58 @@ public abstract class ChessPiece extends Piece {
 			this.setSymbol(symbol);			
 		}		
 	}
-	
 	@Override
-	//TODO	
-	protected ArrayList<Coordinate> searchTiles(Direction dir, int numTiles, Action action) {
-		int numSearched = 0;
-		//index and coordinates to check for in direction dir, initially current position
-		int[] indexes = this.getPosition().getIndexes();
-		Coordinate coordinate = ChessCoordinate.toCoordinate(indexes);
-		//initialise array list of tiles that are moveable to
-		ArrayList<Coordinate> moveableTiles = new ArrayList<Coordinate>();
-		//boolean set to true when other piece is found, blocking movement of this piece
-		boolean foundPiece = false;
-		while (numSearched < numTiles && !foundPiece) {
-			//move in given direction
-			indexes[0] += dir.dr;
-			indexes[1] += dir.dc;
-			try {
-				//try update the coordinate with new indexes
-				coordinate = ChessCoordinate.toCoordinate(indexes);
-			} catch (InvalidCoordinateException e) {
-				//coordinate is invalid, must be at the edge of a board so break out of loop
-				break;
-			}
-			
-			//set foundPiece to true to prevent piece going through another
-			if(getBoard().at(coordinate) !=null)foundPiece = true;
-			if(action.conditionMet(this, coordinate)) {
-				if(((ChessBoard)(getBoard())).isKingRequired()) {
-					//if king required is on, check if your king is in check before adding
-					if(this.validMove(coordinate))moveableTiles.add(coordinate);
-				}else {
-					moveableTiles.add(coordinate);
-				}
-			}
-			numSearched++;
+	public ArrayList<Coordinate> getTotalMoves(Action action) {
+		
+		//get which list of directions to check for given an action
+		Direction[] directions = null;
+		int numTiles = 0;
+		switch(action) {
+		case ATTACK:
+			directions = getAttackableDirections();
+			numTiles = getAttackDistance();
+			break;
+		case MOVE_TO:
+			directions = getMoveableDirections();
+			numTiles = getMoveableDistance();
+			break;
 		}
-		return moveableTiles;
+		
+		//initialise array list of tiles that are moveable to
+		ArrayList<Coordinate> tilesCovered = new ArrayList<Coordinate>();
+		
+		for (Direction dir : directions) {
+			ArrayList<Coordinate> tilesInDir = new ArrayList<Coordinate>();
+
+			int numSearched = 0;
+			//index and coordinates to check for in direction dir, initially current position
+			int[] indexes = this.getPosition().getIndexes();
+			Coordinate coordinate = ChessCoordinate.toCoordinate(indexes);
+			//boolean set to true when other piece is found, blocking movement of this piece
+			boolean foundPiece = false;
+			while (numSearched < numTiles && !foundPiece) {
+				//move in given direction
+				indexes[0] += dir.dr;
+				indexes[1] += dir.dc;
+				try {
+					//try update the coordinate with new indexes
+					coordinate = ChessCoordinate.toCoordinate(indexes);
+				} catch (InvalidCoordinateException e) {
+					//coordinate is invalid, must be at the edge of a board so break out of loop
+					break;
+				}			
+				//set foundPiece to true to prevent piece going through another
+				if(getBoard().at(coordinate) !=null)foundPiece = true;
+				
+				//if the action is possible, make the move. does not include checks
+				if(action.conditionMet(this, coordinate))tilesInDir.add(coordinate);
+				numSearched++;
+			}
+			tilesCovered.addAll(tilesInDir);
+		}
+		return tilesCovered;
 	}
+	
 	/**
 	 * Looks for a piece in a given direction starting from the pieces 
 	 * @param dir - the direction to look at

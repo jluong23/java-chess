@@ -15,7 +15,7 @@ public class Knight extends ChessPiece {
 	}
 	@Override
 	//TODO
-	public ArrayList<Coordinate> getMoves(Action action) throws NoBoardException{
+	public ArrayList<Coordinate> getTotalMoves(Action action) throws NoBoardException{
 		if(getBoard() == null)throw new NoBoardException(this); //if the piece does not have a board attribute
 		else {
 			int sign = 1;

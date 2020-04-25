@@ -89,11 +89,11 @@ public class Player {
 	 * @param action - The action of a certain move
 	 * @return allMoves - A hashmap of piece to Arraylist of coordinates which are the given action a piece can make 
 	*/
-	public HashMap<Piece, ArrayList<Coordinate>> getAllMoves(Action action) throws NoBoardException{
+	public HashMap<Piece, ArrayList<Coordinate>> getAllValidMoves(Action action) throws NoBoardException{
 		//player's pieces mapped to all the moves of a given action the piece can make
 		HashMap<Piece, ArrayList<Coordinate>> allMoves= new HashMap<Piece, ArrayList<Coordinate>>();
 		for (Piece piece : myPieces) {
-			allMoves.put(piece, piece.getMoves(action));
+			allMoves.put(piece, piece.getValidMoves(action));
 		}
 		return allMoves;
 	}
@@ -101,11 +101,11 @@ public class Player {
 	 * Get a hash map of all possible moves for a player 
 	 * @return allMoves - A hashmap of piece to Arraylist of coordinates a piece can perform to
 	*/
-	public HashMap<Piece, ArrayList<Coordinate>> getAllMoves() throws NoBoardException{
+	public HashMap<Piece, ArrayList<Coordinate>> getAllValidMoves() throws NoBoardException{
 		//player's pieces mapped to all the moves of a given action the piece can make
 		HashMap<Piece, ArrayList<Coordinate>> allMoves= new HashMap<Piece, ArrayList<Coordinate>>();
 		for (Piece piece : myPieces) {
-			allMoves.put(piece, piece.getAllMoves());
+			allMoves.put(piece, piece.getAllValidMoves());
 		}
 		return allMoves;
 	}

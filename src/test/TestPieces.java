@@ -49,7 +49,7 @@ public class TestPieces {
 	
 	private void performMovementTest(String[] expectedStrings, Piece piece) {
 		List<Coordinate> expectedArr = ChessCoordinate.toCoordinate(expectedStrings);
-		List<Coordinate> actualArr = piece.getMoves(Action.MOVE_TO);
+		List<Coordinate> actualArr = piece.getValidMoves(Action.MOVE_TO);
 		//sort values as we want to check if they compare the same values
 		Collections.sort(expectedArr);
 	    Collections.sort(actualArr);
@@ -57,7 +57,7 @@ public class TestPieces {
 	}
 	private void performAttackTest(String[] expectedStrings, Piece piece) {
 		List<Coordinate> expectedArr = ChessCoordinate.toCoordinate(expectedStrings);
-		List<Coordinate> actualArr = piece.getMoves(Action.ATTACK);
+		List<Coordinate> actualArr = piece.getValidMoves(Action.ATTACK);
 		//sort values as we want to check if they compare the same values
 		Collections.sort(expectedArr);
 	    Collections.sort(actualArr);

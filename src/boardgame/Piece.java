@@ -193,14 +193,19 @@ public abstract class Piece implements Cloneable{
 	//methods
 	
 	/**
-	 * Fetch the tiles the piece can perform a given action in a given a direction and number of tiles to search
-	 * @param dir the direction to search in
-	 * @param action the action this piece should perform
-	 * @param numTiles the number of tiles to search 
-	 * @param action the action to seaerch for eg. attack or defend
-	 * @return moves - the possible moves the piece can make in the given direction
+	 * 
+	 * @return tilesCovered - the tiles covered
 	 */
-	protected abstract ArrayList<Coordinate> searchTiles(Direction dir, int numTiles, boardgame.Action action);
+	
+	/**
+	 * Get all moves for the unit, not necessarily a valid move
+	 * @param directions - the directions to search in 
+	 * @param numTiles - the number of tiles the piece can move
+	 * @param numTiles - the number of tiles this piece can perform an action in
+	 * @param action - the action to check
+	 * @return
+	 */
+	public abstract ArrayList<Coordinate> getTotalMoves(Action action);
 	
 	/**
 	 * Fetch arraylist of all tiles the piece can perform an action to from this piece's current position.
@@ -208,29 +213,17 @@ public abstract class Piece implements Cloneable{
 	 * @return moves - Arraylist of coordinates the piece can move to
 	 * @throws NoBoardException - If the piece's board attribute is null
 	 */
-	public ArrayList<Coordinate> getMoves(boardgame.Action action) throws NoBoardException{
+	public ArrayList<Coordinate> getValidMoves(boardgame.Action action) throws NoBoardException{
 		if(board == null)throw new NoBoardException(this); //if the piece does not have a board attribute
 		else {
-			ArrayList<Coordinate> moves = new ArrayList<>();
+			//total moves for that action
+			ArrayList<Coordinate> totalMoves = getTotalMoves(action);
+			ArrayList<Coordinate> validMoves = new ArrayList<>();
 			
-			//get which list of directions to check for given an action
-			Direction[] directionList = null;
-			int distance = 0;
-			switch(action) {
-			case ATTACK:
-				directionList = getAttackableDirections();
-				distance = attackDistance;
-				break;
-			case MOVE_TO:
-				directionList = getMoveableDirections();
-				distance = moveableDistance;
-				break;
+			for (Coordinate move : totalMoves) {
+				if(this.validMove(move)) validMoves.add(move);
 			}
-			for (Direction direction : directionList) {
-				//for all directions they can move in, fetch the tiles the piece can move to in each of those directions
-				moves.addAll(searchTiles(direction, distance, action));
-			}
-			return moves;
+			return validMoves;
 		}
 	}
 	
@@ -249,10 +242,10 @@ public abstract class Piece implements Cloneable{
 	 * @return allMoves - an array list of all possible moves for all possible actions
 	 * @throws NoBoardException - If the piece's board attribute is null
 	 */
-	public ArrayList<Coordinate> getAllMoves() throws NoBoardException{
+	public ArrayList<Coordinate> getAllValidMoves() throws NoBoardException{
 		ArrayList<Coordinate> allMoves = new ArrayList<Coordinate>();
 		for (boardgame.Action action : boardgame.Action.values()) {
-			allMoves.addAll(getMoves(action));
+			allMoves.addAll(getValidMoves(action));
 		}
 		return allMoves;
 	}
@@ -263,9 +256,9 @@ public abstract class Piece implements Cloneable{
 	public void move(Coordinate coordinate) throws InvalidMoveException {	
 		if(board == null)throw new NoBoardException(this); //if the piece does not have a board attribute
 		//check if valid move
-		else if(getAllMoves().contains(coordinate)) {
+		else if(getAllValidMoves().contains(coordinate)) {
 			// check if it was a capture
-			if(this.getMoves(Action.ATTACK).contains(coordinate)) {
+			if(getBoard().at(coordinate) != null) {
 				//do capture consequence, abstract method depending on board game.
 				//pass in the piece captures
 				captureConsequnce(board.at(coordinate));

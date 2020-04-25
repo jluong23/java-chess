@@ -31,11 +31,11 @@ public class King extends ChessPiece {
 			for (Direction dir : Direction.values()) {
 				Piece pieceAhead = pieceAhead(dir);
 				if(pieceAhead != null) {
-					//in the direction i'm checking, the unit can attack in the same direction
-					boolean isAttacking = Arrays.asList(pieceAhead.getAttackableDirections()).contains(dir);
+					//if the unit ahead is covering the square this king is currently on
+					boolean isAttacked = pieceAhead.getTotalMoves(Action.ATTACK).contains(this.getPosition());
 					boolean oppositeColour = this.getPlayer().getColour() != pieceAhead.getPlayer().getColour();
 					//only return true if both conditions met, keep checking other directions if not met
-					if(isAttacking && oppositeColour) return true; 
+					if(isAttacked && oppositeColour) return true; 
 				}
 			}
 		}
