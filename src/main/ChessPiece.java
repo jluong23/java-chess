@@ -138,7 +138,7 @@ public abstract class ChessPiece extends Piece {
 				Coordinate originalPos = getPosition();
 				//emulate the move made, move this piece to the coordinate checked and set previous position to null
 				getBoard().setPiece(coordinate, this);
-				getBoard().setPiece(this.getPosition(), null);
+				getBoard().setPiece(originalPos, null);
 				
 				//check if king is in check.
 				//If looking for moves for king, check if this king is in check
