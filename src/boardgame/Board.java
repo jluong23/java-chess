@@ -93,13 +93,26 @@ public abstract class Board {
 	 * @param row the row of coordinates requested
 	 * @return the coordinates fetched as an ArrayList
 	 */
-	public ArrayList<Coordinate> getRowCoordinates(int row) {
+	protected ArrayList<Coordinate> getRowCoordinates(int row) {
 		ArrayList<Coordinate> coords = new ArrayList<>();
 		for (int i = 0; i < board[row].length; i++) {
 			int[] indexes = {row,i};
 			coords.add(ChessCoordinate.toCoordinate(indexes));
 		}
 		return coords;
+	}
+	/**
+	 * Returns all of the pieces on a given row index
+	 * @param rowIndex - the row index to search on
+	 * @return pieces - the pieces on the board at the given row index
+	 */
+	public ArrayList<Piece> getPiecesOnRow(int rowIndex) {
+		ArrayList<Piece> pieces = new ArrayList<Piece>();
+		for (Coordinate coordinate: getRowCoordinates(rowIndex)) {
+			Piece piece = this.at(coordinate);
+			if(piece != null)pieces.add(piece);
+		}
+		return pieces;
 	}
 	
 	@Override

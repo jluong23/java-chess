@@ -1,7 +1,14 @@
 package main.pieces;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.management.RuntimeErrorException;
+
 import boardgame.*;
+import boardgame.exceptions.InvalidColourException;
 import boardgame.exceptions.NoBoardException;
+import main.Castle;
 import main.ChessPiece;
 import main.ChessPieceNames;
 
@@ -28,16 +35,46 @@ public class King extends ChessPiece {
 			for (Direction dir : Direction.values()) {
 				Piece pieceAhead = pieceAhead(dir);
 				if(pieceAhead != null) {
-					//if the unit ahead is covering the square this king is currently on
-					boolean isAttacked = pieceAhead.getTotalMoves(Action.ATTACK).contains(this.getPosition());
-					boolean oppositeColour = this.getPlayer().getColour() != pieceAhead.getPlayer().getColour();
-					//only return true if both conditions met, keep checking other directions if not met
-					if(isAttacked && oppositeColour) return true; 
+					
+					//initi
+					boolean inCheck = false;
+					
+					//if this king is in a coordinate covered by an enemy piece, this king is in check
+					HashMap<Piece, ArrayList<Coordinate>> opponentTilesCovered = getBoard().getOtherPlayer(getPlayer()).getTotalMoves(Action.ATTACK);
+					for (ArrayList<Coordinate> tileCoveredList : opponentTilesCovered.values()) {
+						if(tileCoveredList.contains(this.getPosition())) inCheck = true;
+					}
+					
+					if(inCheck) return true; 
 				}
 			}
 		}
 		//can't be in check, exhausted all directions
 		return false;
+	}
+	
+	public boolean canCastle(Castle side) {
+		int firstRank = 0;
+		switch (getPlayer().getColour()) {
+		//when black, firstRank already set to 0
+		case WHITE:
+			//default to index 7 on standard chess board
+			firstRank = getBoard().getBoardArray().length-1;
+			break;	
+		default:
+			throw new InvalidColourException(this + " has an invalid colour, needs to be black or white.");
+		}
+		
+		ArrayList<Piece> aliveRooks = getPlayer().getPieces("Rook", true);
+		
+		
+		switch (side) {
+		case KING_SIDE:
+		case QUEEN_SIDE:
+			
+		default:
+			throw new RuntimeErrorException(null, "Castle side parameter not registered, must be Castle.KING_SIDE or Castle.QUEEN_SIDE");
+		}
 	}
 	
 }

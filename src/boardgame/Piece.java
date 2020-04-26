@@ -289,6 +289,14 @@ public abstract class Piece implements Cloneable{
 	protected abstract void captureConsequnce(Piece capturedPiece);
 
 	/**
+	 * Checks if a piece on a given row index according to their position attribute
+	 * @param rowIndex - the row index to check on
+	 * @return onRow - whether the piece is on the given row index
+	 */
+	public boolean onRow(int rowIndex) {
+		return rowIndex == getPosition().getIndexes()[0]-1;
+	}
+	/**
 	 * Return a shallow copy of the instance
 	 * @return clone A clone of the instance object
 	 */

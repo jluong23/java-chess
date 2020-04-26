@@ -122,7 +122,7 @@ public abstract class ChessPiece extends Piece {
 	public boolean validMove(Coordinate coordinate) throws NoBoardException, InvalidSettingsException {
 		if(getBoard() == null) throw new NoBoardException(this);
 		else if(((ChessBoard) getBoard()).isKingRequired()){
-			King myKing = (King) getPlayer().getPieces("King").get(0);
+			King myKing = (King) getPlayer().getPieces("King", true).get(0);
 			
 			//if myKing is this piece, must be looking for possible king moves
 			boolean checkingKingMoves = this.equals(myKing);
