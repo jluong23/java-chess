@@ -122,36 +122,35 @@ public abstract class ChessPiece extends Piece {
 	public boolean validMove(Coordinate coordinate) throws NoBoardException, InvalidSettingsException {
 		if(getBoard() == null) throw new NoBoardException(this);
 		else if(((ChessBoard) getBoard()).isKingRequired()){
-			King myKing = (King) getPlayer().getPiece("King");
+			King myKing = (King) getPlayer().getPieces("King").get(0);
 			
 			//if myKing is this piece, must be looking for possible king moves
 			boolean checkingKingMoves = this.equals(myKing);
 			
 			if(myKing == null) throw new InvalidSettingsException("board.kingRequired",((ChessBoard)getBoard()).isKingRequired());
 			else {
-				//temp piece is copy of this piece to place at the coordinate
-				Piece tempPiece = this.deepClonePlayerAttribute();
+				
 				boolean valid = false;
 				//the piece that this piece is capturing, can be null if empty space 
 				Piece capturedPiece = getBoard().at(coordinate);
 
 				//store original position, place back after moving the piece
 				Coordinate originalPos = getPosition();
-				//emulate the move made, move temp piece to the coordinate checked and set previous position to null
-				getBoard().setPiece(coordinate, tempPiece);
+				//emulate the move made, move this piece to the coordinate checked and set previous position to null
+				getBoard().setPiece(coordinate, this);
 				getBoard().setPiece(this.getPosition(), null);
 				
 				//check if king is in check.
-				//If looking for moves for king, check if temp piece is in check
-				if(checkingKingMoves && !((King)(tempPiece)).inCheck()) {
+				//If looking for moves for king, check if this king is in check
+				if(checkingKingMoves && !((King)(this)).inCheck()) {
 					valid = true;
 				}else if(!checkingKingMoves && !myKing.inCheck()) {
+					//this piece is not a king, check if it puts their king in check
 					valid = true;										
 				}
 				//reset back to original, place captured piece back and remove tempKing from player pieces list
 				getBoard().setPiece(originalPos, this);
 				getBoard().setPiece(coordinate, capturedPiece);
-				this.getPlayer().getMyPieces().remove(tempPiece);
 
 				return valid;
 

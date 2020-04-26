@@ -68,19 +68,20 @@ public class Player {
 	public void setPiecesTaken(ArrayList<Piece> piecesTaken) {
 		this.piecesTaken = piecesTaken;
 	}
+
 	/**
-	 * Fetches a piece from myPieces
+	 * Fetches an arrayList of pieces from myPieces by piece name (all occurunces)
 	 * @param pieceName - String of piece name requested (by class name)
-	 * @return piece - piece object in myPieces, null if not found.
+	 * @return pieces - arraylist of pieces in myPieces, empty arraylist if none found.
 	 */
-	public Piece getPiece(String pieceName) {
+	public ArrayList<Piece> getPieces(String pieceName) {
+		ArrayList<Piece> piecesFound = new ArrayList<Piece>();
 		for (Piece piece : myPieces) {
 			if(piece.getName().equalsIgnoreCase(pieceName)) {
-				return piece;
+				piecesFound.add(piece);
 			}
 		}
-		return null;
-		
+		return piecesFound;	
 	}
 	
 	/**

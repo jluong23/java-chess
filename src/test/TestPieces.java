@@ -104,12 +104,25 @@ public class TestPieces {
 	@Test
 	public void testKing() {
 		ChessBoard b = new ChessBoard(Layout.EMPTY,players);
+		//test 1 - king at b2
 		King king = new King(p1);
 		b.setPiece(new ChessCoordinate("b2"), king);
 		String[] expectedCoordsString = new String[]{
 				"A1","A2","A3","B3","B1","C1","C2","C3"};
 		performMovementTest(expectedCoordsString, king);
 		
+		//test 2 - moving to b1, king has 6 moves
+		try {
+			king.move(new ChessCoordinate("b1"));
+		} catch (InvalidMoveException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		expectedCoordsString = new String[]{
+				"A1","A2","B2","C1","C2"};
+		performMovementTest(expectedCoordsString, king);
+
 	}
 	
 	/**
