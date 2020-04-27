@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import boardgame.*;
 import boardgame.exceptions.InvalidMoveException;
+import main.Castle;
 import main.ChessBoard;
 import main.ChessCoordinate;
 import main.Layout;
@@ -453,11 +454,10 @@ public class TestPieces {
 	}
 	
 	/**
-	 * Test method for {@link main.pieces.King#castle(side)} not working when 
-	 * king castles through check or is blocked
+	 * Test method for {@link main.pieces.King#canCastle(side)} 
 	 */
 	@Test
-	public void testCastleBlocked() {
+	public void testCanCastle() {
 		ChessBoard b = new ChessBoard(Layout.EMPTY,players);
 		b.setKingRequired(true);
 		King whiteKing = new King(p1);
@@ -469,22 +469,15 @@ public class TestPieces {
 		b.setPiece(new ChessCoordinate("h1"), whiteKingsRook);
 		b.setPiece(new ChessCoordinate("a1"), whiteQueensRook);
 
-		String[] expectedCoordsString = new String[]{
-				"d1","d2","e2","f2","f1", //standard king moves
-				"g1","b1" //castle moves
-		};
-		performMovementTest(expectedCoordsString, whiteKing);
-		
-		//test 2 - black queen at f8, white king can't castle kingside
+		assertTrue(whiteKing.canCastle(Castle.KING_SIDE));
+		assertTrue(whiteKing.canCastle(Castle.QUEEN_SIDE));
+
+		//test 2 - black queen at f8, white king can't castle kingside, but can still castle queenside
 		Queen attackCastlePiece = new Queen(p2);
 		b.setPiece(new ChessCoordinate("f8"), attackCastlePiece);
 		
-		expectedCoordsString = new String[]{
-				"d1","d2","e2","f2","f1", //standard king moves
-				"b1" //can only castle queenside
-		};
-		performMovementTest(expectedCoordsString, whiteKing);
-
+		assertFalse(whiteKing.canCastle(Castle.KING_SIDE));
+		assertTrue(whiteKing.canCastle(Castle.QUEEN_SIDE));
 		//test 2.1 - after black queen moves to g8, still can't castle kingside
 		try {
 			attackCastlePiece.move(new ChessCoordinate("g8"));
@@ -492,18 +485,15 @@ public class TestPieces {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		performMovementTest(expectedCoordsString, whiteKing);
+		assertFalse(whiteKing.canCastle(Castle.KING_SIDE));
+		assertTrue(whiteKing.canCastle(Castle.QUEEN_SIDE));
 		
-		//test 3 - place white knight on b1, white king can not castle queen side or kingside
+		//test 3 - place white knight on b1, white king can not castle queen side or kingside as knight blocks
 		Knight whiteKnight = new Knight(p1);
 		b.setPiece(new ChessCoordinate("b1"), whiteKnight);
+		assertFalse(whiteKing.canCastle(Castle.KING_SIDE));
+		assertFalse(whiteKing.canCastle(Castle.QUEEN_SIDE));
 		
-		
-		expectedCoordsString = new String[]{
-				"d1","d2","e2","f2","f1", //standard king moves
-		};
-		performMovementTest(expectedCoordsString, whiteKing);
-
 		//test 4 - when white knight moves to a3, white king can castle queenside
 		try {
 			whiteKnight.move(new ChessCoordinate("a3"));
@@ -511,11 +501,8 @@ public class TestPieces {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		expectedCoordsString = new String[]{
-				"d1","d2","e2","f2","f1", //standard king moves
-				"b1" //can castle queenside
-		};
-		performMovementTest(expectedCoordsString, whiteKing);
+		assertFalse(whiteKing.canCastle(Castle.KING_SIDE));
+		assertTrue(whiteKing.canCastle(Castle.QUEEN_SIDE));
 	}
 }
 

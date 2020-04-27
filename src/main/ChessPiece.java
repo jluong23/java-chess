@@ -90,11 +90,14 @@ public abstract class ChessPiece extends Piece {
 	}
 	
 	/**
-	 * Looks for a piece in a given direction starting from the pieces 
+	 * Return all of the adjacent pieces in a given direction next to a piece.
+	 * This method will go through obstructions until the end of the board is reached.
+	 * For chess, this is used for checking if a king can castle.
 	 * @param dir - the direction to look at
-	 * @return piece - the piece found from looking in that direction
+	 * @return pieces - the pieces found from looking in that direction, may include null objects
 	 */
-	protected Piece pieceAhead(Direction dir) {
+	protected ArrayList<Piece> getAdjacentPieces(Direction dir) {
+		ArrayList<Piece> pieces = new ArrayList<Piece>();
 		//index and coordinates to check for in direction dir, initially current position
 		int[] indexes = this.getPosition().getIndexes();
 		Coordinate coordinate = ChessCoordinate.toCoordinate(indexes);
@@ -107,17 +110,16 @@ public abstract class ChessPiece extends Piece {
 				//try update the coordinate with new indexes
 				coordinate = ChessCoordinate.toCoordinate(indexes);
 			} catch (InvalidCoordinateException e) {
-				//coordinate is invalid, must be at the edge of a board so break out of loop
-				break;
+				//coordinate is invalid, must be at the edge of a board so return null object
+				return pieces;
 			}
-			//set foundPiece to true to prevent piece going through another
-			if(getBoard().at(coordinate) !=null)foundPiece = true;
+			Piece piece = getBoard().at(coordinate);
+			pieces.add(piece);
 		}
-		if(foundPiece) {
-			return getBoard().at(coordinate);
-		}else {
-			return null;
-		}
+		//shouldn't be ran since it will always go towards the edge of the board, calling the return
+		// in the catch statement. 
+		return null;
+		
 	}
 	public boolean validMove(Coordinate coordinate) throws NoBoardException, InvalidSettingsException {
 		if(getBoard() == null) throw new NoBoardException(this);

@@ -294,7 +294,7 @@ public abstract class Piece implements Cloneable{
 	 * @return onRow - whether the piece is on the given row index
 	 */
 	public boolean onRow(int rowIndex) {
-		return rowIndex == getPosition().getIndexes()[0]-1;
+		return rowIndex == getPosition().getIndexes()[0];
 	}
 	/**
 	 * Return a shallow copy of the instance
