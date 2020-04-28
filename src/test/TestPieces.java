@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import boardgame.*;
+import boardgame.exceptions.InvalidCoordinateException;
 import boardgame.exceptions.InvalidMoveException;
 import main.Castle;
 import main.ChessBoard;
@@ -476,13 +477,13 @@ public class TestPieces {
 
 		//test 2 - black queen at f8, white king can't castle kingside as f1 is attacked
 		//but can still castle queenside
-		Queen attackCastlePiece = new Queen(p2);
-		b.setPiece(new ChessCoordinate("f8"), attackCastlePiece);
+		Queen blackQueen = new Queen(p2);
+		b.setPiece(new ChessCoordinate("f8"), blackQueen);
 		assertFalse(whiteKing.canCastle(Castle.KING_SIDE));
 		assertTrue(whiteKing.canCastle(Castle.QUEEN_SIDE));
 		//test 2.1 - after black queen moves to g8, still can't castle kingside
 		try {
-			attackCastlePiece.move(new ChessCoordinate("g8"));
+			blackQueen.move(new ChessCoordinate("g8"));
 		} catch (InvalidMoveException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -496,15 +497,60 @@ public class TestPieces {
 		assertFalse(whiteKing.canCastle(Castle.KING_SIDE));
 		assertFalse(whiteKing.canCastle(Castle.QUEEN_SIDE));
 		
-		//test 4 - when white knight moves to a3, white king can castle queenside
+		//test 4 - when white knight moves to c3, white king can castle queenside
 		try {
-			whiteKnight.move(new ChessCoordinate("a3"));
+			whiteKnight.move(new ChessCoordinate("c3"));
 		} catch (InvalidMoveException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		assertFalse(whiteKing.canCastle(Castle.KING_SIDE));
 		assertTrue(whiteKing.canCastle(Castle.QUEEN_SIDE));
+		
+		
+		//test 5 - when the queen checks the white king moving to e6, 
+		//white king can't castle out of check
+		try {
+			blackQueen.move(new ChessCoordinate("e6"));
+		} catch (InvalidMoveException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		assertFalse(whiteKing.canCastle(Castle.KING_SIDE));
+		assertFalse(whiteKing.canCastle(Castle.QUEEN_SIDE));
+
+		//test 6 - white knight blocks the check moving to e2, can castle both sides again
+		try {
+			whiteKnight.move(new ChessCoordinate("e2"));
+		} catch (InvalidMoveException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		assertTrue(whiteKing.canCastle(Castle.KING_SIDE));
+		assertTrue(whiteKing.canCastle(Castle.QUEEN_SIDE));
+
+		//test 7 - black makes passing move, white moves queenside rook, losing castling rights on queenside
+		try {
+			blackQueen.move(new ChessCoordinate("e5"));
+			whiteQueensRook.move(new ChessCoordinate("c1"));
+		} catch (InvalidMoveException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		assertTrue(whiteKing.canCastle(Castle.KING_SIDE));
+		assertFalse(whiteKing.canCastle(Castle.QUEEN_SIDE));
+
+		//test 8 - black makes another passing move and white moves the king, losing castling rights for both sides
+		try {
+			blackQueen.move(new ChessCoordinate("e4"));
+			whiteKing.move(new ChessCoordinate("d1"));
+		} catch (InvalidMoveException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		assertFalse(whiteKing.canCastle(Castle.KING_SIDE));
+		assertFalse(whiteKing.canCastle(Castle.QUEEN_SIDE));
 	}
 }
 
