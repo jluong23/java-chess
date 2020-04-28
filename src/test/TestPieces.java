@@ -472,10 +472,10 @@ public class TestPieces {
 		assertTrue(whiteKing.canCastle(Castle.KING_SIDE));
 		assertTrue(whiteKing.canCastle(Castle.QUEEN_SIDE));
 
-		//test 2 - black queen at f8, white king can't castle kingside, but can still castle queenside
+		//test 2 - black queen at f8, white king can't castle kingside as f1 is attacked
+		//but can still castle queenside
 		Queen attackCastlePiece = new Queen(p2);
 		b.setPiece(new ChessCoordinate("f8"), attackCastlePiece);
-		
 		assertFalse(whiteKing.canCastle(Castle.KING_SIDE));
 		assertTrue(whiteKing.canCastle(Castle.QUEEN_SIDE));
 		//test 2.1 - after black queen moves to g8, still can't castle kingside

@@ -2,6 +2,7 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import boardgame.*;
 import boardgame.exceptions.InvalidCoordinateException;
@@ -90,14 +91,15 @@ public abstract class ChessPiece extends Piece {
 	}
 	
 	/**
-	 * Return all of the adjacent pieces in a given direction next to a piece.
+	 * Return all of the adjacent coordinates with the piece on them in a given direction next to a piece.
+	 * Empty squares will have a null piece value.
 	 * This method will go through obstructions until the end of the board is reached.
 	 * For chess, this is used for checking if a king can castle.
 	 * @param dir - the direction to look at
-	 * @return pieces - the pieces found from looking in that direction, may include null objects
+	 * @return pieces - hashmap of coordinates to pieces found from looking in that direction
 	 */
-	protected ArrayList<Piece> getAdjacentPieces(Direction dir) {
-		ArrayList<Piece> pieces = new ArrayList<Piece>();
+	protected HashMap<Coordinate, Piece> getAdjacentPieces(Direction dir) {
+		HashMap<Coordinate, Piece> coordToPieces = new HashMap<Coordinate, Piece>();
 		//index and coordinates to check for in direction dir, initially current position
 		int[] indexes = this.getPosition().getIndexes();
 		Coordinate coordinate = ChessCoordinate.toCoordinate(indexes);
@@ -111,10 +113,10 @@ public abstract class ChessPiece extends Piece {
 				coordinate = ChessCoordinate.toCoordinate(indexes);
 			} catch (InvalidCoordinateException e) {
 				//coordinate is invalid, must be at the edge of a board so return null object
-				return pieces;
+				return coordToPieces;
 			}
 			Piece piece = getBoard().at(coordinate);
-			pieces.add(piece);
+			coordToPieces.put(coordinate,piece);
 		}
 		//shouldn't be ran since it will always go towards the edge of the board, calling the return
 		// in the catch statement. 

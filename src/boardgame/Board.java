@@ -1,10 +1,15 @@
 package boardgame;
 
+import static org.junit.Assert.assertFalse;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.TooManyListenersException;
 
 import boardgame.exceptions.InvalidCoordinateException;
+import boardgame.exceptions.InvalidPlayerException;
+import boardgame.exceptions.NoPlayerAttributeException;
 import boardgame.exceptions.TooManyPlayersException;
 import main.ChessCoordinate;
 import main.pieces.King;
@@ -130,8 +135,26 @@ public abstract class Board {
 	}
 	
 	public abstract void reset();
-	
-	
+	/**
+	 * Return if a coordinate is attacked by a player
+	 * @param coordinate - the coordinate to check if attacked
+	 * @param player - the player to check who is attacking the coordinate
+	 * @return isAttacked - whether the coordinate is attacked by the player
+	 */
+	public boolean squareAttacked(Coordinate coordinate, Player player) {
+		if(coordinate == null)throw new InvalidCoordinateException("Null coordinate in squareAttacked()");
+		else if(player == null) throw new InvalidPlayerException("Null player in squareAttacked()");
+		else {
+			//get attacked squares by player. If contains the coordinate parameter, square is attacked, return true
+			HashMap<Piece, ArrayList<Coordinate>> playerSquaresAttacked = player.getTotalMoves(Action.MOVE_TO);
+			for (ArrayList<Coordinate> tileCoveredList : playerSquaresAttacked.values()) {
+				if(tileCoveredList.contains(coordinate)) return true;
+			}
+			//exhausted all player attacks, coordinate is not attacked, return false
+			return false;
+		}
+		
+	}
 
 	/**
 	 * Given there are only two players on the board, getOtherPlayer() will return the other player

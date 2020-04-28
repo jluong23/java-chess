@@ -32,18 +32,10 @@ public class King extends ChessPiece {
 	public boolean inCheck() throws NoBoardException{
 		if(getBoard() == null) throw new NoBoardException(this);
 		else {
-			boolean inCheck = false;
-			//if this king is in a coordinate covered by an enemy piece, this king is in check
-			HashMap<Piece, ArrayList<Coordinate>> opponentTilesCovered = getBoard().getOtherPlayer(getPlayer()).getTotalMoves(Action.ATTACK);
-			for (ArrayList<Coordinate> tileCoveredList : opponentTilesCovered.values()) {
-				if(tileCoveredList.contains(this.getPosition())) inCheck = true;
-			}
-			
-			if(inCheck) return true; 
+			Player otherPlayer = getBoard().getOtherPlayer(getPlayer());
+			//return if this king's position is attacked by the other player
+			return getBoard().squareAttacked(getPosition(), otherPlayer);
 		}
-		
-		//can't be in check, exhausted all directions
-		return false;
 	}
 	/**
 	 * Returns a boolean result whether a king can castle given the current board configuration. 
@@ -90,17 +82,28 @@ public class King extends ChessPiece {
 			throw new InvalidColourException(this + " has an invalid colour, needs to be black or white.");
 		}
 		
-		//get the pieces in the according direction
-		ArrayList<Piece> adjacentPieces = getAdjacentPieces(direction);
-		for (Piece piece : adjacentPieces) {
+		//get the adjacent coordinates with their according pieces in the direction
+		HashMap<Coordinate, Piece> adjacentTiles = getAdjacentPieces(direction);
+		//castling through check initially false until a square attacked is found
+		boolean castleThroughCheck = false;
+		for (Coordinate coordinate: adjacentTiles.keySet()) {
 			//if non rook piece on the according side of king, return false
+			Piece piece = adjacentTiles.get(coordinate);
 			if(piece!=null) {
 				if(!piece.getName().equalsIgnoreCase("Rook"))return false;
 				else{
 					//case where the piece is a rook adjacent to king
-					//can only castle if that rook hasn't moved and both king and rook are on first rank
-					return onRow(firstRowIndex) && piece.getTimesMoved() == 0;
+					//can only castle if that rook hasn't moved, 
+					//both king and rook are on first rank and
+					
+					return onRow(firstRowIndex) && piece.getTimesMoved() == 0 && !castleThroughCheck;
 				}
+			}else {
+				//square is empty, check if attacked by enemy piece, 
+				//setting castle through check to true (as a counter example is found)
+				Player otherPlayer = getBoard().getOtherPlayer(getPlayer());
+				if(getBoard().squareAttacked(coordinate, otherPlayer)) castleThroughCheck = true;
+					
 			}
 		}
 		
