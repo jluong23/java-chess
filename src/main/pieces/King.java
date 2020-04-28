@@ -82,13 +82,14 @@ public class King extends ChessPiece {
 			throw new InvalidColourException(this + " has an invalid colour, needs to be black or white.");
 		}
 		
-		//get the adjacent coordinates with their according pieces in the direction
-		HashMap<Coordinate, Piece> adjacentTiles = getAdjacentPieces(direction);
+		//get the adjacent coordinates in the direction
+		ArrayList<Coordinate> adjacentTiles = getAdjacentTiles(direction);
 		//castling through check initially false until a square attacked is found
 		boolean castleThroughCheck = false;
-		for (Coordinate coordinate: adjacentTiles.keySet()) {
+		
+		for (Coordinate coordinate: adjacentTiles) {
 			//if non rook piece on the according side of king, return false
-			Piece piece = adjacentTiles.get(coordinate);
+			Piece piece = getBoard().at(coordinate);
 			if(piece!=null) {
 				if(!piece.getName().equalsIgnoreCase("Rook"))return false;
 				else{

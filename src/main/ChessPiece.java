@@ -91,20 +91,18 @@ public abstract class ChessPiece extends Piece {
 	}
 	
 	/**
-	 * Return all of the adjacent coordinates with the piece on them in a given direction next to a piece.
-	 * Empty squares will have a null piece value.
+	 * Return all of the adjacent coordinates in a given direction next to a piece.
 	 * This method will go through obstructions until the end of the board is reached.
 	 * For chess, this is used for checking if a king can castle.
 	 * @param dir - the direction to look at
-	 * @return pieces - hashmap of coordinates to pieces found from looking in that direction
+	 * @return tiles - arrayList of coordinates to pieces found from piece looking in that direction
 	 */
-	protected HashMap<Coordinate, Piece> getAdjacentPieces(Direction dir) {
-		HashMap<Coordinate, Piece> coordToPieces = new HashMap<Coordinate, Piece>();
+	protected ArrayList<Coordinate> getAdjacentTiles(Direction dir) {
+		ArrayList<Coordinate> tiles = new ArrayList<Coordinate>();
 		//index and coordinates to check for in direction dir, initially current position
 		int[] indexes = this.getPosition().getIndexes();
 		Coordinate coordinate = ChessCoordinate.toCoordinate(indexes);
-		boolean foundPiece = false;
-		while (!foundPiece) {
+		while (coordinate.isValid()) {
 			//move in given direction
 			indexes[0] += dir.dr;
 			indexes[1] += dir.dc;
@@ -112,32 +110,34 @@ public abstract class ChessPiece extends Piece {
 				//try update the coordinate with new indexes
 				coordinate = ChessCoordinate.toCoordinate(indexes);
 			} catch (InvalidCoordinateException e) {
-				//coordinate is invalid, must be at the edge of a board so return null object
-				return coordToPieces;
+				//coordinate is invalid, must be at the edge of a board so return tiles
+				return tiles;
 			}
-			Piece piece = getBoard().at(coordinate);
-			coordToPieces.put(coordinate,piece);
+			tiles.add(coordinate);
 		}
 		//shouldn't be ran since it will always go towards the edge of the board, calling the return
 		// in the catch statement. 
 		return null;
 		
 	}
+	@Override
 	public boolean validMove(Coordinate coordinate) throws NoBoardException, InvalidSettingsException {
 		if(getBoard() == null) throw new NoBoardException(this);
 		else if(((ChessBoard) getBoard()).isKingRequired()){
-			King myKing = (King) getPlayer().getPieces("King", true).get(0);
-			
-			//if myKing is this piece, must be looking for possible king moves
-			boolean checkingKingMoves = this.equals(myKing);
-			
-			if(myKing == null) throw new InvalidSettingsException("board.kingRequired",((ChessBoard)getBoard()).isKingRequired());
+			if(getPlayer().getPieces("King", true).size() == 0) {
+				//king not found, throw an error when kingRequired is on, throw an error
+				throw new InvalidSettingsException("board.kingRequired",((ChessBoard)getBoard()).isKingRequired());				
+			}
 			else {
+				//king has been found
+				King myKing = (King) getPlayer().getPieces("King", true).get(0);
+				//if myKing is this piece, must be looking for possible king moves
+				boolean checkingKingMoves = this.equals(myKing);
 				
 				boolean valid = false;
 				//the piece that this piece is capturing, can be null if empty space 
 				Piece capturedPiece = getBoard().at(coordinate);
-
+				
 				//store original position, place back after moving the piece
 				Coordinate originalPos = getPosition();
 				//emulate the move made, move this piece to the coordinate checked and set previous position to null
@@ -155,12 +155,11 @@ public abstract class ChessPiece extends Piece {
 				//reset back to original, place captured piece back and remove tempKing from player pieces list
 				getBoard().setPiece(originalPos, this);
 				getBoard().setPiece(coordinate, capturedPiece);
-
-				return valid;
-
+				
+				return valid;	
 			}
 		}
-
+		
 		//king required is off, return true
 		return true;
 	}

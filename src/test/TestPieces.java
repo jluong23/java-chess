@@ -461,11 +461,13 @@ public class TestPieces {
 		ChessBoard b = new ChessBoard(Layout.EMPTY,players);
 		b.setKingRequired(true);
 		King whiteKing = new King(p1);
+		King blackKing = new King(p2);
 		Rook whiteKingsRook = new Rook(p1);
 		Rook whiteQueensRook = new Rook(p1);
 		
 		//test 1 - white king can castle in both directions
 		b.setPiece(new ChessCoordinate("e1"), whiteKing);
+		b.setPiece(new ChessCoordinate("b8"), blackKing);
 		b.setPiece(new ChessCoordinate("h1"), whiteKingsRook);
 		b.setPiece(new ChessCoordinate("a1"), whiteQueensRook);
 

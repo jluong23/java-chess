@@ -1,6 +1,5 @@
 package boardgame;
 
-import static org.junit.Assert.assertFalse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -146,7 +145,7 @@ public abstract class Board {
 		else if(player == null) throw new InvalidPlayerException("Null player in squareAttacked()");
 		else {
 			//get attacked squares by player. If contains the coordinate parameter, square is attacked, return true
-			HashMap<Piece, ArrayList<Coordinate>> playerSquaresAttacked = player.getTotalMoves(Action.MOVE_TO);
+			HashMap<Piece, ArrayList<Coordinate>> playerSquaresAttacked = player.getTotalMoves();
 			for (ArrayList<Coordinate> tileCoveredList : playerSquaresAttacked.values()) {
 				if(tileCoveredList.contains(coordinate)) return true;
 			}

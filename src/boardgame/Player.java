@@ -111,7 +111,7 @@ public class Player {
 		return allMoves;
 	}
 	/**
-	 * Get a hashmap of all possible moves for a player (not necessarily valid moves).
+	 * Get a hashmap of all possible moves for a player (not necessarily valid moves) of a certain action.
 	 * For chess, used to see what enemy the squares are covering.
 	 * @param action - The action of a certain move
 	 * @return allMoves - A hashmap of piece to Arraylist of coordinates which are the given action a piece makes
@@ -121,6 +121,19 @@ public class Player {
 		HashMap<Piece, ArrayList<Coordinate>> totalMoves= new HashMap<Piece, ArrayList<Coordinate>>();
 		for (Piece piece : myPieces) {
 			totalMoves.put(piece, piece.getTotalMoves(action));
+		}
+		return totalMoves;
+	}
+	/**
+	 * Get a hashmap of all possible moves for a player (not necessarily valid moves)
+	 * For chess, used to see what enemy the squares are covering.
+	 * @param action - The action of a certain move
+	 */
+	public HashMap<Piece, ArrayList<Coordinate>> getTotalMoves() {
+		//player's pieces mapped to all the moves of a given action the piece can make
+		HashMap<Piece, ArrayList<Coordinate>> totalMoves= new HashMap<Piece, ArrayList<Coordinate>>();
+		for (Piece piece : myPieces) {
+			totalMoves.put(piece, piece.getAllTotalMoves());
 		}
 		return totalMoves;
 	}

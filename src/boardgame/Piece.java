@@ -193,11 +193,6 @@ public abstract class Piece implements Cloneable{
 	//methods
 	
 	/**
-	 * 
-	 * @return tilesCovered - the tiles covered
-	 */
-	
-	/**
 	 * Get all moves for the unit, not necessarily a valid move
 	 * @param directions - the directions to search in 
 	 * @param numTiles - the number of tiles the piece can move
@@ -238,14 +233,27 @@ public abstract class Piece implements Cloneable{
 	public abstract boolean validMove(Coordinate coordinate) throws NoBoardException, InvalidSettingsException;
 	
 	/**
-	 * Call getMoves() for all possible actions
-	 * @return allMoves - an array list of all possible moves for all possible actions
+	 * Call getValidMoves() for all possible actions
+	 * @return allMoves - an array list of all possible moves for all possible valid actions
 	 * @throws NoBoardException - If the piece's board attribute is null
 	 */
 	public ArrayList<Coordinate> getAllValidMoves() throws NoBoardException{
 		ArrayList<Coordinate> allMoves = new ArrayList<Coordinate>();
 		for (boardgame.Action action : boardgame.Action.values()) {
 			allMoves.addAll(getValidMoves(action));
+		}
+		return allMoves;
+	}
+	
+	/**
+	 * Call getTotalMoves() for all possible actions
+	 * @return allMoves - an array list of all possible moves for all possible actions (not necessarily valid)
+	 * @throws NoBoardException - If the piece's board attribute is null
+	 */
+	public ArrayList<Coordinate> getAllTotalMoves() throws NoBoardException{
+		ArrayList<Coordinate> allMoves = new ArrayList<Coordinate>();
+		for (boardgame.Action action : boardgame.Action.values()) {
+			allMoves.addAll(getTotalMoves(action));
 		}
 		return allMoves;
 	}
