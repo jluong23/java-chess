@@ -1,6 +1,8 @@
 package main.pieces;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import boardgame.*;
 import boardgame.exceptions.InvalidCoordinateException;
@@ -15,7 +17,7 @@ public class Knight extends ChessPiece {
 	}
 	@Override
 	//TODO
-	public ArrayList<Coordinate> getTotalMoves(Action action) throws NoBoardException{
+	public Set<Coordinate> getTotalMoves(Action action) throws NoBoardException{
 		if(getBoard() == null)throw new NoBoardException(this); //if the piece does not have a board attribute
 		else {
 			int sign = 1;
@@ -24,7 +26,7 @@ public class Knight extends ChessPiece {
 			//current positions
 			int r = getPosition().getIndexes()[0];
 			int c = getPosition().getIndexes()[1];
-			ArrayList<Coordinate> possibleCoordinates = new ArrayList<Coordinate>();
+			Set<Coordinate> possibleCoordinates = new HashSet<Coordinate>();
 			
 			
 			for (int i = 0; i < 2; i++) { 

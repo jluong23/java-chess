@@ -1,6 +1,7 @@
 package main;
 
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import boardgame.Coordinate;
 import boardgame.exceptions.InvalidCoordinateException;
@@ -13,6 +14,8 @@ public class ChessCoordinate extends Coordinate{
 	public ChessCoordinate(String coordinate) {
 		super(coordinate);
 	}
+	
+	
 	@Override
 	public boolean isValid() {
 		char[] charCoordinates = this.getCoordinate().toCharArray();
@@ -68,13 +71,13 @@ public class ChessCoordinate extends Coordinate{
 	}
 	
 	/**
-	 * 
+	 * Return a set of coordinate objects from an array of coordinate strings
 	 * @param coordinateStrings array of strings to convert into coordinate objects
-	 * @return newCoords the coordinate objects with coordinate attributes from coordinateStrings
+	 * @return newCoords set of the coordinate objects with coordinate attributes from coordinateStrings
 	 * @throws InvalidCoordinateException If the coordinate is invalid and can't be converted
 	 */
-	public static ArrayList<Coordinate> toCoordinate(String[] coordinateStrings) throws InvalidCoordinateException {
-		ArrayList<Coordinate> newCoords = new ArrayList<Coordinate>();
+	public static Set<Coordinate> toCoordinate(String[] coordinateStrings) throws InvalidCoordinateException {
+		Set<Coordinate> newCoords = new HashSet<Coordinate>();
 		for (String coordinateString : coordinateStrings) {
 			Coordinate coordinate = new ChessCoordinate(coordinateString);
 			if(coordinate.isValid()) {
@@ -87,5 +90,7 @@ public class ChessCoordinate extends Coordinate{
 		return newCoords;
 	
 	}
+
+
 
 }

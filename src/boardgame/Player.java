@@ -2,6 +2,7 @@ package boardgame;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 import boardgame.exceptions.NoBoardException;
 
@@ -90,9 +91,9 @@ public class Player {
 	 * @param action - The action of a certain move
 	 * @return allMoves - A hashmap of piece to Arraylist of coordinates which are the given action a piece can make 
 	*/
-	public HashMap<Piece, ArrayList<Coordinate>> getAllValidMoves(Action action) throws NoBoardException{
+	public HashMap<Piece, Set<Coordinate>> getAllValidMoves(Action action) throws NoBoardException{
 		//player's pieces mapped to all the moves of a given action the piece can make
-		HashMap<Piece, ArrayList<Coordinate>> allMoves= new HashMap<Piece, ArrayList<Coordinate>>();
+		HashMap<Piece, Set<Coordinate>> allMoves= new HashMap<Piece, Set<Coordinate>>();
 		for (Piece piece : myPieces) {
 			allMoves.put(piece, piece.getValidMoves(action));
 		}
@@ -102,9 +103,9 @@ public class Player {
 	 * Get a hash map of all possible valid moves for a player 
 	 * @return allMoves - A hashmap of piece to Arraylist of coordinates a piece can perform to
 	*/
-	public HashMap<Piece, ArrayList<Coordinate>> getAllValidMoves() throws NoBoardException{
+	public HashMap<Piece, Set<Coordinate>> getAllValidMoves() throws NoBoardException{
 		//player's pieces mapped to all the moves of a given action the piece can make
-		HashMap<Piece, ArrayList<Coordinate>> allMoves= new HashMap<Piece, ArrayList<Coordinate>>();
+		HashMap<Piece, Set<Coordinate>> allMoves= new HashMap<Piece, Set<Coordinate>>();
 		for (Piece piece : myPieces) {
 			allMoves.put(piece, piece.getAllValidMoves());
 		}
@@ -116,9 +117,9 @@ public class Player {
 	 * @param action - The action of a certain move
 	 * @return allMoves - A hashmap of piece to Arraylist of coordinates which are the given action a piece makes
 	 */
-	public HashMap<Piece, ArrayList<Coordinate>> getTotalMoves(Action action) {
+	public HashMap<Piece, Set<Coordinate>> getTotalMoves(Action action) {
 		//player's pieces mapped to all the moves of a given action the piece can make
-		HashMap<Piece, ArrayList<Coordinate>> totalMoves= new HashMap<Piece, ArrayList<Coordinate>>();
+		HashMap<Piece, Set<Coordinate>> totalMoves= new HashMap<Piece, Set<Coordinate>>();
 		for (Piece piece : myPieces) {
 			totalMoves.put(piece, piece.getTotalMoves(action));
 		}
@@ -129,9 +130,9 @@ public class Player {
 	 * For chess, used to see what enemy the squares are covering.
 	 * @param action - The action of a certain move
 	 */
-	public HashMap<Piece, ArrayList<Coordinate>> getTotalMoves() {
+	public HashMap<Piece, Set<Coordinate>> getTotalMoves() {
 		//player's pieces mapped to all the moves of a given action the piece can make
-		HashMap<Piece, ArrayList<Coordinate>> totalMoves= new HashMap<Piece, ArrayList<Coordinate>>();
+		HashMap<Piece, Set<Coordinate>> totalMoves= new HashMap<Piece, Set<Coordinate>>();
 		for (Piece piece : myPieces) {
 			totalMoves.put(piece, piece.getAllTotalMoves());
 		}

@@ -48,15 +48,27 @@ public abstract class Coordinate implements java.lang.Comparable<Coordinate>{
 	}
 	
 	@Override
-	/**
-	 * Returns whether two chess coordinates are the same
-	 */
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((coordinate == null) ? 0 : coordinate.hashCode());
+		return result;
+	}
+	@Override
 	public boolean equals(Object obj) {
-		if(this.getClass() == obj.getClass()) {
-			return ((Coordinate) obj).getCoordinate().contentEquals(this.getCoordinate());
-		}else {
+		if (this == obj)
+			return true;
+		if (obj == null)
 			return false;
-		}
+		if (getClass() != obj.getClass())
+			return false;
+		Coordinate other = (Coordinate) obj;
+		if (coordinate == null) {
+			if (other.coordinate != null)
+				return false;
+		} else if (!coordinate.equals(other.coordinate))
+			return false;
+		return true;
 	}
 	
 	

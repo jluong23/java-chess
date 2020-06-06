@@ -3,6 +3,8 @@ package main;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import boardgame.*;
 import boardgame.exceptions.InvalidCoordinateException;
@@ -39,7 +41,7 @@ public abstract class ChessPiece extends Piece {
 		}		
 	}
 	@Override
-	public ArrayList<Coordinate> getTotalMoves(Action action) {
+	public Set<Coordinate> getTotalMoves(Action action) {
 		
 		//get which list of directions to check for given an action
 		Direction[] directions = null;
@@ -56,7 +58,7 @@ public abstract class ChessPiece extends Piece {
 		}
 		
 		//initialise array list of tiles that are moveable to
-		ArrayList<Coordinate> tilesCovered = new ArrayList<Coordinate>();
+		Set<Coordinate> tilesCovered = new HashSet<Coordinate>();
 		
 		for (Direction dir : directions) {
 			ArrayList<Coordinate> tilesInDir = new ArrayList<Coordinate>();

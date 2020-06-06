@@ -2,11 +2,13 @@ package main.pieces;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 import javax.management.RuntimeErrorException;
 
 import boardgame.*;
 import boardgame.exceptions.InvalidColourException;
+import boardgame.exceptions.InvalidSettingsException;
 import boardgame.exceptions.NoBoardException;
 import main.Castle;
 import main.ChessPiece;
@@ -35,6 +37,31 @@ public class King extends ChessPiece {
 			Player otherPlayer = getBoard().getOtherPlayer(getPlayer());
 			//return if this king's position is attacked by the other player
 			return getBoard().squareAttacked(getPosition(), otherPlayer);
+		}
+	}
+	
+	@Override
+	public Set<Coordinate> getTotalMoves(Action action) {
+		Set<Coordinate> currentMoves = super.getTotalMoves(action);
+		return currentMoves;
+	}
+	
+	@Override
+	public boolean validMove(Coordinate coordinate) throws NoBoardException, InvalidSettingsException {
+		// TODO Auto-generated method stub
+		return super.validMove(coordinate);
+	}
+	
+	
+	public void castle(Castle side) {
+		switch(side) {
+		case KING_SIDE:
+			break;
+		case QUEEN_SIDE:
+			break;
+		default:
+			break;
+			
 		}
 	}
 	/**

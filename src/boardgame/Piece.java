@@ -1,5 +1,8 @@
 package boardgame;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import boardgame.exceptions.*;
 import boardgame.*;
@@ -200,7 +203,7 @@ public abstract class Piece implements Cloneable{
 	 * @param action - the action to check
 	 * @return
 	 */
-	public abstract ArrayList<Coordinate> getTotalMoves(Action action);
+	public abstract Set<Coordinate> getTotalMoves(Action action);
 	
 	/**
 	 * Fetch arraylist of all tiles the piece can perform an action to from this piece's current position.
@@ -208,12 +211,12 @@ public abstract class Piece implements Cloneable{
 	 * @return moves - Arraylist of coordinates the piece can move to
 	 * @throws NoBoardException - If the piece's board attribute is null
 	 */
-	public ArrayList<Coordinate> getValidMoves(boardgame.Action action) throws NoBoardException{
+	public Set<Coordinate> getValidMoves(boardgame.Action action) throws NoBoardException{
 		if(board == null)throw new NoBoardException(this); //if the piece does not have a board attribute
 		else {
 			//total moves for that action
-			ArrayList<Coordinate> totalMoves = getTotalMoves(action);
-			ArrayList<Coordinate> validMoves = new ArrayList<>();
+			Set<Coordinate> totalMoves = getTotalMoves(action);
+			Set<Coordinate> validMoves = new HashSet<Coordinate>();
 			
 			for (Coordinate move : totalMoves) {
 				if(this.validMove(move)) validMoves.add(move);
@@ -237,21 +240,21 @@ public abstract class Piece implements Cloneable{
 	 * @return allMoves - an array list of all possible moves for all possible valid actions
 	 * @throws NoBoardException - If the piece's board attribute is null
 	 */
-	public ArrayList<Coordinate> getAllValidMoves() throws NoBoardException{
-		ArrayList<Coordinate> allMoves = new ArrayList<Coordinate>();
+	public Set<Coordinate> getAllValidMoves() throws NoBoardException{
+		Set<Coordinate> allMoves = new HashSet<Coordinate>();
 		for (boardgame.Action action : boardgame.Action.values()) {
 			allMoves.addAll(getValidMoves(action));
 		}
 		return allMoves;
 	}
-	
+
 	/**
 	 * Call getTotalMoves() for all possible actions
 	 * @return allMoves - an array list of all possible moves for all possible actions (not necessarily valid)
 	 * @throws NoBoardException - If the piece's board attribute is null
 	 */
-	public ArrayList<Coordinate> getAllTotalMoves() throws NoBoardException{
-		ArrayList<Coordinate> allMoves = new ArrayList<Coordinate>();
+	public Set<Coordinate> getAllTotalMoves() throws NoBoardException{
+		Set<Coordinate> allMoves = new HashSet<Coordinate>();
 		for (boardgame.Action action : boardgame.Action.values()) {
 			allMoves.addAll(getTotalMoves(action));
 		}
@@ -347,6 +350,43 @@ public abstract class Piece implements Cloneable{
 	@Override
 	public String toString() {
 		return Character.toString(symbol);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((board == null) ? 0 : board.hashCode());
+		result = prime * result + ((player == null) ? 0 : player.hashCode());
+		result = prime * result + ((position == null) ? 0 : position.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Piece other = (Piece) obj;
+		if (board == null) {
+			if (other.board != null)
+				return false;
+		} else if (!board.equals(other.board))
+			return false;
+		if (player == null) {
+			if (other.player != null)
+				return false;
+		} else if (!player.equals(other.player))
+			return false;
+		if (position == null) {
+			if (other.position != null)
+				return false;
+		} else if (!position.equals(other.position))
+			return false;
+		return true;
 	}
 
 	

@@ -8,6 +8,7 @@ import static org.junit.Assert.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.After;
 import org.junit.Before;
@@ -50,20 +51,17 @@ public class TestPieces {
 	
 	
 	private void performMovementTest(String[] expectedStrings, Piece piece) {
-		List<Coordinate> expectedArr = ChessCoordinate.toCoordinate(expectedStrings);
-		List<Coordinate> actualArr = piece.getValidMoves(Action.MOVE_TO);
-		//sort values as we want to check if they compare the same values
-		Collections.sort(expectedArr);
-	    Collections.sort(actualArr);
-		assertEquals(expectedArr, actualArr);
+		Set<Coordinate> expected = ChessCoordinate.toCoordinate(expectedStrings);
+		Set<Coordinate> actual = piece.getValidMoves(Action.MOVE_TO);
+//		assertEquals(expected, actual);
+		assertTrue(expected.equals(actual));
 	}
 	private void performAttackTest(String[] expectedStrings, Piece piece) {
-		List<Coordinate> expectedArr = ChessCoordinate.toCoordinate(expectedStrings);
-		List<Coordinate> actualArr = piece.getValidMoves(Action.ATTACK);
-		//sort values as we want to check if they compare the same values
-		Collections.sort(expectedArr);
-	    Collections.sort(actualArr);
-		assertEquals(expectedArr, actualArr);
+		Set<Coordinate> expected = ChessCoordinate.toCoordinate(expectedStrings);
+		Set<Coordinate> actual = piece.getValidMoves(Action.ATTACK);
+//		assertEquals(expected, actual);
+		assertTrue(expected.equals(actual));
+
 	}
 	
 

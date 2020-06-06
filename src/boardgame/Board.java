@@ -4,6 +4,7 @@ package boardgame;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.TooManyListenersException;
 
 import boardgame.exceptions.InvalidCoordinateException;
@@ -145,8 +146,8 @@ public abstract class Board {
 		else if(player == null) throw new InvalidPlayerException("Null player in squareAttacked()");
 		else {
 			//get attacked squares by player. If contains the coordinate parameter, square is attacked, return true
-			HashMap<Piece, ArrayList<Coordinate>> playerSquaresAttacked = player.getTotalMoves();
-			for (ArrayList<Coordinate> tileCoveredList : playerSquaresAttacked.values()) {
+			HashMap<Piece, Set<Coordinate>> playerSquaresAttacked = player.getTotalMoves();
+			for (Set<Coordinate> tileCoveredList : playerSquaresAttacked.values()) {
 				if(tileCoveredList.contains(coordinate)) return true;
 			}
 			//exhausted all player attacks, coordinate is not attacked, return false
