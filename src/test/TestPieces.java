@@ -64,7 +64,15 @@ public class TestPieces {
 
 	}
 	
+	@Test 
+	public void testStandardLayout() {
+		ChessBoard b = new ChessBoard(Layout.STANDARD,players);
+		b.setKingRequired(true);
+		System.out.println(b);
 
+	}
+	
+	
 	/**
 	 * Test method for {@link main.ChessPiece#getMoves(Action)} for the {@link main.pieces.Rook} class.
 	 */
@@ -405,7 +413,7 @@ public class TestPieces {
 	}
 	
 	/**
-	 * Test method for {@link main.pieces.King#castle(side)} on the queen side for both sides
+	 * Test method for {@link main.pieces.King#castle(side)} on the queen side for white
 	 */
 	
 	@Test
@@ -437,6 +445,10 @@ public class TestPieces {
 		assertEquals(whiteQueensRook.getPosition(), rookLocation);
 	}
 	
+	/**
+	 * Test method for {@link main.pieces.King#castle(side)} on the queen side for black
+	 */
+	@Test
 	public void testCastleQueenSideBlack() {
 		ChessBoard b = new ChessBoard(Layout.EMPTY,players);
 		b.setKingRequired(true);

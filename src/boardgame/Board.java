@@ -123,13 +123,19 @@ public abstract class Board {
 	@Override
 	public String toString() {
 		String out = "";
+		final String SPACE = "\u2003";
 		for (int i = 0; i < board.length; i++) {
+			//write down the rank number 
 			out+= (board.length - i) + " |";
-			for (Piece tile : board[i]) {
-				if(tile == null) out+="  "; //if nothing on tile, print empty space
-				else out+=tile + " ";					
+			for (int j = 0; j < board[i].length; j++) {
+				Piece tile = board[i][j];
+				if(tile == null) out+=SPACE; //if nothing on tile, print empty space
+				else out+=tile;				
+				out += "|";
+				
 			}
-			out+="|\n  ------------------\n";
+			
+			out+="\n  ----------------------\n";
 		}
 		return out;
 	}
