@@ -8,6 +8,7 @@ import java.util.Set;
 
 import boardgame.*;
 import boardgame.exceptions.InvalidCoordinateException;
+import boardgame.exceptions.InvalidMoveException;
 import boardgame.exceptions.InvalidSettingsException;
 import boardgame.exceptions.NoBoardException;
 import boardgame.exceptions.NoPlayerAttributeException;
@@ -19,7 +20,6 @@ public abstract class ChessPiece extends Piece {
 
 	public ChessPiece(Player player){
 		super(player);
-		//name attribute is the class name as an enum
 		setChessSymbol();
 		//by default, moveable and attack distance can reach the whole board
 		//reset by pawn and king piece
@@ -40,6 +40,7 @@ public abstract class ChessPiece extends Piece {
 			this.setSymbol(symbol);			
 		}		
 	}
+	
 	@Override
 	public Set<Coordinate> getTotalMoves(Action action) {
 		

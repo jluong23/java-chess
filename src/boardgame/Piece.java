@@ -207,7 +207,6 @@ public abstract class Piece implements Cloneable{
 	
 	/**
 	 * Fetch arraylist of all tiles the piece can perform an action to from this piece's current position.
-	 * searchTiles() is called for all directions of the action.
 	 * @return moves - Arraylist of coordinates the piece can move to
 	 * @throws NoBoardException - If the piece's board attribute is null
 	 */

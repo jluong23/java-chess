@@ -341,7 +341,7 @@ public class TestPieces {
 	}
 	
 	/**
-	 * Test method for {@link main.pieces.King#castle(side)} on the kingside for both sides
+	 * Test method for {@link main.pieces.King#castle(side)} on the kingside for white
 	 */
 	
 	@Test
@@ -354,10 +354,10 @@ public class TestPieces {
 		
 		b.setPiece(new ChessCoordinate("e1"), whiteKing);
 		b.setPiece(new ChessCoordinate("h1"), whiteKingsRook);
+		//try castle kingside
 		try {
-			whiteKing.move(new ChessCoordinate("g1"));
+			whiteKing.move(new ChessCoordinate(Castle.KING_SIDE.getCode()));
 		} catch (InvalidMoveException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		ChessCoordinate kingLocation = new ChessCoordinate("g1");
@@ -370,22 +370,29 @@ public class TestPieces {
 		assertEquals(b.at(rookLocation), whiteKingsRook);
 		//ensure the rooks position is updated
 		assertEquals(whiteKingsRook.getPosition(), rookLocation);
-		
-		//test 2 - black king-side castle
+	}	
+	
+	/**
+	 * Test method for {@link main.pieces.King#castle(side)} on the kingside for black
+	 */
+	@Test
+	public void testCastleKingSideBlack() {
+		ChessBoard b = new ChessBoard(Layout.EMPTY,players);
+		b.setKingRequired(true);
 		King blackKing = new King(p2);
 		Rook blackKingsRook = new Rook(p2);
 		
 		b.setPiece(new ChessCoordinate("e8"), blackKing);
 		b.setPiece(new ChessCoordinate("h8"), blackKingsRook);
 		try {
-			blackKing.move(new ChessCoordinate("g8"));
+			blackKing.move(new ChessCoordinate(Castle.KING_SIDE.getCode()));
 		} catch (InvalidMoveException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		kingLocation = new ChessCoordinate("g8");
-		rookLocation = new ChessCoordinate("g8");
+		ChessCoordinate kingLocation = new ChessCoordinate("g8");
+		ChessCoordinate rookLocation = new ChessCoordinate("f8");
 
 		assertEquals(b.at(kingLocation), blackKing);
 		//ensure kings position is updated
@@ -394,7 +401,8 @@ public class TestPieces {
 		assertEquals(b.at(rookLocation), blackKingsRook);
 		//ensure the rooks position is updated
 		assertEquals(blackKingsRook.getPosition(), rookLocation);	
-	}	
+		
+	}
 	
 	/**
 	 * Test method for {@link main.pieces.King#castle(side)} on the queen side for both sides
@@ -410,8 +418,9 @@ public class TestPieces {
 		
 		b.setPiece(new ChessCoordinate("e1"), whiteKing);
 		b.setPiece(new ChessCoordinate("a1"), whiteQueensRook);
+		//try castle queenside
 		try {
-			whiteKing.move(new ChessCoordinate("c1"));
+			whiteKing.move(new ChessCoordinate(Castle.QUEEN_SIDE.getCode()));
 		} catch (InvalidMoveException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -426,22 +435,25 @@ public class TestPieces {
 		assertEquals(b.at(rookLocation), whiteQueensRook);
 		//ensure the rooks position is updated
 		assertEquals(whiteQueensRook.getPosition(), rookLocation);
-		
-		//test 2 - black queen-side castle
+	}
+	
+	public void testCastleQueenSideBlack() {
+		ChessBoard b = new ChessBoard(Layout.EMPTY,players);
+		b.setKingRequired(true);
 		King blackKing = new King(p2);
 		Rook blackQueensRook = new Rook(p2);
 		
 		b.setPiece(new ChessCoordinate("e8"), blackKing);
 		b.setPiece(new ChessCoordinate("a8"), blackQueensRook);
 		try {
-			blackKing.move(new ChessCoordinate("c8"));
+			blackKing.move(new ChessCoordinate(Castle.QUEEN_SIDE.getCode()));
 		} catch (InvalidMoveException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		kingLocation = new ChessCoordinate("c8");
-		rookLocation = new ChessCoordinate("d8");
+		ChessCoordinate kingLocation = new ChessCoordinate("c8");
+		ChessCoordinate rookLocation = new ChessCoordinate("d8");
 
 		assertEquals(b.at(kingLocation), blackKing);
 		//ensure kings position is updated

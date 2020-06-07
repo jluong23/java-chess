@@ -2,15 +2,19 @@ package main.pieces;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import javax.management.RuntimeErrorException;
 
 import boardgame.*;
 import boardgame.exceptions.InvalidColourException;
+import boardgame.exceptions.InvalidMoveException;
 import boardgame.exceptions.InvalidSettingsException;
 import boardgame.exceptions.NoBoardException;
 import main.Castle;
+import main.ChessCoordinate;
 import main.ChessPiece;
 import main.ChessPieceNames;
 
@@ -41,27 +45,76 @@ public class King extends ChessPiece {
 	}
 	
 	@Override
+	public void move(Coordinate coordinate) throws InvalidMoveException {
+		if(getAllValidMoves().contains(coordinate) && Castle.isCastlingMove(coordinate)) {
+			this.castle(Castle.fromCode(coordinate.getCoordinate()));
+		} else {
+			super.move(coordinate);			
+		}
+	}
+	
+	@Override
 	public Set<Coordinate> getTotalMoves(Action action) {
 		Set<Coordinate> currentMoves = super.getTotalMoves(action);
+		//add castle moves
+		currentMoves.add(new ChessCoordinate(Castle.QUEEN_SIDE.getCode()));
+		currentMoves.add(new ChessCoordinate(Castle.KING_SIDE.getCode()));
 		return currentMoves;
 	}
 	
 	@Override
 	public boolean validMove(Coordinate coordinate) throws NoBoardException, InvalidSettingsException {
-		// TODO Auto-generated method stub
+		//for castling, the coordinate's string is the code for castling, "O-O-O" for kingside or "O-O" for queenside
+		
+		if(Castle.isCastlingMove(coordinate)) return canCastle(Castle.fromCode(coordinate.getCoordinate()));
+		//regular king move, return overriden valid move
 		return super.validMove(coordinate);
 	}
 	
-	
+	/**
+	 * Castle the king to the given side on the king's board attribute, assuming the castle is valid
+	 * @param side - the side to castle on 
+	 */
 	public void castle(Castle side) {
-		switch(side) {
+		Coordinate newKingCoordinate, newRookCoordinate;
+		int newKingColumnIndex, newRookColumnIndex;
+		
+		//set new column indexes for king and rook
+		switch (side) {
 		case KING_SIDE:
+			//king should be 1 away from edge of board, rook should be to the left of it
+			newKingColumnIndex = getBoard().getBoardArray().length - 2;
+			newRookColumnIndex = newKingColumnIndex - 1;
 			break;
 		case QUEEN_SIDE:
+			//king should be 2 away from edge of board, rook should be to the right of it
+			newKingColumnIndex = 2;
+			newRookColumnIndex = newKingColumnIndex + 1;
 			break;
 		default:
-			break;
-			
+			throw new NoSuchElementException(side + " side for castling does not exist");
+		}
+		
+		int[] newKingIndexes = {getFirstRowIndex(), newKingColumnIndex};
+		int[] newRookIndexes = {getFirstRowIndex(), newRookColumnIndex};
+		newKingCoordinate = ChessCoordinate.toCoordinate(newKingIndexes);
+		newRookCoordinate = ChessCoordinate.toCoordinate(newRookIndexes);
+
+		ArrayList<Coordinate> adjacentTiles = getAdjacentTiles(side.getDirection());
+		Iterator<Coordinate> iterator = adjacentTiles.iterator();
+		boolean rookFound = false;
+		while(!rookFound) {
+			Piece piece = getBoard().at(iterator.next());
+			if(piece != null && piece.getName().equalsIgnoreCase("Rook")) {
+				rookFound = true;
+				//set old positions to null
+				getBoard().setPiece(getPosition(), null);
+				getBoard().setPiece(piece.getPosition(), null);
+				
+				//set new positions
+				getBoard().setPiece(newKingCoordinate, this);
+				getBoard().setPiece(newRookCoordinate, piece);
+			}
 		}
 	}
 	/**
@@ -84,30 +137,11 @@ public class King extends ChessPiece {
 		//can't castle if king has no ally rooks on the board
 		if(aliveRooks.size() == 0)return false;
 		
-		//figure out which the rook is on to castle. right for kingside, left for queenside
-		Direction direction = null;
-		switch (side) {
-		case KING_SIDE:
-			direction = Direction.RIGHT;
-			break;
-		case QUEEN_SIDE:
-			direction = Direction.LEFT;
-			break;
-		default:
-			throw new RuntimeErrorException(null, "Castle side parameter not registered, must be Castle.KING_SIDE or Castle.QUEEN_SIDE");
-		}
+		//direction of castle
+		Direction direction = side.getDirection();
 		
-		//figure out the firstRowIndex for the colour. 7 for white, 0 for black in a default chess board
-		int firstRowIndex = 0;
-		switch (getPlayer().getColour()) {
-		//when black, already set to 0
-		case WHITE:
-			//default to index 7 on standard chess board
-			firstRowIndex = getBoard().getBoardArray().length-1;
-			break;	
-		default:
-			throw new InvalidColourException(this + " has an invalid colour, needs to be black or white.");
-		}
+		//7 for white, 0 for black in a default chess board
+		int firstRowIndex = getFirstRowIndex();
 		
 		//get the adjacent coordinates in the direction
 		ArrayList<Coordinate> adjacentTiles = getAdjacentTiles(direction);
@@ -136,6 +170,22 @@ public class King extends ChessPiece {
 		}
 		
 		return false; //exhausted all adjacent pieces without finding a rook, rook must have moved already		
+	}
+	
+	/**
+	 * Returns the first row index of the king on the board using the king's player attribute colour
+	 * @return first row index
+	 */
+	private int getFirstRowIndex() {
+		switch (getPlayer().getColour()) {
+		case WHITE:
+			//default to index 7 on standard chess board
+			return getBoard().getBoardArray().length-1;
+		case BLACK:
+			return 0;
+		default:
+			throw new InvalidColourException(this + " has an invalid colour, needs to be black or white.");
+		}
 	}
 	
 }
