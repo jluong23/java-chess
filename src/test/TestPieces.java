@@ -68,7 +68,6 @@ public class TestPieces {
 	public void testStandardLayout() {
 		ChessBoard b = new ChessBoard(Layout.STANDARD,players);
 		b.setKingRequired(true);
-		System.out.println(b);
 
 	}
 	
@@ -573,6 +572,64 @@ public class TestPieces {
 		}
 		assertFalse(whiteKing.canCastle(Castle.KING_SIDE));
 		assertFalse(whiteKing.canCastle(Castle.QUEEN_SIDE));
+	}
+	
+	/**
+	 * Test method for {@link main.pieces.King#inStalemate()} 
+	 */
+	@Test
+	public void testStalemate() {
+		ChessBoard b = new ChessBoard(Layout.EMPTY,players);
+		b.setKingRequired(true);
+		King whiteKing = new King(p1);
+		King blackKing = new King(p2);
+		Queen whiteQueen = new Queen(p1);
+		//black king is in stalemate on a1, has no moves
+		b.setPiece(new ChessCoordinate("A1"), blackKing);
+		b.setPiece(new ChessCoordinate("A3"), whiteKing);
+		b.setPiece(new ChessCoordinate("C2"), whiteQueen);
+		assertTrue(blackKing.inStalemate());
+		
+		//after queen moves away to the right, king can move to b2
+		try {
+			whiteQueen.move(new ChessCoordinate("h2"));
+		} catch (InvalidMoveException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		assertFalse(blackKing.inStalemate());
+
+	}
+	
+	/**
+	 * Test method for {@link main.pieces.King#inCheckmate()} 
+	 */
+	@Test
+	public void testCheckmate() {
+		ChessBoard b = new ChessBoard(Layout.EMPTY,players);
+		b.setKingRequired(true);
+		King whiteKing = new King(p1);
+		King blackKing = new King(p2);
+		Rook whiteRook = new Rook(p1);
+
+		//mate with rook against black king
+		b.setPiece(new ChessCoordinate("A1"), blackKing);
+		b.setPiece(new ChessCoordinate("A3"), whiteKing);
+		b.setPiece(new ChessCoordinate("H1"), whiteRook);
+		assertTrue(blackKing.inCheckmate());
+		
+		//after white rook moves to h2, no longer in check, king can move to b2.
+		try {
+			whiteRook.move(new ChessCoordinate("h2"));
+		} catch (InvalidMoveException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		assertFalse(blackKing.inCheckmate());
+
+
+
 	}
 }
 

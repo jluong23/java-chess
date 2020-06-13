@@ -43,6 +43,23 @@ public class King extends ChessPiece {
 			return getBoard().squareAttacked(getPosition(), otherPlayer);
 		}
 	}
+	/**
+	 * Returns whether the king is checkmated on it's board attribute (in check and has no valid moves)
+	 * @return boolean result
+	 */
+	public boolean inCheckmate() {
+		return inCheck() && getAllValidMoves().size() == 0;
+	}
+	
+	/**
+	 * Returns whether the king is in stale mate (not in check and has valid moves)
+	 * @return boolean result
+	 */
+	public boolean inStalemate() {
+		return !inCheck() && getAllValidMoves().size() == 0;
+	}
+	
+	
 	
 	@Override
 	public void move(Coordinate coordinate) throws InvalidMoveException {

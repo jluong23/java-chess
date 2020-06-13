@@ -17,9 +17,24 @@ import main.pieces.King;
 public abstract class Board {
 	private Piece[][] board;
 	private List<Player> players;
+	private Player playerTurn;
 
 	public Board(List<Player> players2){
 		this.players = players2;
+	}
+	
+	/**
+	 * @return the playerTurn
+	 */
+	public Player getPlayerTurn() {
+		return playerTurn;
+	}
+
+	/**
+	 * @param playerTurn the playerTurn to set
+	 */
+	public void setPlayerTurn(Player playerTurn) {
+		this.playerTurn = playerTurn;
 	}
 	
 	/**
@@ -140,6 +155,7 @@ public abstract class Board {
 		return out;
 	}
 	
+	
 	public abstract void reset();
 	/**
 	 * Return if a coordinate is attacked by a player
@@ -177,4 +193,5 @@ public abstract class Board {
 		}
 		return null; //returns null if other player can't be found, shouldn't happen
 	}
+
 }
