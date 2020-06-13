@@ -62,11 +62,13 @@ public class King extends ChessPiece {
 	
 	
 	@Override
-	public void move(Coordinate coordinate) throws InvalidMoveException {
+	public boolean move(Coordinate coordinate) {
+		//check if castling is legal and correct code for castling is entered
 		if(getAllValidMoves().contains(coordinate) && Castle.isCastlingMove(coordinate)) {
 			this.castle(Castle.fromCode(coordinate.getCoordinate()));
+			return true;
 		} else {
-			super.move(coordinate);			
+			return super.move(coordinate);			
 		}
 	}
 	

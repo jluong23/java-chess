@@ -1,12 +1,15 @@
 package main.pieces;
 
-import boardgame.*;
-import boardgame.exceptions.InvalidMoveException;
+import boardgame.Coordinate;
+import boardgame.Direction;
+import boardgame.Player;
 import main.ChessPiece;
 
 public class Pawn extends ChessPiece {
 
+	//amount of squares a pawn can move on the first move
 	private static int FIRST_MOVE_DISTANCE = 2;
+	//normal amount of squares a pawn can move after the first move
 	private static int NORMAL_MOVE_DISTANCE = 1;
 
 	public Pawn(Player player) {
@@ -27,10 +30,11 @@ public class Pawn extends ChessPiece {
 	}
 	
 	@Override
-	public void move(Coordinate coordinate) throws InvalidMoveException{
-		super.move(coordinate);
-		//pawns can move two squares on the first move, but only one afterwards
+	public boolean move(Coordinate coordinate){
+		boolean result = super.move(coordinate);
 		setMoveableDistance(NORMAL_MOVE_DISTANCE);
+		return result;
+		
 	}
 
 }

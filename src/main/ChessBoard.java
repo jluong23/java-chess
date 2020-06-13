@@ -2,10 +2,21 @@ package main;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
-import boardgame.*;
-import boardgame.exceptions.*;
-import main.pieces.*;
+import boardgame.Board;
+import boardgame.Coordinate;
+import boardgame.Piece;
+import boardgame.Player;
+import boardgame.exceptions.InvalidColourException;
+import boardgame.exceptions.InvalidLayoutException;
+import boardgame.exceptions.TooManyPlayersException;
+import main.pieces.Bishop;
+import main.pieces.King;
+import main.pieces.Knight;
+import main.pieces.Pawn;
+import main.pieces.Queen;
+import main.pieces.Rook;
 
 public class ChessBoard extends Board {
 	
@@ -107,4 +118,28 @@ public class ChessBoard extends Board {
 	public void reset() {
 		setBoardStyle(layout);
 	}
+	@Override
+	public void startGameLoop(Player startingPlayer) {
+		
+		King whiteKing = (King) startingPlayer.getPieces("King", true).get(0);
+		King blackKing = (King) getOtherPlayer(startingPlayer).getPieces("King", true).get(0);
+		Player currentPlayer = startingPlayer;
+		Scanner reader = new Scanner(System.in);
+		
+		while(!whiteKing.inCheckmate() || !blackKing.inCheckmate() ||
+				!whiteKing.inStalemate() || !blackKing.inStalemate()) {
+			//print the board
+			System.out.println(this);
+			//ask the current player to make a move
+			System.out.print(currentPlayer.getColour() + " turn to move: ");
+			
+			
+			boolean validMoveFound = false;
+			String move = reader.next();
+			
+		}
+	}
+	
+	
+	
 }

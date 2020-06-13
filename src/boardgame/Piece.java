@@ -262,9 +262,10 @@ public abstract class Piece implements Cloneable{
 	/**
 	 * Move piece to a given coordinate on board
 	 * @param coordinate - Coordinate to move to
+	 * @return boolean result whether the move is valid or not
 	 */
-	public void move(Coordinate coordinate) throws InvalidMoveException {	
-		if(board == null)throw new NoBoardException(this); //if the piece does not have a board attribute
+	public boolean move(Coordinate coordinate){	
+		if(board == null)return false; //if the piece does not have a board attribute
 		//check if valid move
 		else if(getAllValidMoves().contains(coordinate)) {
 			// check if it was a capture
@@ -280,9 +281,9 @@ public abstract class Piece implements Cloneable{
 			//set new position to this piece
 			board.setPiece(coordinate, this);
 			this.timesMoved++;								
-		}
-		else {
-			throw new InvalidMoveException(this, coordinate);
+			return true;
+		}else {
+			return false;			
 		}
 	}
 	/**

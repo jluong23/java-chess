@@ -3,10 +3,11 @@
  */
 package test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -14,14 +15,21 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import boardgame.*;
-import boardgame.exceptions.InvalidCoordinateException;
-import boardgame.exceptions.InvalidMoveException;
+import boardgame.Action;
+import boardgame.Colour;
+import boardgame.Coordinate;
+import boardgame.Piece;
+import boardgame.Player;
 import main.Castle;
 import main.ChessBoard;
 import main.ChessCoordinate;
 import main.Layout;
-import main.pieces.*;
+import main.pieces.Bishop;
+import main.pieces.King;
+import main.pieces.Knight;
+import main.pieces.Pawn;
+import main.pieces.Queen;
+import main.pieces.Rook;
 /**
  * @author james
  *
@@ -118,13 +126,7 @@ public class TestPieces {
 				"A1","A2","A3","B3","B1","C1","C2","C3"};
 		performMovementTest(expectedCoordsString, king);
 		
-		//test 2 - moving to b1, king has 6 moves
-		try {
-			king.move(new ChessCoordinate("b1"));
-		} catch (InvalidMoveException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		king.move(new ChessCoordinate("b1"));
 		
 		expectedCoordsString = new String[]{
 				"A1","A2","B2","C1","C2"};
@@ -175,11 +177,7 @@ public class TestPieces {
 		performMovementTest(expectedCoordsString, pawn);
 		
 		//second test, pawn moves to c4, can only move to c5
-		try {
-			pawn.move(new ChessCoordinate("c4"));
-		} catch (InvalidMoveException e) {
-			System.out.println(e);
-		}
+		pawn.move(new ChessCoordinate("c4"));
 		expectedCoordsString = new String[]{
 				"C5"
 		};
@@ -225,12 +223,7 @@ public class TestPieces {
 		performAttackTest(new String[] {"b2"}, knight);
 		performMovementTest(expectedCoordsString, knight);
 		
-		//third test, knight moves to a3
-		try {
-			knight.move(new ChessCoordinate("a3"));
-		} catch (InvalidMoveException e) {
-			System.out.println(e);
-		}
+		knight.move(new ChessCoordinate("a3"));
 		expectedCoordsString = new String[]{
 				"b5","c4", //top right
 				"b1","c2" //bottom right
@@ -277,12 +270,7 @@ public class TestPieces {
 		//condition 3 - blackPawn has a position at b3
 		assertEquals(new ChessCoordinate("b3"), blackPawn.getPosition());	
 		
-		//make the capture
-		try {
-			queen.move(new ChessCoordinate("b3"));
-		} catch (InvalidMoveException e) {
-			e.printStackTrace();
-		}
+		queen.move(new ChessCoordinate("b3"));
 		
 		//after capture
 		//condition 1
@@ -312,12 +300,7 @@ public class TestPieces {
 
 		assertFalse(blackKing.inCheck());
 
-		//second test, queen moves to b2, black king should be in check
-		try {
-			whiteQueen.move(new ChessCoordinate("b2"));
-		} catch (InvalidMoveException e) {
-			e.printStackTrace();
-		}
+		whiteQueen.move(new ChessCoordinate("b2"));
 		assertTrue(blackKing.inCheck());
 //		//third test: king can not move to b7 since it was still be in check
 		String[] expectedCoordsString = new String[]{
@@ -361,12 +344,7 @@ public class TestPieces {
 		
 		b.setPiece(new ChessCoordinate("e1"), whiteKing);
 		b.setPiece(new ChessCoordinate("h1"), whiteKingsRook);
-		//try castle kingside
-		try {
-			whiteKing.move(new ChessCoordinate(Castle.KING_SIDE.getCode()));
-		} catch (InvalidMoveException e) {
-			e.printStackTrace();
-		}
+		whiteKing.move(new ChessCoordinate(Castle.KING_SIDE.getCode()));
 		ChessCoordinate kingLocation = new ChessCoordinate("g1");
 		ChessCoordinate rookLocation = new ChessCoordinate("f1");
 
@@ -391,12 +369,8 @@ public class TestPieces {
 		
 		b.setPiece(new ChessCoordinate("e8"), blackKing);
 		b.setPiece(new ChessCoordinate("h8"), blackKingsRook);
-		try {
-			blackKing.move(new ChessCoordinate(Castle.KING_SIDE.getCode()));
-		} catch (InvalidMoveException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		blackKing.move(new ChessCoordinate(Castle.KING_SIDE.getCode()));
+
 		
 		ChessCoordinate kingLocation = new ChessCoordinate("g8");
 		ChessCoordinate rookLocation = new ChessCoordinate("f8");
@@ -425,13 +399,7 @@ public class TestPieces {
 		
 		b.setPiece(new ChessCoordinate("e1"), whiteKing);
 		b.setPiece(new ChessCoordinate("a1"), whiteQueensRook);
-		//try castle queenside
-		try {
-			whiteKing.move(new ChessCoordinate(Castle.QUEEN_SIDE.getCode()));
-		} catch (InvalidMoveException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		whiteKing.move(new ChessCoordinate(Castle.QUEEN_SIDE.getCode()));
 		ChessCoordinate kingLocation = new ChessCoordinate("c1");
 		ChessCoordinate rookLocation = new ChessCoordinate("d1");
 
@@ -456,12 +424,7 @@ public class TestPieces {
 		
 		b.setPiece(new ChessCoordinate("e8"), blackKing);
 		b.setPiece(new ChessCoordinate("a8"), blackQueensRook);
-		try {
-			blackKing.move(new ChessCoordinate(Castle.QUEEN_SIDE.getCode()));
-		} catch (InvalidMoveException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		blackKing.move(new ChessCoordinate(Castle.QUEEN_SIDE.getCode()));
 		
 		ChessCoordinate kingLocation = new ChessCoordinate("c8");
 		ChessCoordinate rookLocation = new ChessCoordinate("d8");
@@ -502,13 +465,7 @@ public class TestPieces {
 		b.setPiece(new ChessCoordinate("f8"), blackQueen);
 		assertFalse(whiteKing.canCastle(Castle.KING_SIDE));
 		assertTrue(whiteKing.canCastle(Castle.QUEEN_SIDE));
-		//test 2.1 - after black queen moves to g8, still can't castle kingside
-		try {
-			blackQueen.move(new ChessCoordinate("g8"));
-		} catch (InvalidMoveException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		blackQueen.move(new ChessCoordinate("g8"));
 		assertFalse(whiteKing.canCastle(Castle.KING_SIDE));
 		assertTrue(whiteKing.canCastle(Castle.QUEEN_SIDE));
 		
@@ -518,58 +475,27 @@ public class TestPieces {
 		assertFalse(whiteKing.canCastle(Castle.KING_SIDE));
 		assertFalse(whiteKing.canCastle(Castle.QUEEN_SIDE));
 		
-		//test 4 - when white knight moves to c3, white king can castle queenside
-		try {
-			whiteKnight.move(new ChessCoordinate("c3"));
-		} catch (InvalidMoveException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		whiteKnight.move(new ChessCoordinate("c3"));
 		assertFalse(whiteKing.canCastle(Castle.KING_SIDE));
 		assertTrue(whiteKing.canCastle(Castle.QUEEN_SIDE));
 		
 		
-		//test 5 - when the queen checks the white king moving to e6, 
-		//white king can't castle out of check
-		try {
-			blackQueen.move(new ChessCoordinate("e6"));
-		} catch (InvalidMoveException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		blackQueen.move(new ChessCoordinate("e6"));
 		
 		assertFalse(whiteKing.canCastle(Castle.KING_SIDE));
 		assertFalse(whiteKing.canCastle(Castle.QUEEN_SIDE));
 
-		//test 6 - white knight blocks the check moving to e2, can castle both sides again
-		try {
-			whiteKnight.move(new ChessCoordinate("e2"));
-		} catch (InvalidMoveException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		whiteKnight.move(new ChessCoordinate("e2"));
 		assertTrue(whiteKing.canCastle(Castle.KING_SIDE));
 		assertTrue(whiteKing.canCastle(Castle.QUEEN_SIDE));
 
-		//test 7 - black makes passing move, white moves queenside rook, losing castling rights on queenside
-		try {
-			blackQueen.move(new ChessCoordinate("e5"));
-			whiteQueensRook.move(new ChessCoordinate("c1"));
-		} catch (InvalidMoveException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		blackQueen.move(new ChessCoordinate("e5"));
+		whiteQueensRook.move(new ChessCoordinate("c1"));
 		assertTrue(whiteKing.canCastle(Castle.KING_SIDE));
 		assertFalse(whiteKing.canCastle(Castle.QUEEN_SIDE));
 
-		//test 8 - black makes another passing move and white moves the king, losing castling rights for both sides
-		try {
-			blackQueen.move(new ChessCoordinate("e4"));
-			whiteKing.move(new ChessCoordinate("d1"));
-		} catch (InvalidMoveException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		blackQueen.move(new ChessCoordinate("e4"));
+		whiteKing.move(new ChessCoordinate("d1"));
 		assertFalse(whiteKing.canCastle(Castle.KING_SIDE));
 		assertFalse(whiteKing.canCastle(Castle.QUEEN_SIDE));
 	}
@@ -590,13 +516,7 @@ public class TestPieces {
 		b.setPiece(new ChessCoordinate("C2"), whiteQueen);
 		assertTrue(blackKing.inStalemate());
 		
-		//after queen moves away to the right, king can move to b2
-		try {
-			whiteQueen.move(new ChessCoordinate("h2"));
-		} catch (InvalidMoveException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		whiteQueen.move(new ChessCoordinate("h2"));
 		
 		assertFalse(blackKing.inStalemate());
 
@@ -619,21 +539,7 @@ public class TestPieces {
 		b.setPiece(new ChessCoordinate("H1"), whiteRook);
 		assertTrue(blackKing.inCheckmate());
 		
-		//after white rook moves to h2, no longer in check, king can move to b2.
-		try {
-			whiteRook.move(new ChessCoordinate("h2"));
-		} catch (InvalidMoveException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		whiteRook.move(new ChessCoordinate("h2"));
 		assertFalse(blackKing.inCheckmate());
-
-
-
 	}
 }
-
-
-
-
-

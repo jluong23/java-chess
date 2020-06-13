@@ -5,19 +5,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-import java.util.TooManyListenersException;
 
 import boardgame.exceptions.InvalidCoordinateException;
 import boardgame.exceptions.InvalidPlayerException;
-import boardgame.exceptions.NoPlayerAttributeException;
 import boardgame.exceptions.TooManyPlayersException;
 import main.ChessCoordinate;
-import main.pieces.King;
 
 public abstract class Board {
 	private Piece[][] board;
 	private List<Player> players;
 	private Player playerTurn;
+	private int moveCounter;
+	private List<Coordinate> moves;
 
 	public Board(List<Player> players2){
 		this.players = players2;
@@ -155,6 +154,10 @@ public abstract class Board {
 		return out;
 	}
 	
+	/**
+	 * Starts the game
+	 */
+	public abstract void startGameLoop(Player startingPlayer);
 	
 	public abstract void reset();
 	/**
@@ -193,5 +196,34 @@ public abstract class Board {
 		}
 		return null; //returns null if other player can't be found, shouldn't happen
 	}
+
+	/**
+	 * @return the moveCounter
+	 */
+	public int getMoveCounter() {
+		return moveCounter;
+	}
+
+	/**
+	 * @param moveCounter the moveCounter to set
+	 */
+	public void setMoveCounter(int moveCounter) {
+		this.moveCounter = moveCounter;
+	}
+
+	/**
+	 * @return the moves
+	 */
+	public List<Coordinate> getMoves() {
+		return moves;
+	}
+
+	/**
+	 * @param moves the moves to set
+	 */
+	public void setMoves(List<Coordinate> moves) {
+		this.moves = moves;
+	}
+
 
 }

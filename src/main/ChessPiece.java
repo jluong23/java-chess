@@ -2,13 +2,16 @@
 package main;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import boardgame.*;
+import boardgame.Action;
+import boardgame.Colour;
+import boardgame.Coordinate;
+import boardgame.Direction;
+import boardgame.Piece;
+import boardgame.Player;
 import boardgame.exceptions.InvalidCoordinateException;
-import boardgame.exceptions.InvalidMoveException;
 import boardgame.exceptions.InvalidSettingsException;
 import boardgame.exceptions.NoBoardException;
 import boardgame.exceptions.NoPlayerAttributeException;
