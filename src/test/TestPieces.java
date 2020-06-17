@@ -326,7 +326,6 @@ public class TestPieces {
 		b.setPiece(new ChessCoordinate("c3"), pinnedPawn);
 		b.setPiece(new ChessCoordinate("h8"), blackKing);
 		b.setPiece(new ChessCoordinate("a2"), whiteKing);
-		System.out.println(b);
 		performMovementTest(new String[] {}, pinnedPawn);
 	}
 	

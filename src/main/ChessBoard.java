@@ -1,10 +1,12 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
 import boardgame.Board;
+import boardgame.Colour;
 import boardgame.Coordinate;
 import boardgame.Piece;
 import boardgame.Player;
@@ -99,12 +101,11 @@ public class ChessBoard extends Board {
 				
 				final int NUM_PIECES_IN_RANK = 8;
 				//create the pieces, assigning the player to them
-				ArrayList<Piece> pawns = new Pawn(player).clone(NUM_PIECES_IN_RANK);
 				Piece[] specialPieces = {new Rook(player), new Knight(player), new Bishop(player), new Queen(player),
 				new King(player), new Bishop(player), new Knight(player), new Rook(player)};
 				
 				for (int i = 0; i < NUM_PIECES_IN_RANK; i++) {
-					this.setPiece(pawnRankCoords.get(i), pawns.get(i));
+					this.setPiece(pawnRankCoords.get(i), new Pawn(player));
 					this.setPiece(backRankCoords.get(i), specialPieces[i]);
 				}
 			}
@@ -116,21 +117,37 @@ public class ChessBoard extends Board {
 		setBoardStyle(layout);
 	}
 	@Override
-	public void startGameLoop(Player startingPlayer) {
-		
-		King whiteKing = (King) startingPlayer.getPieces("King", true).get(0);
-		King blackKing = (King) getOtherPlayer(startingPlayer).getPieces("King", true).get(0);
-		Player currentPlayer = startingPlayer;
+	public void startGameLoop() {
+		Player whitePlayer = this.getPlayer(Colour.WHITE);
+		Player blackPlayer = this.getPlayer(Colour.BLACK);
+		King whiteKing = (King) whitePlayer.getPieces("King", true).get(0);
+		King blackKing = (King) blackPlayer.getPieces("King", true).get(0);
+		//white starts first move
+		Player currentPlayer = whitePlayer;
+		//scanner object to take input from command line
 		Scanner reader = new Scanner(System.in);
-		boolean draw = false, whiteWin = false, blackWin = false; 
+		//initialise while loop condition variables
+		boolean draw = false, whiteWin = false, blackWin = false, quit = false; 
 		
-		while(!whiteWin || !blackWin || !draw) {
+		while(!whiteWin && !blackWin && !draw && !quit) {
 			//print the board
 			System.out.println(this);
 			//ask the current player to make a move
 			System.out.print(currentPlayer.getColour() + " turn to move: ");
 			boolean validMoveFound = false;
 			String move = reader.next();
+			if(move.equalsIgnoreCase("quit")) quit = true;
+			else {
+			
+				
+				//swap current player turn
+				if(currentPlayer == whitePlayer) currentPlayer = blackPlayer;
+				else 
+					currentPlayer = whitePlayer;
+			}
+			
+			
+			
 			//update results of game for loop condition
 			whiteWin = blackKing.inCheckmate();
 			blackWin = whiteKing.inCheckmate();
@@ -151,6 +168,17 @@ public class ChessBoard extends Board {
 		}
 		setRowNames(rowNames);
 		setColumnNames(columnNames);
+	}
+	
+	public static void main(String[] args) {
+		//test starting the game
+		Player p1 = new Player(Colour.WHITE);
+		Player p2 = new Player(Colour.BLACK);
+		Player[] playersArray = {p1,p2};
+		List<Player> players = Arrays.asList(playersArray);
+		ChessBoard b = new ChessBoard(Layout.STANDARD,players);
+		b.startGameLoop();
+
 	}
 	
 	

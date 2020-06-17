@@ -57,6 +57,18 @@ public abstract class Board {
 	public List<Player> getPlayers() {
 		return players;
 	}
+	
+	/**
+	 * Returns the first occurrence of a player with a given colour
+	 * @param colour - the colour the player should have
+	 * @return the player object or null if no player has the colour parameter
+	 */
+	public Player getPlayer(Colour colour) {
+		for (Player player : getPlayers()) {
+			if(player.getColour().equals(colour)) return player;
+		}
+		return null;
+	}
 
 	/**
 	 * @param players the players to set
@@ -220,7 +232,7 @@ public abstract class Board {
 	/**
 	 * Starts the game
 	 */
-	public abstract void startGameLoop(Player startingPlayer);
+	public abstract void startGameLoop();
 	
 	public abstract void reset();
 	/**

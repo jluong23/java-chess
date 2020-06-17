@@ -311,26 +311,18 @@ public abstract class Piece implements Cloneable{
 	 * Return a shallow copy of the instance
 	 * @return clone A clone of the instance object
 	 */
-	public Object clone() {
+	public Piece clone() {
+		Piece clone;
 		try {
-			return super.clone();
+			clone = (Piece) super.clone();
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
+			return null;
 		}
-		return null;
-	}
-	
-	/**
-	 * Return n shallow copies of the instance as an ArrayList
-	 * @param n the number of copies to make
-	 * @return duplicatePieces the clones of the instance in an ArrayList
-	 */
-	public ArrayList<Piece> clone(int n){
-		ArrayList<Piece> duplicatePieces = new ArrayList<Piece>();
-		for (int i = 0; i < n; i++) {
-			duplicatePieces.add( (Piece) this.clone());
-		}
-		return duplicatePieces;
+		// add the clone to player pieces
+		player.getMyPieces().add(clone); 
+		return clone;
+
 	}
 	
 	public Piece deepClonePlayerAttribute(){

@@ -1,22 +1,21 @@
 package main.pieces;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import javax.management.RuntimeErrorException;
-
-import boardgame.*;
+import boardgame.Action;
+import boardgame.Coordinate;
+import boardgame.Direction;
+import boardgame.Piece;
+import boardgame.Player;
 import boardgame.exceptions.InvalidColourException;
-import boardgame.exceptions.InvalidMoveException;
 import boardgame.exceptions.InvalidSettingsException;
 import boardgame.exceptions.NoBoardException;
 import main.Castle;
 import main.ChessCoordinate;
 import main.ChessPiece;
-import main.ChessPieceNames;
 
 public class King extends ChessPiece {
 
@@ -52,11 +51,11 @@ public class King extends ChessPiece {
 	}
 	
 	/**
-	 * Returns whether the king is in stale mate (not in check and has valid moves)
+	 * Returns whether the king is in stale mate (not in check and player has no valid moves)
 	 * @return boolean result
 	 */
 	public boolean inStalemate() {
-		return !inCheck() && getAllValidMoves().size() == 0;
+		return !inCheck() && getPlayer().getAllValidMoves().size() == 0;
 	}
 	
 	
