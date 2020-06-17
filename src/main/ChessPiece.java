@@ -140,7 +140,7 @@ public abstract class ChessPiece extends Piece {
 				boolean checkingKingMoves = this.equals(myKing);
 				
 				boolean valid = false;
-
+				//make a pseudo move on the board
 				makePseudoMove(coordinate);
 				//check if king is in check after pseudo move is played
 				//If looking for moves for king, check if this king is in check
@@ -150,6 +150,7 @@ public abstract class ChessPiece extends Piece {
 					//this piece is not a king, check if it puts their king in check
 					valid = true;										
 				}
+				//undo the pseudo move back to original position
 				popPseudoMove();
 				
 				return valid;	
@@ -162,7 +163,6 @@ public abstract class ChessPiece extends Piece {
 	
 	@Override
 	protected void captureConsequnce(Piece pieceCaptured) {
-		// TODO Auto-generated method stub
 		this.getPlayer().getPiecesTaken().add(pieceCaptured);
 		pieceCaptured.setAlive(false);
 		pieceCaptured.setPosition(null);

@@ -138,15 +138,13 @@ public class ChessBoard extends Board {
 			String move = reader.next();
 			if(move.equalsIgnoreCase("quit")) quit = true;
 			else {
-			
+				//try and make the move
 				
 				//swap current player turn
 				if(currentPlayer == whitePlayer) currentPlayer = blackPlayer;
 				else 
 					currentPlayer = whitePlayer;
 			}
-			
-			
 			
 			//update results of game for loop condition
 			whiteWin = blackKing.inCheckmate();

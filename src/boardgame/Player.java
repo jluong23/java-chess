@@ -139,6 +139,15 @@ public class Player {
 		return totalMoves;
 	}
 	
+	public boolean hasValidMoves() {
+		//assume player does not have moves until a counter example is found in foreach loop
+		boolean hasMoves = false;
+		for (Set<Coordinate> moves : getAllValidMoves().values()) {
+			if(moves.size() > 0) hasMoves = true;
+		}
+		return hasMoves;
+	}
+	
 	
 	
 	

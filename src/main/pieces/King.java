@@ -47,20 +47,16 @@ public class King extends ChessPiece {
 	 * @return boolean result
 	 */
 	public boolean inCheckmate() {
-		return inCheck() && getAllValidMoves().size() == 0;
+		return inCheck() && !getPlayer().hasValidMoves();
 	}
+	
 	
 	/**
 	 * Returns whether the king is in stale mate (not in check and player has no valid moves)
 	 * @return boolean result
 	 */
 	public boolean inStalemate() {
-		//assume kings player does not have moves until a counter example is found in foreach loop
-		boolean hasMoves = false;
-		for (Set<Coordinate> moves : getPlayer().getAllValidMoves().values()) {
-			if(moves.size() > 0) hasMoves = true;
-		}
-		return !inCheck() && !hasMoves;
+		return !inCheck() && !getPlayer().hasValidMoves();
 	}
 	
 	
