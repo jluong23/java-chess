@@ -26,9 +26,13 @@ public class ChessBoard extends Board {
 	public ChessBoard(Layout layout, List<Player> players) {
 		super(players);
 		this.layout = layout;
+
+		
 		//set as empty initially to access board methods while changing to given layout
 		setBoardArray(new Piece[8][8]);
 		setBoardStyle(layout);
+		setRowAndColNames();
+
 	}
 	/**
 	 * @return the kingRequired
@@ -108,13 +112,6 @@ public class ChessBoard extends Board {
 	}
 	
 	@Override
-	public String toString() {
-		String out = super.toString();
-		//include letters of chess board
-		out+="   a b c d e f g h";
-		return out;
-	}
-	@Override
 	public void reset() {
 		setBoardStyle(layout);
 	}
@@ -125,19 +122,35 @@ public class ChessBoard extends Board {
 		King blackKing = (King) getOtherPlayer(startingPlayer).getPieces("King", true).get(0);
 		Player currentPlayer = startingPlayer;
 		Scanner reader = new Scanner(System.in);
+		boolean draw = false, whiteWin = false, blackWin = false; 
 		
-		while(!whiteKing.inCheckmate() || !blackKing.inCheckmate() ||
-				!whiteKing.inStalemate() || !blackKing.inStalemate()) {
+		while(!whiteWin || !blackWin || !draw) {
 			//print the board
 			System.out.println(this);
 			//ask the current player to make a move
 			System.out.print(currentPlayer.getColour() + " turn to move: ");
-			
-			
 			boolean validMoveFound = false;
 			String move = reader.next();
+			//update results of game for loop condition
+			whiteWin = blackKing.inCheckmate();
+			blackWin = whiteKing.inCheckmate();
+			draw = whiteKing.inStalemate() || blackKing.inStalemate();
 			
 		}
+	}
+	@Override
+	public void setRowAndColNames() {		
+		List<Character> rowNames = new ArrayList<Character>();
+		List<Character> columnNames = new ArrayList<Character>();
+		for (int i = 0; i < getBoardArray().length; i++) {
+			//for white's perspective
+			//from 8 to 1, top left to bottom
+			rowNames.add((char) ('8' - i));
+			//from a to b, left to right from
+			columnNames.add((char)('A' + i));
+		}
+		setRowNames(rowNames);
+		setColumnNames(columnNames);
 	}
 	
 	

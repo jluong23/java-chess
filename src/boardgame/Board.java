@@ -17,6 +17,9 @@ public abstract class Board {
 	private Player playerTurn;
 	private int moveCounter;
 	private List<Coordinate> moves;
+	private List<Character> rowNames;
+	private List<Character> columnNames;
+
 
 	public Board(List<Player> players2){
 		this.players = players2;
@@ -133,23 +136,83 @@ public abstract class Board {
 		}
 		return pieces;
 	}
+	/**
+	 * @return the moveCounter
+	 */
+	public int getMoveCounter() {
+		return moveCounter;
+	}
+
+	/**
+	 * @param moveCounter the moveCounter to set
+	 */
+	public void setMoveCounter(int moveCounter) {
+		this.moveCounter = moveCounter;
+	}
+
+	/**
+	 * @return the moves
+	 */
+	public List<Coordinate> getMoves() {
+		return moves;
+	}
+
+	/**
+	 * @param moves the moves to set
+	 */
+	public void setMoves(List<Coordinate> moves) {
+		this.moves = moves;
+	}
 	
+	/**
+	 * @return the columnNames
+	 */
+	public List<Character> getColumnNames() {
+		return columnNames;
+	}
+
+	/**
+	 * @param columnNames the columnNames to set
+	 */
+	public void setColumnNames(List<Character> columnNames) {
+		this.columnNames = columnNames;
+	}
+
+	/**
+	 * @return the rowNames
+	 */
+	public List<Character> getRowNames() {
+		return rowNames;
+	}
+
+	/**
+	 * @param list the rowNames to set
+	 */
+	public void setRowNames(List<Character> list) {
+		this.rowNames = list;
+	}
+
 	@Override
 	public String toString() {
 		String out = "";
 		final String SPACE = "\u2003";
 		for (int i = 0; i < board.length; i++) {
-			//write down the rank number 
-			out+= (board.length - i) + " |";
+			//write down the row value 
+			out+= getRowNames().get(i) + " |";
 			for (int j = 0; j < board[i].length; j++) {
 				Piece tile = board[i][j];
 				if(tile == null) out+=SPACE; //if nothing on tile, print empty space
 				else out+=tile;				
 				out += "|";
-				
 			}
 			
 			out+="\n  ----------------------\n";
+			
+		}
+		//write down the column names
+		out+=SPACE + SPACE;
+		for (char col : getColumnNames()) {
+			out+= col + " ";
 		}
 		return out;
 	}
@@ -198,32 +261,10 @@ public abstract class Board {
 	}
 
 	/**
-	 * @return the moveCounter
+	 * This method should populate rowNames and columnNames using the public setters for these attributes. 
+	 * This is required to print the board with correct axes.
 	 */
-	public int getMoveCounter() {
-		return moveCounter;
-	}
-
-	/**
-	 * @param moveCounter the moveCounter to set
-	 */
-	public void setMoveCounter(int moveCounter) {
-		this.moveCounter = moveCounter;
-	}
-
-	/**
-	 * @return the moves
-	 */
-	public List<Coordinate> getMoves() {
-		return moves;
-	}
-
-	/**
-	 * @param moves the moves to set
-	 */
-	public void setMoves(List<Coordinate> moves) {
-		this.moves = moves;
-	}
+	public abstract void setRowAndColNames();
 
 
 }
