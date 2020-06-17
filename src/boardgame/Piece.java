@@ -196,7 +196,7 @@ public abstract class Piece implements Cloneable{
 	//methods
 	
 	/**
-	 * Get all moves for the unit, not necessarily a valid move
+	 * Get all moves for the unit, not necessarily a valid move.
 	 * @param directions - the directions to search in 
 	 * @param numTiles - the number of tiles the piece can move
 	 * @param numTiles - the number of tiles this piece can perform an action in
@@ -307,6 +307,50 @@ public abstract class Piece implements Cloneable{
 	public boolean onRow(int rowIndex) {
 		return rowIndex == getPosition().getIndexes()[0];
 	}
+	
+	//used as space when creating new board positions with played pseudo moves
+	private static Piece pseudoCapturedPiece;
+	private static Coordinate pseudoOriginalCoordinate;
+	private static Coordinate pseudoNewCoordinate;
+	
+	/**
+	 * Place this piece at a new coordinate. Used to check for valid board positions
+	 * @param coordinate - the coordinate to place this piece on
+	 */
+	public void makePseudoMove(Coordinate coordinate) {
+		//the piece that this piece is capturing, can be null if no capture and piece is only moving to a square
+		pseudoCapturedPiece = getBoard().at(coordinate);
+		if(pseudoCapturedPiece != null) {
+			//remove from pieces list of the player if a capture occurs
+			pseudoCapturedPiece.getPlayer().getMyPieces().remove(pseudoCapturedPiece);
+		}
+		//store original and new position as class variables, place back after moving the piece
+		pseudoOriginalCoordinate = getPosition();
+		pseudoNewCoordinate = coordinate;
+		//emulate the move made, move this piece to the coordinate checked and set previous position to null
+		getBoard().setPiece(coordinate, this);
+		getBoard().setPiece(pseudoOriginalCoordinate, null);
+	}
+	
+	/**
+	 * Undo the pseudo move played, placing the piece back to where it was in the original position
+	 */
+	public void popPseudoMove() {
+		//place captured piece back
+		getBoard().setPiece(pseudoOriginalCoordinate, this);
+		//reset piece back to original position,
+		getBoard().setPiece(pseudoNewCoordinate, pseudoCapturedPiece);
+		//add captured piece back to player pieces list if capture occured
+		if(pseudoCapturedPiece != null) {
+			getBoard().getOtherPlayer(getPlayer()).getMyPieces().add(pseudoCapturedPiece);
+		}
+		
+		//reset pseudo variables
+		pseudoCapturedPiece = null;
+		pseudoOriginalCoordinate = null;
+		pseudoNewCoordinate = null;
+	}
+	
 	/**
 	 * Return a shallow copy of the instance
 	 * @return clone A clone of the instance object
@@ -322,20 +366,6 @@ public abstract class Piece implements Cloneable{
 		// add the clone to player pieces
 		player.getMyPieces().add(clone); 
 		return clone;
-
-	}
-	
-	public Piece deepClonePlayerAttribute(){
-		try {
-			//try make a copy of this piece, sharing the player attribute
-			return (Piece) Class.forName(this.getClass().getName()).getConstructor(Player.class).newInstance(getPlayer());
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-				| java.lang.reflect.InvocationTargetException | NoSuchMethodException | SecurityException
-				| ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
 
 	}
 	

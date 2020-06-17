@@ -46,7 +46,6 @@ public abstract class ChessPiece extends Piece {
 	
 	@Override
 	public Set<Coordinate> getTotalMoves(Action action) {
-		
 		//get which list of directions to check for given an action
 		Direction[] directions = null;
 		int numTiles = 0;
@@ -141,16 +140,9 @@ public abstract class ChessPiece extends Piece {
 				boolean checkingKingMoves = this.equals(myKing);
 				
 				boolean valid = false;
-				//the piece that this piece is capturing, can be null if empty space 
-				Piece capturedPiece = getBoard().at(coordinate);
-				
-				//store original position, place back after moving the piece
-				Coordinate originalPos = getPosition();
-				//emulate the move made, move this piece to the coordinate checked and set previous position to null
-				getBoard().setPiece(coordinate, this);
-				getBoard().setPiece(originalPos, null);
-				
-				//check if king is in check.
+
+				makePseudoMove(coordinate);
+				//check if king is in check after pseudo move is played
 				//If looking for moves for king, check if this king is in check
 				if(checkingKingMoves && !((King)(this)).inCheck()) {
 					valid = true;
@@ -158,9 +150,7 @@ public abstract class ChessPiece extends Piece {
 					//this piece is not a king, check if it puts their king in check
 					valid = true;										
 				}
-				//reset back to original, place captured piece back and remove tempKing from player pieces list
-				getBoard().setPiece(originalPos, this);
-				getBoard().setPiece(coordinate, capturedPiece);
+				popPseudoMove();
 				
 				return valid;	
 			}
@@ -178,5 +168,6 @@ public abstract class ChessPiece extends Piece {
 		pieceCaptured.setPosition(null);
 		
 	}
+
 	
 }

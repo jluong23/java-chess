@@ -55,7 +55,12 @@ public class King extends ChessPiece {
 	 * @return boolean result
 	 */
 	public boolean inStalemate() {
-		return !inCheck() && getPlayer().getAllValidMoves().size() == 0;
+		//assume kings player does not have moves until a counter example is found in foreach loop
+		boolean hasMoves = false;
+		for (Set<Coordinate> moves : getPlayer().getAllValidMoves().values()) {
+			if(moves.size() > 0) hasMoves = true;
+		}
+		return !inCheck() && !hasMoves;
 	}
 	
 	
