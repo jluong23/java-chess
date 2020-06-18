@@ -1,15 +1,13 @@
 package boardgame;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import boardgame.exceptions.*;
-import boardgame.*;
+import boardgame.exceptions.InvalidSettingsException;
+import boardgame.exceptions.NoBoardException;
 public abstract class Piece implements Cloneable{
 	
 	//attributes
-	private char symbol;
+	private char icon;
 	private String name;
 	private Player player;
 	private int timesMoved;
@@ -33,20 +31,22 @@ public abstract class Piece implements Cloneable{
 		name = getClass().getSimpleName().toUpperCase();
 
 	}
-
 	/**
-	 * @return the symbol
+	 * @return the icon
 	 */
-	public char getSymbol() {
-		return symbol;
+	public char getIcon() {
+		return icon;
 	}
 
+
 	/**
-	 * @param symbol the symbol to set
+	 * @param icon the icon to set
 	 */
-	public void setSymbol(char symbol) {
-		this.symbol = symbol;
+	public void setIcon(char icon) {
+		this.icon = icon;
 	}
+
+
 	/**
 	 * @return the name
 	 */
@@ -371,7 +371,7 @@ public abstract class Piece implements Cloneable{
 	
 	@Override
 	public String toString() {
-		return Character.toString(symbol);
+		return Character.toString(icon);
 	}
 
 	@Override

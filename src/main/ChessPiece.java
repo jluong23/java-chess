@@ -39,13 +39,20 @@ public abstract class ChessPiece extends Piece {
 			throw new NoPlayerAttributeException(this);
 		}else {
 			Colour colour = getPlayer().getColour();
-			char symbol = ChessPieceNames.getSymbol(getName(),colour);
-			this.setSymbol(symbol);			
+			char icon = ChessPieceNames.getIcon(getName(),colour);
+			this.setIcon(icon);			
 		}		
 	}
 	
 	@Override
 	public Set<Coordinate> getTotalMoves(Action action) {
+		//initialise array list of tiles that are moveable to
+		Set<Coordinate> tilesCovered = new HashSet<Coordinate>();
+		
+		//return an empty set if not alive
+		if(!isAlive()) return tilesCovered;
+		
+		
 		//get which list of directions to check for given an action
 		Direction[] directions = null;
 		int numTiles = 0;
@@ -59,9 +66,6 @@ public abstract class ChessPiece extends Piece {
 			numTiles = getMoveableDistance();
 			break;
 		}
-		
-		//initialise array list of tiles that are moveable to
-		Set<Coordinate> tilesCovered = new HashSet<Coordinate>();
 		
 		for (Direction dir : directions) {
 			ArrayList<Coordinate> tilesInDir = new ArrayList<Coordinate>();
