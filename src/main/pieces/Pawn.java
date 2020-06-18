@@ -22,9 +22,11 @@ public class Pawn extends ChessPiece {
 		case BLACK:
 			setMoveableDirections(new Direction[] {Direction.DOWN});
 			setAttackableDirections(Direction.diagonalBackwards());
+			break;
 		case WHITE:
 			setMoveableDirections(new Direction[] {Direction.UP});
 			setAttackableDirections(Direction.diagonalForwards());
+			break;
 	
 		}
 	}
