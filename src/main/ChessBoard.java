@@ -175,27 +175,26 @@ public class ChessBoard extends Board {
 		//castle the king if its a castling move
 		if(Castle.isCastlingMove(new ChessCoordinate(notation))) {
 			King playerKing = (King) getPlayerTurn().getPieces("King", true).get(0);
-			playerKing.move(new ChessCoordinate(notation));
-			return true;
+			//return the result of trying to castle
+			return playerKing.move(new ChessCoordinate(notation));
+			
 		}else {
 			//not a castling move, standard move
 				
-			String[] notationList = notation.toUpperCase().split("");
+			String[] notationList = notation.split("");
 			//find the piece name
-			String pieceName;		
-			if(getColumnNames().contains(notationList[0])) {
-				//if first character is a column
+			String pieceName = ChessPieceNames.getPieceName(notationList[0]);		
+			
+			if(pieceName == null && getColumnNames().contains(notationList[0].toUpperCase())) {
+				//if first character is a column and returned null from above
 				//must be a pawn move like e4 or axb2
 				pieceName = ChessPieceNames.PAWN.toString();
-			}else {
-				//special piece move
-				try {
-					pieceName = ChessPieceNames.getPieceName(notationList[0]);				
-				}catch (NoSuchElementException e) {
-					//the piece name was invalid, return false
-					return false;
-				}
+			}else if(pieceName == null){
+				//not a column and null so invalid move
+				return false;
 			}
+				
+			
 //			//capturing move if there is a capture (x)
 //			boolean isCaptureMove = Arrays.asList(notationList).contains("X");
 			

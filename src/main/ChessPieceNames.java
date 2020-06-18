@@ -1,7 +1,5 @@
 package main;
 
-import java.util.NoSuchElementException;
-
 import boardgame.Colour;
 import boardgame.exceptions.InvalidColourException;
 
@@ -46,13 +44,13 @@ public enum ChessPieceNames{
 	/**
 	 * Return a piece name as a string from a given symbol
 	 * @param symbol - the symbol related to the piece
-	 * @return the piece name as a string
+	 * @return the piece name as a string, null if not found
 	 */
 	public static String getPieceName(String symbol) {
 		for (ChessPieceNames piece : ChessPieceNames.values()) {
-			if(piece.symbol.equalsIgnoreCase(symbol)) return piece.toString();
+			if(piece.symbol.equals(symbol)) return piece.toString();
 		}
-		throw new NoSuchElementException("Could not find symbol " + symbol +  " in ChessPieceNames.getPieceName()");
+		return null;
 	}
 	
 	
