@@ -123,7 +123,7 @@ public class ChessBoard extends Board {
 		King whiteKing = (King) whitePlayer.getPieces("King", true).get(0);
 		King blackKing = (King) blackPlayer.getPieces("King", true).get(0);
 		//white starts first move
-		Player currentPlayer = whitePlayer;
+		setPlayerTurn(whitePlayer);
 		//scanner object to take input from command line
 		Scanner reader = new Scanner(System.in);
 		//initialise while loop condition variables
@@ -133,25 +133,44 @@ public class ChessBoard extends Board {
 			//print the board
 			System.out.println(this);
 			//ask the current player to make a move
-			System.out.print(currentPlayer.getColour() + " turn to move: ");
+			System.out.print(getPlayerTurn().getColour() + "'s turn to move: ");
 			boolean validMoveFound = false;
-			String move = reader.next();
-			if(move.equalsIgnoreCase("quit")) quit = true;
-			else {
-				//try and make the move
-				
-				//swap current player turn
-				if(currentPlayer == whitePlayer) currentPlayer = blackPlayer;
-				else 
-					currentPlayer = whitePlayer;
-			}
 			
+			while(!validMoveFound && !quit) {
+				String move = reader.next();
+				if(move.equalsIgnoreCase("quit")) quit = true;
+				else if (makeMove(move)) {
+					//if the move is valid, play it and change turn
+						validMoveFound = true;
+						changeTurn();
+					}
+				else {
+					//move is invalid, ask for another move
+					System.out.println("Invalid move. Try again: ");
+				}
+			}
 			//update results of game for loop condition
 			whiteWin = blackKing.inCheckmate();
 			blackWin = whiteKing.inCheckmate();
 			draw = whiteKing.inStalemate() || blackKing.inStalemate();
-			
 		}
+		
+		//end of game has been reached
+		if(quit)System.out.println("Exiting the game...");
+		else if(draw)System.out.println("DRAW");
+		else {
+			// the loser is the player that has the current turn, so the winner does not have the current turn
+			Player winner = getPlayerTurn().equals(whitePlayer) ? blackPlayer : whitePlayer;
+			System.out.println(winner.getColour() + " has won the game!");
+		}
+		reader.close();
+		
+	}
+	
+	@Override
+	public boolean makeMove(String notation) {
+		// TODO Auto-generated method stub
+		return true;
 	}
 	@Override
 	public void setRowAndColNames() {		
@@ -178,6 +197,7 @@ public class ChessBoard extends Board {
 		b.startGameLoop();
 
 	}
+
 	
 	
 	

@@ -230,11 +230,36 @@ public abstract class Board {
 	}
 	
 	/**
+	 * Change the turn of the game by changing playerTurn attribute.
+	 * By default, functions by taking the next player in the players attribute, wrapping around
+	 * to the beginning if on the last player.
+	 */
+	protected void changeTurn() {
+		int currentIndex = players.indexOf(playerTurn);
+		if(currentIndex == players.size() - 1) setPlayerTurn(players.get(0));
+		else setPlayerTurn(players.get(currentIndex+1));
+		
+	}
+	
+	/**
 	 * Starts the game
 	 */
 	public abstract void startGameLoop();
 	
+	/**
+	 * Should reset the board to it's layout attribute and reset piece lists (captured and owned) to original for all players
+	 */
 	public abstract void reset();
+	
+	/**
+	 * Make a move given the move notation
+	 * @param notation - the move notation
+	 * @return boolean result whether the move was successfully played. Should return false for invalid notation
+	 */
+	public abstract boolean makeMove(String notation);
+	
+	
+	
 	/**
 	 * Return if a coordinate is attacked by a player
 	 * @param coordinate - the coordinate to check if attacked
