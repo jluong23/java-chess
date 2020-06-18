@@ -17,8 +17,8 @@ public abstract class Board {
 	private Player playerTurn;
 	private int moveCounter;
 	private List<Coordinate> moves;
-	private List<Character> rowNames;
-	private List<Character> columnNames;
+	private List<String> rowNames;
+	private List<String> columnNames;
 
 
 	public Board(List<Player> players2){
@@ -148,6 +148,50 @@ public abstract class Board {
 		}
 		return pieces;
 	}
+	
+	/**
+	 * Get the first occurunce of a piece on the board by row
+	 * @param pieceName - the piece to get by name
+	 * @param row - the row to get from using row names list attribute
+	 * @return The piece on the row, null if there is no piece
+	 */
+	public Piece getPieceOnRow(String pieceName, String row) {
+		int rowIndex = getRowNames().indexOf(row);
+		for (Piece piece : board[rowIndex]) {
+			if(piece.getName().equalsIgnoreCase(pieceName)) return piece;
+		}
+		return null;
+	}
+	
+	/**
+	 * Get the first occurunce of a piece on the board by column
+	 * 
+	 * @param pieceName - the piece to get by name
+	 * @param col - th ecolumn to get from using column names list attribute
+	 * @return The piece on the column, null if there is no piece
+	 */
+	public Piece getPieceOnCol(String pieceName, String col) {
+		int colIndex = getColumnNames().indexOf(col);
+		for (Piece[] row : board) {
+			Piece piece = row[colIndex];
+			if(piece.getName().equalsIgnoreCase(pieceName)) return piece;
+			
+		}
+		return null;
+	}
+	
+	public boolean shareColumn(List<Piece> pieces) {
+		//true until counter example is found
+		boolean shared = true;
+		String firstColumn = pieces.get(0).getPosition().getCoordinate().split("")[0];
+		for (int i = 0; i < pieces.size(); i++) {
+			String column = pieces.get(i).getPosition().getCoordinate().split("")[0];
+			//columns should be equal between all pieces
+			if(firstColumn != column) shared = false;
+		}
+		return shared;
+	}
+	
 	/**
 	 * @return the moveCounter
 	 */
@@ -179,29 +223,29 @@ public abstract class Board {
 	/**
 	 * @return the columnNames
 	 */
-	public List<Character> getColumnNames() {
+	public List<String> getColumnNames() {
 		return columnNames;
 	}
 
 	/**
-	 * @param columnNames the columnNames to set
+	 * @param columnNames2 the columnNames to set
 	 */
-	public void setColumnNames(List<Character> columnNames) {
-		this.columnNames = columnNames;
+	public void setColumnNames(List<String> columnNames2) {
+		this.columnNames = columnNames2;
 	}
 
 	/**
 	 * @return the rowNames
 	 */
-	public List<Character> getRowNames() {
+	public List<String> getRowNames() {
 		return rowNames;
 	}
 
 	/**
-	 * @param list the rowNames to set
+	 * @param rowNames2 the rowNames to set
 	 */
-	public void setRowNames(List<Character> list) {
-		this.rowNames = list;
+	public void setRowNames(List<String> rowNames2) {
+		this.rowNames = rowNames2;
 	}
 
 	@Override
@@ -223,7 +267,7 @@ public abstract class Board {
 		}
 		//write down the column names
 		out+=SPACE + SPACE;
-		for (char col : getColumnNames()) {
+		for (String col : getColumnNames()) {
 			out+= col + " ";
 		}
 		return out;

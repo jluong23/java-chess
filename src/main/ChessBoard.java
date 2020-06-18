@@ -3,7 +3,9 @@ package main;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.util.Set;
 
 import boardgame.Board;
 import boardgame.Colour;
@@ -146,7 +148,7 @@ public class ChessBoard extends Board {
 					}
 				else {
 					//move is invalid, ask for another move
-					System.out.println("Invalid move. Try again: ");
+					System.out.print("Invalid move. Try again: ");
 				}
 			}
 			//update results of game for loop condition
@@ -169,19 +171,96 @@ public class ChessBoard extends Board {
 	
 	@Override
 	public boolean makeMove(String notation) {
-		// TODO Auto-generated method stub
-		return true;
+		
+		//castle the king if its a castling move
+		if(Castle.isCastlingMove(new ChessCoordinate(notation))) {
+			King playerKing = (King) getPlayerTurn().getPieces("King", true).get(0);
+			playerKing.move(new ChessCoordinate(notation));
+			return true;
+		}else {
+			//not a castling move, standard move
+				
+			String[] notationList = notation.toUpperCase().split("");
+			//find the piece name
+			String pieceName;		
+			if(getColumnNames().contains(notationList[0])) {
+				//if first character is a column
+				//must be a pawn move like e4 or axb2
+				pieceName = ChessPieceNames.PAWN.toString();
+			}else {
+				//special piece move
+				try {
+					pieceName = ChessPieceNames.getPieceName(notationList[0]);				
+				}catch (NoSuchElementException e) {
+					//the piece name was invalid, return false
+					return false;
+				}
+			}
+//			//capturing move if there is a capture (x)
+//			boolean isCaptureMove = Arrays.asList(notationList).contains("X");
+			
+			//final coordinate
+			String coordinateString = notationList[notationList.length-2] + notationList[notationList.length-1];
+			ChessCoordinate coordinate = new ChessCoordinate(coordinateString);
+			if(coordinate.isValid()) {
+				//extract players alive pieces of piece name
+				List<Piece> piecesOfType = getPlayerTurn().getPieces(pieceName, true);
+				//list of pieces that can move to the same square
+				List<Piece> piecesCanMoveToSquare = new ArrayList<Piece>();
+				for (Piece piece : piecesOfType) {
+					Set<Coordinate> pieceMoves = piece.getAllValidMoves();
+					if(pieceMoves.contains(coordinate))piecesCanMoveToSquare.add(piece);
+				}
+				
+				if(piecesCanMoveToSquare.size() > 1) {
+					//multiple pieces of the same type can move to that square, check which one to use
+					//if pawn, the identifier to use is the 0th index of notationList, eg axb4. use pawn in column a.
+					//for other pieces, column to use is the 1st index of notationList. eg Nab4.
+		
+					//variable called identifier as it can be a row or column value.
+					String identifier = pieceName.equalsIgnoreCase(ChessPieceNames.PAWN.toString()) ?
+							notationList[0] : notationList[1];
+					//identifier should be a row value if pieces share the same column
+					boolean isRow = shareColumn(piecesOfType);
+					
+					if(isRow && getRowNames().contains(identifier)) {
+						//locate piece by row and move that piece to coordinate
+						getPieceOnRow(pieceName, identifier).move(coordinate);
+						return true;
+						
+					}else if(getColumnNames().contains(identifier)) {
+						//locate piece by column and move that piece to coordinate
+						getPieceOnCol(pieceName, identifier).move(coordinate);
+						return true;
+					}
+					//invalid identifier
+					else return false;
+				}
+					
+				else if (piecesCanMoveToSquare.size() == 1) {
+					//only one piece can go to that square, so take piece at 0th index as the list only has one element
+					piecesCanMoveToSquare.get(0).move(coordinate);
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+			//invalid coordinate, move can not be played
+			else return false;
+		}
+		
 	}
 	@Override
 	public void setRowAndColNames() {		
-		List<Character> rowNames = new ArrayList<Character>();
-		List<Character> columnNames = new ArrayList<Character>();
+		List<String> rowNames = new ArrayList<>();
+		List<String> columnNames = new ArrayList<>();
 		for (int i = 0; i < getBoardArray().length; i++) {
 			//for white's perspective
 			//from 8 to 1, top left to bottom
-			rowNames.add((char) ('8' - i));
+			rowNames.add(Character.toString('8'- i));
 			//from a to b, left to right from
-			columnNames.add((char)('A' + i));
+			columnNames.add(Character.toString('A'+ i));
 		}
 		setRowNames(rowNames);
 		setColumnNames(columnNames);

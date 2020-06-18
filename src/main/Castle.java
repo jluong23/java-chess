@@ -1,7 +1,5 @@
 package main;
 
-import java.util.NoSuchElementException;
-
 import boardgame.Coordinate;
 import boardgame.Direction;
 
