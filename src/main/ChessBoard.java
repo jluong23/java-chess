@@ -7,6 +7,7 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.Set;
 
+import boardgame.Action;
 import boardgame.Board;
 import boardgame.Colour;
 import boardgame.Coordinate;
@@ -196,7 +197,7 @@ public class ChessBoard extends Board {
 				
 			
 //			//capturing move if there is a capture (x)
-//			boolean isCaptureMove = Arrays.asList(notationList).contains("X");
+			boolean isCaptureMove = Arrays.asList(notationList).contains("x");
 			
 			//final coordinate
 			String coordinateString = notationList[notationList.length-2] + notationList[notationList.length-1];
@@ -207,7 +208,10 @@ public class ChessBoard extends Board {
 				//list of pieces that can move to the same square
 				List<Piece> piecesCanMoveToSquare = new ArrayList<Piece>();
 				for (Piece piece : piecesOfType) {
-					Set<Coordinate> pieceMoves = piece.getAllValidMoves();
+					
+					//use valid moves of attacking if capturing move, else use move to
+					Set<Coordinate> pieceMoves = isCaptureMove 
+							? piece.getValidMoves(Action.ATTACK) : piece.getValidMoves(Action.MOVE_TO);
 					if(pieceMoves.contains(coordinate))piecesCanMoveToSquare.add(piece);
 				}
 				
