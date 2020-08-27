@@ -89,6 +89,7 @@ public class ChessBoard extends Board {
 			setPiece(new ChessCoordinate("A8"), new Knight(getPlayer(Colour.BLACK)));
 			setPiece(new ChessCoordinate("C8"), new Knight(getPlayer(Colour.BLACK)));
 			setPiece(new ChessCoordinate("B8"), new King(getPlayer(Colour.BLACK)));
+			setPiece(new ChessCoordinate("B3"), new Pawn(getPlayer(Colour.BLACK)));
 
 
 		}
@@ -202,7 +203,7 @@ public class ChessBoard extends Board {
 			//find the piece name
 			String pieceName = ChessPieceNames.getPieceName(notationList[0]);		
 			
-			if(pieceName == null && getColumnNames().contains(notationList[0].toUpperCase())) {
+			if(pieceName == null && getColumnNames().contains(notationList[0].toLowerCase())) {
 				//if first character is a column and returned null from above
 				//must be a pawn move like e4 or axb2
 				pieceName = ChessPieceNames.PAWN.toString();
@@ -229,13 +230,24 @@ public class ChessBoard extends Board {
 					Set<Coordinate> pieceMoves = isCaptureMove 
 							? piece.getValidMoves(Action.ATTACK) : piece.getValidMoves(Action.MOVE_TO);
 					if(pieceMoves.contains(coordinate))piecesCanMoveToSquare.add(piece);
+				}	
+				
+				if (piecesCanMoveToSquare.size() == 1) {
+					//only one piece can go to that square, so take piece at 0th index as the list only has one element
+					piecesCanMoveToSquare.get(0).move(coordinate);
+					return true;
 				}
 				
-				if(piecesCanMoveToSquare.size() > 1) {
+				else if (piecesCanMoveToSquare.size() > 1) {
+					
+					if(notation.length() <= 3) {
+						System.out.println("Invalid move, specify which piece to move to " + coordinateString);
+						return false;
+					}
 					//multiple pieces of the same type can move to that square, check which one to use
 					//if pawn, the identifier to use is the 0th index of notationList, eg axb4. use pawn in column a.
 					//for other pieces, column to use is the 1st index of notationList. eg Nab4.
-		
+					
 					//variable called identifier as it can be a row or column value.
 					String identifier = (pieceName.equalsIgnoreCase(ChessPieceNames.PAWN.toString()) ?
 							notationList[0] : notationList[1]).toLowerCase();
@@ -246,40 +258,28 @@ public class ChessBoard extends Board {
 						//locate piece by row and move that piece to coordinate
 						for (Piece piece : piecesCanMoveToSquare) {
 							//look at the row number of piece coordinate, see if it matches the identifier 
-
 							if(Character.toString(piece.getPosition().toString().charAt(1)).equalsIgnoreCase(identifier)) {
 								piece.move(coordinate);
 								return true;
-								
 							}
 						}
-						
 						System.out.println("There is no " + pieceName + " on row " + identifier);
 						return false;
-						
 					}else if(getColumnNames().contains(identifier)) {
 						for (Piece piece : piecesCanMoveToSquare) {
 							//look at the column letter of piece coordinate, see if it matches the identifier 
 							if(Character.toString(piece.getPosition().toString().charAt(0)).equalsIgnoreCase(identifier)) {
 								piece.move(coordinate);
 								return true;
-								
 							}
-							
 						}
 						System.out.println("There is no " + pieceName + " on column " + identifier);
 						return false;
-						
 					}
 					//invalid identifier
 					else return false;
 				}
 					
-				else if (piecesCanMoveToSquare.size() == 1) {
-					//only one piece can go to that square, so take piece at 0th index as the list only has one element
-					piecesCanMoveToSquare.get(0).move(coordinate);
-					return true;
-				}
 				else {
 					return false;
 				}
@@ -303,19 +303,4 @@ public class ChessBoard extends Board {
 		setRowNames(rowNames);
 		setColumnNames(columnNames);
 	}
-	
-	public static void main(String[] args) {
-		//test starting the game
-		Player p1 = new Player(Colour.WHITE);
-		Player p2 = new Player(Colour.BLACK);
-		Player[] playersArray = {p1,p2};
-		List<Player> players = Arrays.asList(playersArray);
-		ChessBoard b = new ChessBoard(Layout.TEST_TWO_KNIGHTS,players);
-		b.startGameLoop();
-
-	}
-
-	
-	
-	
 }
