@@ -3,7 +3,6 @@ package main;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -30,7 +29,6 @@ public class ChessBoard extends Board {
 	
 	public ChessBoard(Layout layout, List<Player> players) {
 		super(players);
-		this.layout = layout;
 
 		
 		//set as empty initially to access board methods while changing to given layout
@@ -57,29 +55,47 @@ public class ChessBoard extends Board {
 	 * EMPTY: King is not required
 	 * @param layout the layout for the chess board
 	 */
-	public void setBoardStyle(Layout layout) throws InvalidLayoutException {
+	private void setBoardStyle(Layout layout) throws InvalidLayoutException {
 		if(layout == null) throw new InvalidLayoutException("Null layout detected");
 		else {
 			switch(layout) {
 			case STANDARD:
-				setDefaultBoard();
 				kingRequired = true;
+				setDefaultBoard();
 				break;
 			case EMPTY:
-				//by default, king required is false.
 				kingRequired = false;
 				//just break for empty layout enum as the emptyBoard is already assigned
+				break;
+			case TEST_TWO_KNIGHTS:
+				kingRequired = true;
+				setTestTwoKnightsBoard();
 				break;
 			default:
 				throw new InvalidLayoutException("Layout does not exist");
 			}
+			this.layout = layout;
+
+		}
+	}
+	private void setTestTwoKnightsBoard() {
+		if(getPlayers().size() != 2) {
+			throw new TooManyPlayersException("There are too many players, must only be 2");
+		}else {
+			setPiece(new ChessCoordinate("A1"), new Knight(getPlayer(Colour.WHITE)));
+			setPiece(new ChessCoordinate("C1"), new Knight(getPlayer(Colour.WHITE)));
+			setPiece(new ChessCoordinate("B1"), new King(getPlayer(Colour.WHITE)));
 			
+			setPiece(new ChessCoordinate("A8"), new Knight(getPlayer(Colour.BLACK)));
+			setPiece(new ChessCoordinate("C8"), new Knight(getPlayer(Colour.BLACK)));
+			setPiece(new ChessCoordinate("B8"), new King(getPlayer(Colour.BLACK)));
+
+
 		}
 	}
 	/**
 	 * Sets current board to default board layout
 	 * @throws TooManyPlayersException
-	 * @throws InvalidColourException
 	 */
 	private void setDefaultBoard() throws TooManyPlayersException, InvalidColourException{
 		if(getPlayers().size() != 2) {
@@ -132,14 +148,14 @@ public class ChessBoard extends Board {
 		//initialise while loop condition variables
 		boolean draw = false, whiteWin = false, blackWin = false, quit = false; 
 		
-		while(!whiteWin && !blackWin && !draw && !quit) {
+		while(!(whiteWin || blackWin || draw || quit)) {
 			//print the board
 			System.out.println(this);
 			//ask the current player to make a move
 			System.out.print(getPlayerTurn().getColour() + "'s turn to move: ");
 			boolean validMoveFound = false;
 			
-			while(!validMoveFound && !quit) {
+			while(!(validMoveFound || quit)) {
 				String move = reader.next();
 				if(move.equalsIgnoreCase("quit")) quit = true;
 				else if (makeMove(move)) {
@@ -221,20 +237,39 @@ public class ChessBoard extends Board {
 					//for other pieces, column to use is the 1st index of notationList. eg Nab4.
 		
 					//variable called identifier as it can be a row or column value.
-					String identifier = pieceName.equalsIgnoreCase(ChessPieceNames.PAWN.toString()) ?
-							notationList[0] : notationList[1];
+					String identifier = (pieceName.equalsIgnoreCase(ChessPieceNames.PAWN.toString()) ?
+							notationList[0] : notationList[1]).toLowerCase();
 					//identifier should be a row value if pieces share the same column
-					boolean isRow = shareColumn(piecesOfType);
+					boolean isRowIdentifier = shareColumn(piecesOfType);
 					
-					if(isRow && getRowNames().contains(identifier)) {
+					if(isRowIdentifier && getRowNames().contains(identifier)) {
 						//locate piece by row and move that piece to coordinate
-						getPieceOnRow(pieceName, identifier).move(coordinate);
-						return true;
+						for (Piece piece : piecesCanMoveToSquare) {
+							//look at the row number of piece coordinate, see if it matches the identifier 
+
+							if(Character.toString(piece.getPosition().toString().charAt(1)).equalsIgnoreCase(identifier)) {
+								piece.move(coordinate);
+								return true;
+								
+							}
+						}
+						
+						System.out.println("There is no " + pieceName + " on row " + identifier);
+						return false;
 						
 					}else if(getColumnNames().contains(identifier)) {
-						//locate piece by column and move that piece to coordinate
-						getPieceOnCol(pieceName, identifier).move(coordinate);
-						return true;
+						for (Piece piece : piecesCanMoveToSquare) {
+							//look at the column letter of piece coordinate, see if it matches the identifier 
+							if(Character.toString(piece.getPosition().toString().charAt(0)).equalsIgnoreCase(identifier)) {
+								piece.move(coordinate);
+								return true;
+								
+							}
+							
+						}
+						System.out.println("There is no " + pieceName + " on column " + identifier);
+						return false;
+						
 					}
 					//invalid identifier
 					else return false;
@@ -263,7 +298,7 @@ public class ChessBoard extends Board {
 			//from 8 to 1, top left to bottom
 			rowNames.add(Character.toString('8'- i));
 			//from a to b, left to right from
-			columnNames.add(Character.toString('A'+ i));
+			columnNames.add(Character.toString('a'+ i));
 		}
 		setRowNames(rowNames);
 		setColumnNames(columnNames);
@@ -275,7 +310,7 @@ public class ChessBoard extends Board {
 		Player p2 = new Player(Colour.BLACK);
 		Player[] playersArray = {p1,p2};
 		List<Player> players = Arrays.asList(playersArray);
-		ChessBoard b = new ChessBoard(Layout.STANDARD,players);
+		ChessBoard b = new ChessBoard(Layout.TEST_TWO_KNIGHTS,players);
 		b.startGameLoop();
 
 	}

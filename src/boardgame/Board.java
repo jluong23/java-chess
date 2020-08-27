@@ -149,37 +149,6 @@ public abstract class Board {
 		return pieces;
 	}
 	
-	/**
-	 * Get the first occurunce of a piece on the board by row
-	 * @param pieceName - the piece to get by name
-	 * @param row - the row to get from using row names list attribute
-	 * @return The piece on the row, null if there is no piece
-	 */
-	public Piece getPieceOnRow(String pieceName, String row) {
-		int rowIndex = getRowNames().indexOf(row);
-		for (Piece piece : board[rowIndex]) {
-			if(piece.getName().equalsIgnoreCase(pieceName)) return piece;
-		}
-		return null;
-	}
-	
-	/**
-	 * Get the first occurunce of a piece on the board by column
-	 * 
-	 * @param pieceName - the piece to get by name
-	 * @param col - th ecolumn to get from using column names list attribute
-	 * @return The piece on the column, null if there is no piece
-	 */
-	public Piece getPieceOnCol(String pieceName, String col) {
-		int colIndex = getColumnNames().indexOf(col);
-		for (Piece[] row : board) {
-			Piece piece = row[colIndex];
-			if(piece.getName().equalsIgnoreCase(pieceName)) return piece;
-			
-		}
-		return null;
-	}
-	
 	
 	/**
 	 * Return result if list of pieces are on the same column
@@ -274,7 +243,7 @@ public abstract class Board {
 		//write down the column names
 		out+=SPACE + SPACE;
 		for (String col : getColumnNames()) {
-			out+= col + " ";
+			out+= col + "  ";
 		}
 		return out;
 	}

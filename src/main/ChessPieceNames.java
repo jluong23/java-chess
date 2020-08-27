@@ -48,7 +48,7 @@ public enum ChessPieceNames{
 	 */
 	public static String getPieceName(String symbol) {
 		for (ChessPieceNames piece : ChessPieceNames.values()) {
-			if(piece.symbol.equals(symbol)) return piece.toString();
+			if(piece.symbol.equalsIgnoreCase(symbol)) return piece.toString();
 		}
 		return null;
 	}
