@@ -1,5 +1,6 @@
 package boardgame;
 import java.util.HashSet;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import boardgame.exceptions.InvalidSettingsException;
@@ -60,6 +61,28 @@ public abstract class Piece implements Cloneable{
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	
+	/**
+	 * 
+	 * @return Returns first letter of name of piece
+	 */
+	public char getFirstLetterName() {
+		return getName().toCharArray()[0];
+	}
+	
+	/**
+	 * 
+	 * @return Returns first letter of name of piece with first letter of player colour prefixed
+	 */
+	public String getFirstLetterNameWithColourPrefix() {
+		if(getPlayer().getColour() == null)throw new NoSuchElementException(player + "has no colour attribute");
+		else 
+			{
+				return getPlayer().getColour().toString().charAt(0) + Character.toString(getFirstLetterName());
+			}
+	}
+	
 	/**
 	 * @return the player
 	 */

@@ -48,4 +48,9 @@ public class Knight extends ChessPiece {
 			return possibleCoordinates;
 		}
 	}
+	
+	@Override
+	public char getFirstLetterName() {
+		return 'N';
+	}
 }

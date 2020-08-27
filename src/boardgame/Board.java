@@ -180,6 +180,12 @@ public abstract class Board {
 		return null;
 	}
 	
+	
+	/**
+	 * Return result if list of pieces are on the same column
+	 * @param pieces
+	 * @return
+	 */
 	public boolean shareColumn(List<Piece> pieces) {
 		//true until counter example is found
 		boolean shared = true;
@@ -251,18 +257,18 @@ public abstract class Board {
 	@Override
 	public String toString() {
 		String out = "";
-		final String SPACE = "\u2003";
+		final String SPACE = "  ";
 		for (int i = 0; i < board.length; i++) {
 			//write down the row value 
 			out+= getRowNames().get(i) + " |";
 			for (int j = 0; j < board[i].length; j++) {
 				Piece tile = board[i][j];
 				if(tile == null) out+=SPACE; //if nothing on tile, print empty space
-				else out+=tile;				
+				else out+=tile.getFirstLetterNameWithColourPrefix();				
 				out += "|";
 			}
 			
-			out+="\n  ----------------------\n";
+			out+="\n  -------------------------\n";
 			
 		}
 		//write down the column names
